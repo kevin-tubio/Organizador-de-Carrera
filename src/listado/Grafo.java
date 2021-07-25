@@ -74,4 +74,11 @@ public class Grafo {
 		return grados;
 	}
 
+	public Set<Materia> obtenerDesbloqueables(int materia, Map<Integer, Materia> vertices) {
+		if (!listaDeAdyacencia.containsKey(materia)) {
+			obtenerListaDeAdyacencia(vertices);
+		}
+		return listaDeAdyacencia.get(materia);
+	}
+
 }

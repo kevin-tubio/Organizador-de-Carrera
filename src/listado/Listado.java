@@ -3,17 +3,24 @@ package listado;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Set;
 
+import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;
 
 public class Listado {
 
 	private static Listado instancia;
 	private HashMap<Integer, Materia> listadoDeMaterias;
+	private Grafo grafo;
+	private LinkedList<Materia> ordenDeMaterias;
 
 	private Listado() {
 		this.listadoDeMaterias = new HashMap<>();
+		this.ordenDeMaterias = null;
+		this.grafo = new Grafo();
 	}
 
 	public static Listado obtenerListado() {
@@ -53,6 +60,16 @@ public class Listado {
 			salida.write(materia.toString());
 		}
 		return salida.toString();
+	}
+
+	public void calcularOrdenDeMaterias() throws ListadoInvalidoException {
+		grafo = new Grafo();
+		ordenDeMaterias = new LinkedList<>(grafo.ordenamientoTopologico(listadoDeMaterias));
+	}
+
+	public Set<Materia> consultarDesbloqueables(int materia) throws MateriaInvalidaException {
+		comprobarMaterias(materia);
+		return grafo.obtenerDesbloqueables(materia, listadoDeMaterias);
 	}
 
 	public static void borrarListado() {
