@@ -12,7 +12,7 @@ import org.junit.Test;
 
 import excepciones.ListadoInvalidoException;
 
-class GrafoTest {
+public class GrafoTest {
 
 	@Test
 	public void secuenciaLineal() {
@@ -26,10 +26,10 @@ class GrafoTest {
 		cTercera.add(segunda);
 		tercera.setCorrelativas(cTercera);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
-		var grafo = new Grafo(vertices);
+		var grafo = new Grafo();
 
 		try {
-			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico());
+			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
 			assertEquals(secuencia.get(0), primera);
 			assertEquals(secuencia.get(1), segunda);
 			assertEquals(secuencia.get(2), tercera);
@@ -57,10 +57,10 @@ class GrafoTest {
 		cQuinta.add(segunda);
 		quinta.setCorrelativas(cQuinta);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera, cuarta, quinta, sexta);
-		var grafo = new Grafo(vertices);
+		var grafo = new Grafo();
 
 		try {
-			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico());
+			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
 			assertEquals(secuencia.get(0), primera);
 			assertEquals(secuencia.get(1), cuarta);
 			assertEquals(secuencia.get(2), sexta);
@@ -87,10 +87,10 @@ class GrafoTest {
 		cTercera.add(segunda);
 		tercera.setCorrelativas(cTercera);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
-		var grafo = new Grafo(vertices);
+		var grafo = new Grafo();
 
 		try {
-			grafo.ordenamientoTopologico();
+			grafo.ordenamientoTopologico(vertices);
 		} catch (ListadoInvalidoException e) {
 			assertEquals(e.getMessage(), "Las correlativas a las materias del listado forman un ciclo");
 		}
