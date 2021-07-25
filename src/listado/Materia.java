@@ -1,7 +1,8 @@
 package listado;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class Materia {
 
@@ -14,7 +15,7 @@ public class Materia {
 	private int periodo;
 	private String nombre;
 	private Estado estado;
-	private LinkedList<Materia> correlativas;
+	private HashSet<Materia> correlativas;
 
 	public Materia(int numeroActividad, String nombre, int anio, int periodo) {
 		this.numeroActividad = numeroActividad;
@@ -22,7 +23,7 @@ public class Materia {
 		this.estado = Estado.NO_CURSADA;
 		this.anio = anio;
 		this.periodo = periodo;
-		this.correlativas = new LinkedList<>();
+		this.correlativas = new HashSet<>();
 	}
 
 	public Estado getEstado() {
@@ -49,15 +50,38 @@ public class Materia {
 		return nombre;
 	}
 
-	public List<Materia> getCorrelativas() {
+	public Set<Materia> getCorrelativas() {
 		return correlativas;
 	}
 
-	public void setCorrelativas(List<Materia> correlativas) {
+	public void setCorrelativas(Set<Materia> correlativas) {
 		this.correlativas.addAll(correlativas);
 	}
 
 	public int cantidadDeCorrelativas() {
 		return this.correlativas.size();
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(numeroActividad);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Materia other = (Materia) obj;
+		return numeroActividad == other.numeroActividad;
+	}
+
+	@Override
+	public String toString() {
+		return "Materia [numeroActividad=" + numeroActividad + ", nombre=" + nombre + "]";
+	}
+
 }
