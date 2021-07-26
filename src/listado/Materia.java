@@ -7,12 +7,13 @@ import java.util.Set;
 public class Materia {
 
 	public enum Estado {
-		NO_CURSADA, APROBADA, REGULARIZADA, REPROBADA
+		NO_CURSADA, APROBADA, REGULARIZADA
 	}
 
 	private int numeroActividad;
 	private int anio;
 	private int periodo;
+	private int calificacion;
 	private String nombre;
 	private Estado estado;
 	private HashSet<Materia> correlativas;
@@ -20,10 +21,11 @@ public class Materia {
 	public Materia(int numeroActividad, String nombre, int anio, int periodo) {
 		this.numeroActividad = numeroActividad;
 		this.nombre = nombre;
-		this.estado = Estado.NO_CURSADA;
+		this.estado = null;
 		this.anio = anio;
 		this.periodo = periodo;
 		this.correlativas = new HashSet<>();
+		this.calificacion = 0;
 	}
 
 	public Estado getEstado() {
@@ -82,6 +84,14 @@ public class Materia {
 	@Override
 	public String toString() {
 		return "Materia [numeroActividad=" + numeroActividad + ", nombre=" + nombre + "]";
+	}
+
+	public void setCalificacion(int calificacion) {
+		this.calificacion = calificacion;
+	}
+
+	public int getCalificacion() {
+		return this.calificacion;
 	}
 
 }
