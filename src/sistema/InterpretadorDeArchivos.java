@@ -8,26 +8,44 @@ import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import excepciones.PlanillaInvalidaException;
 import listado.Listado;
 import listado.Materia;
 
 public class InterpretadorDeArchivos {
 
-	public Listado generarListado(String ruta) throws IOException {
+	public Listado generarListado(String ruta) throws IOException, PlanillaInvalidaException {
 		var listado = Listado.obtenerListado();
-		try (var libro = new HSSFWorkbook(new FileInputStream(ruta))) {
-			HSSFSheet hoja = libro.getSheetAt(0);
-
-			agregarMaterias(listado, hoja);
-		}
-
+		Sheet hoja = obtenerSheet(ruta);
+		validarPlanilla(hoja);
+		agregarMaterias(listado, hoja);
 		return listado;
 	}
 
-	private void agregarMaterias(Listado listado, HSSFSheet hoja) {
+	private void validarPlanilla(Sheet hoja) {
+		
+	}
+
+	private Sheet obtenerSheet(String ruta) throws IOException {
+		try (var libro = new HSSFWorkbook(new FileInputStream(ruta))) {
+			HSSFSheet hoja = libro.getSheetAt(0);
+			return hoja;
+		} catch(OfficeXmlFileException e) {
+			try (var libro = new XSSFWorkbook(new FileInputStream(ruta))) {
+				XSSFSheet hoja = libro.getSheetAt(0);
+				return hoja;
+			}
+		}
+	}
+
+	private void agregarMaterias(Listado listado, Sheet hoja) {
 		Iterator<Row> iteradorFilas = hoja.iterator();
 		Iterator<Cell> iteradorColumnas = null;
 		while (iteradorFilas.hasNext()) {
