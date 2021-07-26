@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -72,7 +73,15 @@ public class Listado {
 		return grafo.obtenerDesbloqueables(materia, listadoDeMaterias);
 	}
 
+	public List<Materia> getOrdenDeMaterias() {
+		return ordenDeMaterias;
+	}
+
 	public static void borrarListado() {
 		Listado.instancia = null;
+	}
+
+	public int consultarCantidadDeMaterias() {
+		return listadoDeMaterias.size();
 	}
 }
