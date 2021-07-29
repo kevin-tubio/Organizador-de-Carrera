@@ -16,7 +16,7 @@ import listado.Listado;
 import listado.Materia;
 import listado.Materia.Estado;
 
-public class InterpretadorDeArchivos {
+public class InterpretadorDePlanillas {
 
 	public Listado generarListado(String ruta) throws IOException, PlanillaInvalidaException {
 		var listado = Listado.obtenerListado();

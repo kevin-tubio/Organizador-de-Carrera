@@ -11,13 +11,13 @@ import org.junit.Test;
 import excepciones.PlanillaInvalidaException;
 import listado.Listado;
 
-public class InterpretadorDeArchivosTest {
+public class InterpretadorDePlanillasTest {
 
-	private InterpretadorDeArchivos interpretador;
+	private InterpretadorDePlanillas interpretador;
 
 	@Before
 	public void set() {
-		interpretador = new InterpretadorDeArchivos();
+		interpretador = new InterpretadorDePlanillas();
 	}
 
 	@After
