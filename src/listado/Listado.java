@@ -50,7 +50,7 @@ public class Listado {
 	private void comprobarMaterias(int... materias) throws MateriaInvalidaException {
 		for (Integer materia : materias) {
 			if (!listadoDeMaterias.containsKey(materia)) {
-				throw new MateriaInvalidaException("La materia " + materia + " no se encuentra dentro del listado");
+				throw new MateriaInvalidaException("La materia (" + materia + ") no se encuentra dentro del listado");
 			}
 		}
 	}
