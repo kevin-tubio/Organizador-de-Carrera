@@ -4,27 +4,24 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 
 import org.junit.Test;
 
 import excepciones.ListadoInvalidoException;
+import excepciones.MateriaInvalidaException;
 
 public class GrafoTest {
 
 	@Test
-	public void secuenciaLineal() {
+	public void secuenciaLineal() throws MateriaInvalidaException {
 		var primera = new Materia(1, "Primera", 1, 1);
 		var segunda = new Materia(2, "Segunda", 1, 1);
 		var tercera = new Materia(3, "Tercera", 1, 1);
-		HashSet<Materia> cSegunda = new HashSet<>();
-		HashSet<Materia> cTercera = new HashSet<>();
-		cSegunda.add(primera);
-		segunda.setCorrelativas(cSegunda);
-		cTercera.add(segunda);
-		tercera.setCorrelativas(cTercera);
+
+		segunda.setCorrelativa(primera);
+		tercera.setCorrelativa(segunda);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
 		var grafo = new Grafo();
 
@@ -39,23 +36,17 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaBifurcada() {
+	public void secuenciaBifurcada() throws MateriaInvalidaException {
 		var primera = new Materia(1, "Primera", 1, 1);
 		var segunda = new Materia(2, "Segunda", 1, 1);
 		var tercera = new Materia(3, "Tercera", 1, 1);
 		var cuarta = new Materia(4, "Cuarta", 1, 1);
 		var quinta = new Materia(5, "Quinta", 1, 1);
 		var sexta = new Materia(6, "Sexta", 1, 1);
-		HashSet<Materia> cSegunda = new HashSet<>();
-		HashSet<Materia> cTercera = new HashSet<>();
-		HashSet<Materia> cQuinta = new HashSet<>();
-		cSegunda.add(primera);
-		segunda.setCorrelativas(cSegunda);
-		cTercera.add(segunda);
-		tercera.setCorrelativas(cTercera);
-		cQuinta.add(primera);
-		cQuinta.add(segunda);
-		quinta.setCorrelativas(cQuinta);
+		segunda.setCorrelativa(primera);
+		tercera.setCorrelativa(segunda);
+		quinta.setCorrelativa(primera);
+		quinta.setCorrelativa(segunda);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera, cuarta, quinta, sexta);
 		var grafo = new Grafo();
 
@@ -73,19 +64,13 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaCiclica() {
+	public void secuenciaCiclica() throws MateriaInvalidaException {
 		var primera = new Materia(1, "Primera", 1, 1);
 		var segunda = new Materia(2, "Segunda", 1, 1);
 		var tercera = new Materia(3, "Tercera", 1, 1);
-		HashSet<Materia> cPrimera = new HashSet<>();
-		HashSet<Materia> cSegunda = new HashSet<>();
-		HashSet<Materia> cTercera = new HashSet<>();
-		cPrimera.add(tercera);
-		primera.setCorrelativas(cPrimera);
-		cSegunda.add(primera);
-		segunda.setCorrelativas(cSegunda);
-		cTercera.add(segunda);
-		tercera.setCorrelativas(cTercera);
+		primera.setCorrelativa(tercera);
+		segunda.setCorrelativa(primera);
+		tercera.setCorrelativa(segunda);
 		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
 		var grafo = new Grafo();
 

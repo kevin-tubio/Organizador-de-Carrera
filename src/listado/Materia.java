@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import excepciones.MateriaInvalidaException;
+
 public class Materia {
 
 	public enum Estado {
@@ -56,8 +58,13 @@ public class Materia {
 		return correlativas;
 	}
 
-	public void setCorrelativas(Set<Materia> correlativas) {
-		this.correlativas.addAll(correlativas);
+	public void setCorrelativa(Materia correlativa) throws MateriaInvalidaException {
+		if (!this.equals(correlativa)) {
+			this.correlativas.add(correlativa);
+		} else {
+			throw new MateriaInvalidaException(
+					"no puede tener como correlativa a (" + correlativa.numeroActividad + ").");
+		}
 	}
 
 	public int cantidadDeCorrelativas() {

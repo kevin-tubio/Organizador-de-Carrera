@@ -2,7 +2,6 @@ package listado;
 
 import java.io.StringWriter;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +38,13 @@ public class Listado {
 		comprobarMaterias(materia);
 		comprobarMaterias(correlativas);
 
-		HashSet<Materia> conjuntoCorrelativas = new HashSet<>();
 		for (Integer correlativa : correlativas) {
-			conjuntoCorrelativas.add(listadoDeMaterias.get(correlativa));
+			try {
+				listadoDeMaterias.get(materia).setCorrelativa(listadoDeMaterias.get(correlativa));
+			} catch (MateriaInvalidaException e) {
+				System.err.println("La materia (" + materia + ") " + e.getMessage());
+			}
 		}
-		listadoDeMaterias.get(materia).setCorrelativas(conjuntoCorrelativas);
 	}
 
 	private void comprobarMaterias(int... materias) throws MateriaInvalidaException {
