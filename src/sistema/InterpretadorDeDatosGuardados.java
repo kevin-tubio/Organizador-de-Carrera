@@ -1,0 +1,97 @@
+package sistema;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+
+import excepciones.ArchivoException;
+import excepciones.FormatoDeLineaException;
+import listado.Listado;
+import listado.Materia;
+import listado.Materia.Estado;
+
+public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
+
+	private int numeroDeLinea;
+
+	@Override
+	public Listado generarListado(String ruta) throws ArchivoException {
+		Listado.obtenerListado();
+		numeroDeLinea = 0;
+		try (var buffer = new BufferedReader(
+				new InputStreamReader(new FileInputStream(ruta), StandardCharsets.UTF_8))) {
+			agregarMaterias(buffer);
+		} catch (FileNotFoundException e) {
+			throw new ArchivoException("No se encontro el archivo en: " + ruta);
+		} catch (IOException e) {
+			Listado.borrarListado();
+			throw new ArchivoException(e.getMessage(), e.getCause());
+		}
+		return Listado.obtenerListado();
+	}
+
+	private String validarLinea(String lineaActual, String mensaje) throws FormatoDeLineaException {
+		if (lineaActual == null || lineaActual.strip().isEmpty()) {
+			throw new FormatoDeLineaException(mensaje);
+		}
+		return lineaActual.strip();
+	}
+
+	private void agregarMaterias(BufferedReader buffer) throws IOException, ArchivoException {
+		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, "Linea 2. Se esperaba un numero");
+		var listado = Listado.obtenerListado();
+		for (var i = 0; i < cantidadDeMaterias; i++) {
+			try {
+				listado.agregarMateria(crearMateria(buffer));
+			} catch (FormatoDeLineaException e) {
+				System.err.println("Linea " + numeroDeLinea + ", " + e.getMessage());
+			}
+		}
+
+	}
+
+	private int obtenerCantidadDeMaterias(BufferedReader buffer, String alerta) throws IOException, ArchivoException {
+		try {
+			numeroDeLinea++;
+			return Integer.parseInt(validarLinea(buffer.readLine(), alerta));
+		} catch (NumberFormatException e) {
+			throw new FormatoDeLineaException(alerta);
+		}
+	}
+
+	private Materia crearMateria(BufferedReader buffer) throws IOException, ArchivoException {
+		numeroDeLinea++;
+		var linea = validarLinea(buffer.readLine(), "se esperaban los datos de una materia.");
+		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/(\\d/){2}\\d{1,2}/[A-Za-z ]{0,}$")) {
+			throw new FormatoDeLineaException("se esperaban 6 datos separados por una barra diagonal");
+		}
+		String[] datos = linea.split("/");
+		var numeroDeMateria = obtenerNumero(datos[0]);
+		var nombre = datos[1];
+		var anio = obtenerNumero(datos[2]);
+		var periodo = obtenerNumero(datos[3]);
+		var materia = new Materia(numeroDeMateria, nombre, anio, periodo);
+		materia.setCalificacion(obtenerNumero(datos[4]));
+		materia.setEstado(obtenerEstadoDeMateria(datos[5]));
+		return materia;
+	}
+
+	private Estado obtenerEstadoDeMateria(String dato) {
+		switch (dato) {
+		case "Aprobada":
+			return Estado.APROBADA;
+		case "Regularizada":
+			return Estado.REGULARIZADA;
+		default:
+			return Estado.NO_CURSADA;
+		}
+	}
+
+	private int obtenerNumero(String dato) {
+		return Integer.parseInt(dato);
+	}
+
+}
