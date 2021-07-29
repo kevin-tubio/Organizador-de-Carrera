@@ -9,6 +9,7 @@ import java.nio.charset.StandardCharsets;
 
 import excepciones.ArchivoException;
 import excepciones.FormatoDeLineaException;
+import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
 import listado.Materia.Estado;
@@ -24,6 +25,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 		try (var buffer = new BufferedReader(
 				new InputStreamReader(new FileInputStream(ruta), StandardCharsets.UTF_8))) {
 			agregarMaterias(buffer);
+			obtenerCorrelativas(buffer);
 		} catch (FileNotFoundException e) {
 			throw new ArchivoException("No se encontro el archivo en: " + ruta);
 		} catch (IOException e) {
@@ -92,6 +94,37 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 
 	private int obtenerNumero(String dato) {
 		return Integer.parseInt(dato);
+	}
+
+	private void obtenerCorrelativas(BufferedReader buffer) throws IOException {
+		numeroDeLinea++;
+		var linea = buffer.readLine();
+		if (linea != null && linea.strip().matches("\\d+")) {
+			var cantidad = Integer.parseInt(linea);
+			for (var i = 0; i < cantidad; i++) {
+				agregarCorrelativa(buffer);
+			}
+		}
+	}
+
+	private void agregarCorrelativa(BufferedReader buffer) throws IOException {
+		numeroDeLinea++;
+		var linea = buffer.readLine();
+		var listado = Listado.obtenerListado();
+		if (linea != null && linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
+			String[] datos = linea.split(": *");
+			try {
+				String[] correlativas = datos[1].split("/");
+				var numeros = new int[correlativas.length];
+				for (var i = 0; i < numeros.length; i++) {
+					numeros[i] = Integer.parseInt(correlativas[i].strip());
+				}
+				listado.agregarCorrelativas(Integer.parseInt(datos[0]), numeros);
+			} catch (MateriaInvalidaException e) {
+				System.err.println(e.getMessage());
+			}
+		} else
+			System.err.println("Linea " + numeroDeLinea + ", se esperaban los numeros de materias correlativas");
 	}
 
 }
