@@ -2,13 +2,11 @@ package sistema;
 
 import static org.junit.Assert.fail;
 
-import java.io.IOException;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import excepciones.PlanillaInvalidaException;
+import excepciones.ArchivoException;
 import listado.Listado;
 
 public class InterpretadorDePlanillasTest {
@@ -29,7 +27,7 @@ public class InterpretadorDePlanillasTest {
 	public void interpretarArchivoXls() {
 		try {
 			interpretador.generarListado("archivoDeEntrada/valido/plan_estudios.xls");
-		} catch (IOException | PlanillaInvalidaException e) {
+		} catch (ArchivoException e) {
 			fail();
 		}
 	}
@@ -38,36 +36,24 @@ public class InterpretadorDePlanillasTest {
 	public void interpretarArchivoXlsx() {
 		try {
 			interpretador.generarListado("archivoDeEntrada/valido/plan_estudios.xlsx");
-		} catch (IOException | PlanillaInvalidaException e) {
+		} catch (ArchivoException e) {
 			fail();
 		}
 	}
 
-	@Test(expected = PlanillaInvalidaException.class)
-	public void interpretarArchivoSinMaterias() throws PlanillaInvalidaException {
-		try {
-			interpretador.generarListado("archivoDeEntrada/invalido/sin_materias.xls");
-		} catch (IOException e) {
-			fail();
-		}
+	@Test(expected = ArchivoException.class)
+	public void interpretarArchivoSinMaterias() throws ArchivoException {
+		interpretador.generarListado("archivoDeEntrada/invalido/sin_materias.xls");
 	}
 
-	@Test(expected = PlanillaInvalidaException.class)
-	public void interpretarArchivoSinNumerosDeMateria() throws PlanillaInvalidaException {
-		try {
-			interpretador.generarListado("archivoDeEntrada/invalido/sin_numeros_de_materias.xls");
-		} catch (IOException e) {
-			fail();
-		}
+	@Test(expected = ArchivoException.class)
+	public void interpretarArchivoSinNumerosDeMateria() throws ArchivoException {
+		interpretador.generarListado("archivoDeEntrada/invalido/sin_numeros_de_materias.xls");
 	}
 
-	@Test(expected = PlanillaInvalidaException.class)
-	public void interpretarArchivoAnioDeMateria() throws PlanillaInvalidaException {
-		try {
-			interpretador.generarListado("archivoDeEntrada/invalido/sin_anio_de_materias.xls");
-		} catch (IOException e) {
-			fail();
-		}
+	@Test(expected = ArchivoException.class)
+	public void interpretarArchivoAnioDeMateria() throws ArchivoException {
+		interpretador.generarListado("archivoDeEntrada/invalido/sin_anio_de_materias.xls");
 	}
 
 }

@@ -1,6 +1,7 @@
 package sistema;
 
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Iterator;
 
@@ -10,20 +11,28 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
 import listado.Listado;
 import listado.Materia;
 import listado.Materia.Estado;
 
-public class InterpretadorDePlanillas {
+public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 
-	public Listado generarListado(String ruta) throws IOException, PlanillaInvalidaException {
+	@Override
+	public Listado generarListado(String ruta) throws ArchivoException {
 		var listado = Listado.obtenerListado();
-		var hoja = obtenerHoja(ruta);
-
-		agregarMaterias(listado, hoja);
-		return listado;
+		try {
+			var hoja = obtenerHoja(ruta);
+			agregarMaterias(listado, hoja);
+		} catch (FileNotFoundException e) {
+			throw new ArchivoException("No se encontro el archivo en: " + ruta);
+		} catch (IOException | PlanillaInvalidaException e) {
+			Listado.borrarListado();
+			throw new ArchivoException(e.getMessage(), e.getCause());
+		}
+		return Listado.obtenerListado();
 	}
 
 	private Sheet obtenerHoja(String ruta) throws IOException {
