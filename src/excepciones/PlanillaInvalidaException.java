@@ -1,6 +1,6 @@
 package excepciones;
 
-public class PlanillaInvalidaException extends Exception {
+public class PlanillaInvalidaException extends ArchivoException {
 
 	private static final long serialVersionUID = 7436271155743279782L;
 
