@@ -7,6 +7,7 @@ import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -49,7 +50,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		Iterator<Row> iteradorFilas = hoja.iterator();
 		while (iteradorFilas.hasNext()) {
 			Row filaActual = iteradorFilas.next();
-			if (filaActual.getCell(0).getStringCellValue().matches("^[A-Za-zÀ-ÿ]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)")) {
+			if (filaActual.getCell(0).getStringCellValue().matches("^[A-Za-zÀ-ÿ]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\) ?")) {
 				try {
 					listado.agregarMateria(crearMateria(filaActual));
 				} catch (FormatoDeCeldaException e) {
@@ -65,7 +66,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 	private Materia crearMateria(Row filaActual) throws FormatoDeCeldaException {
 		var numero = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
-		var anio = obtenerAnioDeMateria(filaActual.getCell(2).getStringCellValue());
+		var anio = obtenerAnioDeMateria(filaActual.getCell(2));
 		var periodo = obtenerPeriodoDeMateria(filaActual.getCell(3).getStringCellValue());
 		var materia = new Materia(numero, nombre, anio, periodo);
 		obtenerEstadoDeMateria(materia, filaActual.getCell(4).getStringCellValue());
@@ -77,14 +78,16 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 	}
 
 	private String obtenerNombreMateria(String contenido) {
-		return contenido.split("[\\d\\(\\)\\n]+")[0].strip();
+		return contenido.split(" ?[\\d\\(\\)]+")[0];
 	}
 
-	private int obtenerAnioDeMateria(String contenido) throws FormatoDeCeldaException {
+	private int obtenerAnioDeMateria(Cell celda) throws FormatoDeCeldaException {
 		try {
-			return Integer.parseInt(contenido);
+			return Integer.parseInt(celda.getStringCellValue().strip());
 		} catch (NumberFormatException e) {
 			throw new FormatoDeCeldaException("columna 3. Se esperaba un numero.", e.getCause());
+		} catch (IllegalStateException e) {
+			return (int) celda.getNumericCellValue();
 		}
 	}
 
@@ -97,12 +100,12 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 	}
 
 	private void obtenerEstadoDeMateria(Materia materia, String contenido) throws FormatoDeCeldaException {
-		if (contenido.equals("") || contenido.matches("[\s]+")) {
+		if (contenido.equals("") || contenido.matches("[ ]+")) {
 			materia.setEstado(Estado.NO_CURSADA);
-		} else if (contenido.matches("^\\d{1,2} \\([A][a-z]+\\)")) {
-			materia.setCalificacion(Integer.parseInt(contenido.split(" \\([Aa-z]+\\)")[0]));
+		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\) *$")) {
+			materia.setCalificacion(Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]));
 			materia.setEstado(Estado.APROBADA);
-		} else if (contenido.matches("^[A][a-z]+ \\([A][a-z]+\\)")) {
+		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\) *$")) {
 			materia.setEstado(Estado.REGULARIZADA);
 		} else {
 			throw new FormatoDeCeldaException("columna 5. Se esperaba un estado de cursada valido o una celda vacia.");
