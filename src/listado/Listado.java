@@ -84,4 +84,17 @@ public class Listado {
 	public int consultarCantidadDeMaterias() {
 		return listadoDeMaterias.size();
 	}
+
+	public Map<Integer, Materia> getListadoDeMaterias() {
+		return listadoDeMaterias;
+	}
+
+	public Materia obtenerMateria(int numeroDeMateria) throws MateriaInvalidaException {
+		if (listadoDeMaterias.containsKey(numeroDeMateria)) {
+			return listadoDeMaterias.get(numeroDeMateria);
+		} else {
+			throw new MateriaInvalidaException("la materia (" + numeroDeMateria + ") no se encontra en el listado");
+		}
+	}
+
 }
