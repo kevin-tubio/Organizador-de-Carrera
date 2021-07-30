@@ -16,9 +16,9 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaLineal() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, 1);
-		var segunda = new Materia(2, "Segunda", 1, 1);
-		var tercera = new Materia(3, "Tercera", 1, 1);
+		var primera = new Materia(1, "Primera", 1, "1");
+		var segunda = new Materia(2, "Segunda", 1, "1");
+		var tercera = new Materia(3, "Tercera", 1, "1");
 
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);
@@ -37,12 +37,12 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaBifurcada() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, 1);
-		var segunda = new Materia(2, "Segunda", 1, 1);
-		var tercera = new Materia(3, "Tercera", 1, 1);
-		var cuarta = new Materia(4, "Cuarta", 1, 1);
-		var quinta = new Materia(5, "Quinta", 1, 1);
-		var sexta = new Materia(6, "Sexta", 1, 1);
+		var primera = new Materia(1, "Primera", 1, "1");
+		var segunda = new Materia(2, "Segunda", 1, "1");
+		var tercera = new Materia(3, "Tercera", 1, "1");
+		var cuarta = new Materia(4, "Cuarta", 1, "1");
+		var quinta = new Materia(5, "Quinta", 1, "1");
+		var sexta = new Materia(6, "Sexta", 1, "1");
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);
 		quinta.setCorrelativa(primera);
@@ -65,9 +65,9 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaCiclica() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, 1);
-		var segunda = new Materia(2, "Segunda", 1, 1);
-		var tercera = new Materia(3, "Tercera", 1, 1);
+		var primera = new Materia(1, "Primera", 1, "1");
+		var segunda = new Materia(2, "Segunda", 1, "1");
+		var tercera = new Materia(3, "Tercera", 1, "1");
 		primera.setCorrelativa(tercera);
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);

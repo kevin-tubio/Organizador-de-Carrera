@@ -91,12 +91,8 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		}
 	}
 
-	private int obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
-		try {
-			return Integer.parseInt(contenido.split("[^\\d]")[0]);
-		} catch (NumberFormatException e) {
-			throw new FormatoDeCeldaException("columna 4. Se esperaba un numero.", e.getCause());
-		}
+	private String obtenerPeriodoDeMateria(String contenido) {
+		return contenido;
 	}
 
 	private void obtenerEstadoDeMateria(Materia materia, String contenido) throws FormatoDeCeldaException {

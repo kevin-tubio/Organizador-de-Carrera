@@ -74,7 +74,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 		var numeroDeMateria = obtenerNumero(datos[0]);
 		var nombre = datos[1];
 		var anio = obtenerNumero(datos[2]);
-		var periodo = obtenerNumero(datos[3]);
+		var periodo = datos[3];
 		var materia = new Materia(numeroDeMateria, nombre, anio, periodo);
 		materia.setCalificacion(obtenerNumero(datos[4]));
 		materia.setEstado(obtenerEstadoDeMateria(datos[5]));

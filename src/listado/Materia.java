@@ -14,13 +14,13 @@ public class Materia {
 
 	private int numeroActividad;
 	private int anio;
-	private int periodo;
+	private String periodo;
 	private int calificacion;
 	private String nombre;
 	private Estado estado;
 	private HashSet<Materia> correlativas;
 
-	public Materia(int numeroActividad, String nombre, int anio, int periodo) {
+	public Materia(int numeroActividad, String nombre, int anio, String periodo) {
 		this.numeroActividad = numeroActividad;
 		this.nombre = nombre;
 		this.estado = null;
@@ -46,7 +46,7 @@ public class Materia {
 		return anio;
 	}
 
-	public int getPeriodo() {
+	public String getPeriodo() {
 		return periodo;
 	}
 
