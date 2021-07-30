@@ -67,8 +67,8 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 	private Materia crearMateria(BufferedReader buffer) throws IOException, ArchivoException {
 		numeroDeLinea++;
 		var linea = validarLinea(buffer.readLine(), "se esperaban los datos de una materia.");
-		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/(\\d/){2}\\d{1,2}/[A-Za-z ]{0,}$")) {
-			throw new FormatoDeLineaException("se esperaban 6 datos separados por una barra diagonal");
+		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/\\d/([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+/\\d{1,2}/[A-Za-z ]{0,}$")) {
+			throw new FormatoDeLineaException("Linea " + numeroDeLinea + ", formato invalido.");
 		}
 		String[] datos = linea.split("/");
 		var numeroDeMateria = obtenerNumero(datos[0]);
