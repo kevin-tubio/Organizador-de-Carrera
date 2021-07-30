@@ -91,8 +91,11 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		}
 	}
 
-	private String obtenerPeriodoDeMateria(String contenido) {
-		return contenido;
+	private String obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
+		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
+			throw new FormatoDeCeldaException("columna 4. Formato invalido");
+		}
+		return contenido.strip();
 	}
 
 	private void obtenerEstadoDeMateria(Materia materia, String contenido) throws FormatoDeCeldaException {
