@@ -90,7 +90,7 @@ public class Materia {
 
 	@Override
 	public String toString() {
-		return "Materia [numeroActividad=" + numeroActividad + ", nombre=" + nombre + "]";
+		return nombre + " (" + numeroActividad + ")";
 	}
 
 	public void setCalificacion(int calificacion) {
