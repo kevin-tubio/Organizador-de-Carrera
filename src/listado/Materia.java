@@ -97,8 +97,15 @@ public class Materia {
 		this.calificacion = calificacion;
 	}
 
-	public int getCalificacion() {
-		return this.calificacion;
+	public String getCalificacion() {
+		switch (this.estado) {
+		case APROBADA:
+			return this.calificacion + "";
+		case REGULARIZADA:
+			return "Regularizada";
+		default:
+			return "";
+		}
 	}
 
 }

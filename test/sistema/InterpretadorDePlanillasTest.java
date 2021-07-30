@@ -17,7 +17,7 @@ import listado.Materia.Estado;
 
 public class InterpretadorDePlanillasTest {
 
-	private InterpretadorDePlanillas interpretador;
+	private InterpretadorDeArchivos interpretador;
 
 	@Before
 	public void set() {
@@ -105,13 +105,13 @@ public class InterpretadorDePlanillasTest {
 		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(1240).getEstado());
 		assertEquals(Estado.REGULARIZADA, listado.obtenerMateria(1242).getEstado());
 		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(1270).getEstado());
-		assertEquals(0, listado.obtenerMateria(3).getCalificacion());
-		assertEquals(5, listado.obtenerMateria(592).getCalificacion());
-		assertEquals(6, listado.obtenerMateria(1265).getCalificacion());
-		assertEquals(8, listado.obtenerMateria(1269).getCalificacion());
-		assertEquals(0, listado.obtenerMateria(1240).getCalificacion());
-		assertEquals(0, listado.obtenerMateria(1242).getCalificacion());
-		assertEquals(0, listado.obtenerMateria(1270).getCalificacion());
+		assertEquals("", listado.obtenerMateria(3).getCalificacion());
+		assertEquals("5", listado.obtenerMateria(592).getCalificacion());
+		assertEquals("6", listado.obtenerMateria(1265).getCalificacion());
+		assertEquals("8", listado.obtenerMateria(1269).getCalificacion());
+		assertEquals("", listado.obtenerMateria(1240).getCalificacion());
+		assertEquals("Regularizada", listado.obtenerMateria(1242).getCalificacion());
+		assertEquals("", listado.obtenerMateria(1270).getCalificacion());
 	}
 
 	@Test
@@ -127,7 +127,7 @@ public class InterpretadorDePlanillasTest {
 		assertEquals(2, listado.consultarCantidadDeMaterias());
 		assertEquals(listadoDeMaterias, listado.getListadoDeMaterias());
 		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(3).getEstado());
-		assertEquals(0, listado.obtenerMateria(3).getCalificacion());
+		assertEquals("", listado.obtenerMateria(3).getCalificacion());
 	}
 
 }
