@@ -1,7 +1,6 @@
 package listado;
 
 import java.io.StringWriter;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -9,16 +8,18 @@ import java.util.Set;
 
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 public class Listado {
 
 	private static Listado instancia;
-	private HashMap<Integer, Materia> listadoDeMaterias;
+	private static ObservableMap<Integer, Materia> listadoDeMaterias;
 	private Grafo grafo;
 	private LinkedList<Materia> ordenDeMaterias;
 
 	private Listado() {
-		this.listadoDeMaterias = new HashMap<>();
+		listadoDeMaterias = FXCollections.observableHashMap(); // NOSONAR
 		this.ordenDeMaterias = null;
 		this.grafo = new Grafo();
 	}
@@ -30,8 +31,12 @@ public class Listado {
 		return instancia;
 	}
 
+	public static void borrarListado() {
+		listadoDeMaterias.clear();
+	}
+
 	public void agregarMateria(Materia materia) {
-		this.listadoDeMaterias.put(materia.getNumeroActividad(), materia);
+		listadoDeMaterias.put(materia.getNumeroActividad(), materia);
 	}
 
 	public void agregarCorrelativas(int materia, int... correlativas) throws MateriaInvalidaException {
@@ -78,15 +83,11 @@ public class Listado {
 		return ordenDeMaterias;
 	}
 
-	public static void borrarListado() {
-		Listado.instancia = null;
-	}
-
 	public int consultarCantidadDeMaterias() {
 		return listadoDeMaterias.size();
 	}
 
-	public Map<Integer, Materia> getListadoDeMaterias() {
+	public ObservableMap<Integer, Materia> getListadoDeMaterias() {
 		return listadoDeMaterias;
 	}
 
