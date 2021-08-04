@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import enumerados.Periodo;
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;
 
@@ -16,9 +17,9 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaLineal() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, "1");
-		var segunda = new Materia(2, "Segunda", 1, "1");
-		var tercera = new Materia(3, "Tercera", 1, "1");
+		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
 
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);
@@ -37,12 +38,12 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaBifurcada() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, "1");
-		var segunda = new Materia(2, "Segunda", 1, "1");
-		var tercera = new Materia(3, "Tercera", 1, "1");
-		var cuarta = new Materia(4, "Cuarta", 1, "1");
-		var quinta = new Materia(5, "Quinta", 1, "1");
-		var sexta = new Materia(6, "Sexta", 1, "1");
+		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var cuarta = new Materia(4, "Cuarta", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var quinta = new Materia(5, "Quinta", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var sexta = new Materia(6, "Sexta", 1, Periodo.PRIMER_CUATRIMESTRE);
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);
 		quinta.setCorrelativa(primera);
@@ -65,9 +66,9 @@ public class GrafoTest {
 
 	@Test
 	public void secuenciaCiclica() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, "1");
-		var segunda = new Materia(2, "Segunda", 1, "1");
-		var tercera = new Materia(3, "Tercera", 1, "1");
+		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
+		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
 		primera.setCorrelativa(tercera);
 		segunda.setCorrelativa(primera);
 		tercera.setCorrelativa(segunda);

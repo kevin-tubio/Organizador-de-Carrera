@@ -9,7 +9,8 @@ public enum Estado {
 		this.cadena = string;
 	}
 
-	public String getCadena() {
+	@Override
+	public String toString() {
 		return cadena;
 	}
 }

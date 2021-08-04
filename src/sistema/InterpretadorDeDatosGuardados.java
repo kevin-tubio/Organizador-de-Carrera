@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
 import enumerados.Estado;
+import enumerados.Periodo;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeLineaException;
 import excepciones.MateriaInvalidaException;
@@ -74,11 +75,22 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 		var numeroDeMateria = obtenerNumero(datos[0]);
 		var nombre = datos[1];
 		var anio = obtenerNumero(datos[2]);
-		var periodo = datos[3];
+		var periodo = obtenerPeriodo(datos[3]);
 		var materia = new Materia(numeroDeMateria, nombre, anio, periodo);
 		materia.setCalificacion(obtenerNumero(datos[4]));
 		materia.setEstado(obtenerEstadoDeMateria(datos[5]));
 		return materia;
+	}
+
+	private Periodo obtenerPeriodo(String dato) {
+		switch (dato) {
+		case "1er Cuatrimestre":
+			return Periodo.PRIMER_CUATRIMESTRE;
+		case "2do Cuatrimestre":
+			return Periodo.SEGUNDO_CUATRIMESTRE;
+		default:
+			return Periodo.ANUAL;
+		}
 	}
 
 	private Estado obtenerEstadoDeMateria(String dato) {

@@ -5,19 +5,20 @@ import java.util.Objects;
 import java.util.Set;
 
 import enumerados.Estado;
+import enumerados.Periodo;
 import excepciones.MateriaInvalidaException;
 
 public class Materia {
 
 	private int numeroActividad;
 	private int anio;
-	private String periodo;
+	private Periodo periodo;
 	private int calificacion;
 	private String nombre;
 	private Estado estado;
 	private HashSet<Materia> correlativas;
 
-	public Materia(int numeroActividad, String nombre, int anio, String periodo) {
+	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
 		this.numeroActividad = numeroActividad;
 		this.nombre = nombre;
 		this.estado = null;
@@ -44,7 +45,7 @@ public class Materia {
 	}
 
 	public String getPeriodo() {
-		return periodo;
+		return periodo.toString();
 	}
 
 	public String getNombre() {

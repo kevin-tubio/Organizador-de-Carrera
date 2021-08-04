@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enumerados.Estado;
+import enumerados.Periodo;
 import excepciones.ArchivoException;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
@@ -42,10 +43,12 @@ public class InterpretadorDeDatosGuardadosTest {
 		interpretador.generarListado("archivoDeEntrada/valido/materias_guardadas.txt");
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
-		listadoDeMaterias.put(1269, new Materia(1269, "Algoritmos y Programación III", 2, "2"));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, "1"));
-		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, "1"));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, "2"));
+		listadoDeMaterias.put(1269,
+				new Materia(1269, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		var listado = Listado.obtenerListado();
 
 		assertEquals(4, listado.consultarCantidadDeMaterias());
@@ -66,10 +69,12 @@ public class InterpretadorDeDatosGuardadosTest {
 		interpretador.generarListado("archivoDeEntrada/valido/materias_guardadas_correlativas.txt");
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
-		listadoDeMaterias.put(1269, new Materia(1269, "Algoritmos y Programación III", 2, "2"));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, "1"));
-		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, "1"));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, "2"));
+		listadoDeMaterias.put(1269,
+				new Materia(1269, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		var listado = Listado.obtenerListado();
 
 		assertEquals(4, listado.consultarCantidadDeMaterias());
@@ -84,11 +89,12 @@ public class InterpretadorDeDatosGuardadosTest {
 		assertEquals("Regularizada", listado.obtenerMateria(1242).getCalificacion());
 
 		Set<Materia> aYP = new HashSet<>();
-		aYP.add(new Materia(1242, "Matemáticas Especiales", 2, "2"));
-		aYP.add(new Materia(862, "Álgebra I", 1, "1"));
+		aYP.add(new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		aYP.add(new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
 
 		Set<Materia> algebra = new HashSet<>();
-		algebra.add(new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, "1"));
+		algebra.add(new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				Periodo.PRIMER_CUATRIMESTRE));
 
 		assertEquals(aYP, listado.obtenerMateria(1269).getCorrelativas());
 		assertEquals(algebra, listado.obtenerMateria(862).getCorrelativas());

@@ -13,6 +13,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import enumerados.Estado;
+import enumerados.Periodo;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
@@ -91,11 +92,20 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		}
 	}
 
-	private String obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
+	private Periodo obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
 		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
 			throw new FormatoDeCeldaException("columna 4. Formato invalido");
 		}
-		return contenido.strip();
+		switch (contenido.strip()) {
+		case "1er Cuatrimestre":
+			return Periodo.PRIMER_CUATRIMESTRE;
+		case "2do Cuatrimestre":
+			return Periodo.SEGUNDO_CUATRIMESTRE;
+		case "Anual":
+			return Periodo.ANUAL;
+		default:
+			return Periodo.ANUAL;
+		}
 	}
 
 	private void obtenerEstadoDeMateria(Materia materia, String contenido) throws FormatoDeCeldaException {
