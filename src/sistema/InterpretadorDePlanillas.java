@@ -12,12 +12,12 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import enumerados.Estado;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
 import listado.Listado;
 import listado.Materia;
-import listado.Materia.Estado;
 
 public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 

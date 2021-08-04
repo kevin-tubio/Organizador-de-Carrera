@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import enumerados.Estado;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeLineaException;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
-import listado.Materia.Estado;
 
 public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 

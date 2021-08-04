@@ -10,11 +10,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import enumerados.Estado;
 import excepciones.ArchivoException;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
-import listado.Materia.Estado;
 
 public class InterpretadorDeDatosGuardadosTest {
 

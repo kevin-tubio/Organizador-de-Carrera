@@ -4,13 +4,10 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import enumerados.Estado;
 import excepciones.MateriaInvalidaException;
 
 public class Materia {
-
-	public enum Estado {
-		NO_CURSADA, APROBADA, REGULARIZADA
-	}
 
 	private int numeroActividad;
 	private int anio;
