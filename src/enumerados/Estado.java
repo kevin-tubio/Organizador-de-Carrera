@@ -1,7 +1,7 @@
 package enumerados;
 
 public enum Estado {
-	NO_CURSADA("No cursada"), APROBADA("Aprobada"), REGULARIZADA("Regularizada"), EN_CURSO("En curso");
+	NO_CURSADA(""), APROBADA("Aprobada"), REGULARIZADA("Regularizada"), EN_CURSO("En curso");
 
 	private String cadena;
 

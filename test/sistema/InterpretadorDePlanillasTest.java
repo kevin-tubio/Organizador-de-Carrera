@@ -117,7 +117,7 @@ public class InterpretadorDePlanillasTest {
 		assertEquals("6", listado.obtenerMateria(1265).getCalificacion());
 		assertEquals("8", listado.obtenerMateria(1269).getCalificacion());
 		assertEquals("", listado.obtenerMateria(1240).getCalificacion());
-		assertEquals("Regularizada", listado.obtenerMateria(1242).getCalificacion());
+		assertEquals("Aprobado", listado.obtenerMateria(1242).getCalificacion());
 		assertEquals("", listado.obtenerMateria(1270).getCalificacion());
 	}
 

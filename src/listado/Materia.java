@@ -100,7 +100,7 @@ public class Materia {
 		case APROBADA:
 			return this.calificacion + "";
 		case REGULARIZADA:
-			return "Regularizada";
+			return "Aprobado";
 		default:
 			return "";
 		}
