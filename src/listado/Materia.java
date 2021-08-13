@@ -12,13 +12,15 @@ import excepciones.MateriaInvalidaException;
 public class Materia {
 
 	private int numeroActividad;
-	private int anio;
-	private Periodo periodo;
-	private int calificacion;
 	private String nombre;
+	private int anio;
+	private int calificacion;
+	private int horasSemanales;
+	private double creditos;
+	private Periodo periodo;
 	private Estado estado;
-	private HashSet<Materia> correlativas;
 	private Tipo tipo;
+	private Set<Materia> correlativas;
 
 	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
 		this(numeroActividad, nombre, anio, periodo, Estado.NO_CURSADA, 0);
@@ -32,6 +34,8 @@ public class Materia {
 		this.periodo = periodo;
 		this.correlativas = new HashSet<>();
 		this.calificacion = calificacion;
+		this.horasSemanales = 0;
+		this.creditos = 0;
 		this.tipo = Tipo.MATERIA;
 	}
 
@@ -82,6 +86,22 @@ public class Materia {
 
 	public void setTipo(Tipo tipo) {
 		this.tipo = tipo;
+	}
+
+	public int getHorasSemanales() {
+		return horasSemanales;
+	}
+
+	public void setHorasSemanales(int horasSemanales) {
+		this.horasSemanales = horasSemanales;
+	}
+
+	public double getCreditos() {
+		return creditos;
+	}
+
+	public void setCreditos(double creditos) {
+		this.creditos = creditos;
 	}
 
 	@Override
