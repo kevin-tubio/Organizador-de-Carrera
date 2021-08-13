@@ -15,13 +15,11 @@ public class Listado {
 
 	private static Listado instancia;
 	private static ObservableMap<Integer, Materia> listadoDeMaterias;
-	private Grafo grafo;
-	private LinkedList<Materia> ordenDeMaterias;
+	private List<Materia> ordenDeMaterias;
 
 	private Listado() {
 		listadoDeMaterias = FXCollections.observableHashMap(); // NOSONAR
 		this.ordenDeMaterias = null;
-		this.grafo = new Grafo();
 	}
 
 	public static Listado obtenerListado() {
@@ -70,11 +68,12 @@ public class Listado {
 	}
 
 	public void calcularOrdenDeMaterias() throws ListadoInvalidoException {
-		grafo = new Grafo();
+		Grafo grafo = new Grafo();
 		ordenDeMaterias = new LinkedList<>(grafo.ordenamientoTopologico(listadoDeMaterias));
 	}
 
 	public Set<Materia> consultarDesbloqueables(int materia) throws MateriaInvalidaException {
+		Grafo grafo = new Grafo();
 		comprobarMaterias(materia);
 		return grafo.obtenerDesbloqueables(materia, listadoDeMaterias);
 	}
