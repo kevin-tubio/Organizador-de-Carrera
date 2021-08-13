@@ -1,15 +1,28 @@
 package listado;
 
 public class Alumno {
-	
-	private String nombreCompleto;
+
 	private int legajo;
+	private String nombreCompleto;
 	private String carrera;
-	
+
 	public Alumno(String nombreCompleto, int legajo, String carrera) {
-		this.nombreCompleto = nombreCompleto;
+		setNombreCompleto(nombreCompleto);
 		this.legajo = legajo;
 		this.carrera = carrera;
+	}
+
+	private void setNombreCompleto(String nombre) {
+		this.nombreCompleto = capitalizarPalabras(nombre);
+	}
+
+	private String capitalizarPalabras(String nombre) {
+		var sb = new StringBuilder();
+		for (String palabra : nombre.split(" ")) {
+			palabra = palabra.toUpperCase().replace(palabra.substring(1), palabra.substring(1).toLowerCase());
+			sb.append(palabra + " ");
+		}
+		return sb.toString().stripTrailing();
 	}
 
 	public String getNombreCompleto() {
@@ -22,6 +35,11 @@ public class Alumno {
 
 	public String getCarrera() {
 		return carrera;
+	}
+
+	@Override
+	public String toString() {
+		return nombreCompleto + " (" + legajo + ").";
 	}
 
 }
