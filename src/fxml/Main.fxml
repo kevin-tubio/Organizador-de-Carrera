@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane minHeight="600.0" minWidth="1024.0"
+	prefHeight="720.0" prefWidth="1280.0"
+	xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="controladores.ControladorPrincipal">
+	<children>
+		<BorderPane minHeight="600.0" minWidth="1024.0"
+			prefHeight="720.0" prefWidth="1280.0">
+			<top>
+				<MenuBar maxWidth="1.7976931348623157E308" minWidth="1024.0"
+					prefWidth="1280.0">
+					<menus>
+						<Menu mnemonicParsing="false" text="Archivo">
+							<items>
+								<MenuItem mnemonicParsing="false" text="Nuevo" />
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem mnemonicParsing="false" text="Abrir" />
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem mnemonicParsing="false" text="Guardar" />
+								<SeparatorMenuItem mnemonicParsing="false" />
+								<MenuItem mnemonicParsing="false" text="Salir" />
+							</items>
+						</Menu>
+						<Menu mnemonicParsing="false" text="Editar">
+							<items>
+								<MenuItem mnemonicParsing="false" text="Agregar" />
+								<MenuItem mnemonicParsing="false"
+									text="Editar seleccionada" />
+								<MenuItem mnemonicParsing="false"
+									text="Borrar seleccionada" />
+							</items>
+						</Menu>
+					</menus>
+				</MenuBar>
+			</top>
+			<center>
+				<TabPane maxWidth="1.7976931348623157E308" minWidth="1024.0"
+					prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE"
+					BorderPane.alignment="CENTER">
+					<tabs>
+						<Tab closable="false" text="Plan de estudios">
+							<content>
+								<fx:include fx:id="planDeEstudios"
+									source="PlanDeEstudios.fxml" />
+							</content>
+						</Tab>
+						<Tab closable="false" text="Lista de materias">
+							<content>
+								<fx:include fx:id="listaDeMaterias"
+									source="ListaDeMaterias.fxml" />
+							</content>
+						</Tab>
+					</tabs>
+					<BorderPane.margin>
+						<Insets />
+					</BorderPane.margin>
+				</TabPane>
+			</center>
+			<bottom>
+				<HBox maxWidth="1.7976931348623157E308" minWidth="1024.0"
+					prefHeight="32.0" prefWidth="1280.0" />
+			</bottom>
+		</BorderPane>
+	</children>
+</AnchorPane>
