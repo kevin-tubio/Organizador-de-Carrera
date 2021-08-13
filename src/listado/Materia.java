@@ -6,6 +6,7 @@ import java.util.Set;
 
 import enumerados.Estado;
 import enumerados.Periodo;
+import enumerados.Tipo;
 import excepciones.MateriaInvalidaException;
 
 public class Materia {
@@ -17,15 +18,21 @@ public class Materia {
 	private String nombre;
 	private Estado estado;
 	private HashSet<Materia> correlativas;
+	private Tipo tipo;
 
 	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
+		this(numeroActividad, nombre, anio, periodo, Estado.NO_CURSADA, 0);
+	}
+
+	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo, Estado estado, int calificacion) {
 		this.numeroActividad = numeroActividad;
 		this.nombre = nombre;
-		this.estado = null;
+		this.estado = estado;
 		this.anio = anio;
 		this.periodo = periodo;
 		this.correlativas = new HashSet<>();
-		this.calificacion = 0;
+		this.calificacion = calificacion;
+		this.tipo = Tipo.MATERIA;
 	}
 
 	public Estado getEstado() {
@@ -44,8 +51,8 @@ public class Materia {
 		return anio;
 	}
 
-	public String getPeriodo() {
-		return periodo.toString();
+	public Periodo getPeriodo() {
+		return periodo;
 	}
 
 	public String getNombre() {
@@ -67,6 +74,14 @@ public class Materia {
 
 	public int cantidadDeCorrelativas() {
 		return this.correlativas.size();
+	}
+
+	public Tipo getTipo() {
+		return tipo;
+	}
+
+	public void setTipo(Tipo tipo) {
+		this.tipo = tipo;
 	}
 
 	@Override
