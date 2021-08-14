@@ -41,16 +41,17 @@
 								<MenuItem fx:id="itemEditar" mnemonicParsing="false"
 									text="Editar seleccionada" />
 								<MenuItem fx:id="itemBorrar" mnemonicParsing="false"
-									text="Borrar seleccionada" />
+									onAction="#borrarMateria" text="Borrar seleccionada" />
 							</items>
 						</Menu>
 					</menus>
 				</MenuBar>
 			</top>
 			<center>
-				<TabPane maxWidth="1.7976931348623157E308" minWidth="1024.0"
-					onMouseClicked="#deshabilitarFunciones" prefWidth="1280.0"
-					tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+				<TabPane fx:id="tab" maxWidth="1.7976931348623157E308"
+					minWidth="1024.0" onMouseClicked="#deshabilitarFunciones"
+					prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE"
+					BorderPane.alignment="CENTER">
 					<tabs>
 						<Tab closable="false" text="Plan de estudios">
 							<content>

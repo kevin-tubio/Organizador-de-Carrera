@@ -49,7 +49,8 @@
 								<MenuItem fx:id="itemContextualEditar"
 									mnemonicParsing="false" text="Editar seleccionada" />
 								<MenuItem fx:id="itemContextualBorrar"
-									mnemonicParsing="false" text="Borrar seleccionada" />
+									mnemonicParsing="false" onAction="#borrarContextual"
+									text="Borrar seleccionada" />
 							</items>
 						</ContextMenu>
 					</contextMenu>

@@ -12,9 +12,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import listado.Listado;
+import listado.Materia;
 import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;
@@ -31,6 +33,8 @@ public class ControladorPrincipal implements Initializable {
 	private MenuItem itemBorrar;
 	@FXML
 	private MenuItem itemEditar;
+	@FXML
+	private TabPane tab;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -73,6 +77,25 @@ public class ControladorPrincipal implements Initializable {
 	private void setFunciones(boolean valor) {
 		this.itemEditar.setDisable(valor);
 		this.itemBorrar.setDisable(valor);
+	}
+
+	public void borrarMateria() {
+		switch (this.tab.getSelectionModel().getSelectedItem().getText()) {
+		case "Plan de estudios":
+			borrarMateria(planDeEstudiosController.obtenerSeleccionado());
+			break;
+		case "Lista de materias":
+			borrarMateria(listaDeMateriasController.obtenerSeleccionado());
+			break;
+		default:
+		}
+		if (Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
+			this.deshabilitarFunciones();
+		}
+	}
+
+	protected void borrarMateria(Materia seleccionada) {
+		Listado.obtenerListado().getListadoDeMaterias().remove(seleccionada.getNumeroActividad());
 	}
 
 	public void agregarMateria() throws IOException {
