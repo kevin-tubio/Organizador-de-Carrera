@@ -8,6 +8,7 @@ import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -32,11 +33,17 @@ public class ControladorTabla implements Initializable {
 	private TableColumn<Materia, String> nota;
 	@FXML
 	private TableColumn<Materia, String> estado;
+	@FXML
+	private MenuItem itemContextualEditar;
+	@FXML
+	private MenuItem itemContextualBorrar;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.inicializarTabla();
 		this.agregarSubscriptorAListado();
+		this.itemContextualEditar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
+		this.itemContextualBorrar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 	private void inicializarTabla() {
@@ -58,6 +65,16 @@ public class ControladorTabla implements Initializable {
 			}
 		};
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
+	}
+
+	public void habilitarFunciones() {
+		if (this.obtenerSeleccionado() != null) {
+			this.controlador.habilitarFunciones();
+		}
+	}
+
+	protected Materia obtenerSeleccionado() {
+		return this.tabla.getSelectionModel().getSelectedItem();
 	}
 
 	public void agregarMateria() throws IOException {

@@ -27,11 +27,16 @@ public class ControladorPrincipal implements Initializable {
 	private ControladorLista listaDeMateriasController;
 	@FXML
 	private MenuItem itemAgregar;
+	@FXML
+	private MenuItem itemBorrar;
+	@FXML
+	private MenuItem itemEditar;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.planDeEstudiosController.inyectar(this);
 		this.listaDeMateriasController.inyectar(this);
+		this.deshabilitarFunciones();
 	}
 
 	public void abrirArchivo() {
@@ -55,6 +60,19 @@ public class ControladorPrincipal implements Initializable {
 			interpretador = new InterpretadorDePlanillas();
 		}
 		interpretador.generarListado(archivo.getAbsolutePath());
+	}
+
+	public void habilitarFunciones() {
+		this.setFunciones(false);
+	}
+
+	public void deshabilitarFunciones() {
+		this.setFunciones(true);
+	}
+
+	private void setFunciones(boolean valor) {
+		this.itemEditar.setDisable(valor);
+		this.itemBorrar.setDisable(valor);
 	}
 
 	public void agregarMateria() throws IOException {

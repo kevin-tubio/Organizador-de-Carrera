@@ -15,7 +15,8 @@
 	<children>
 		<HBox prefHeight="634.0" prefWidth="1280.0">
 			<children>
-				<TableView fx:id="tabla" tableMenuButtonVisible="true"
+				<TableView fx:id="tabla"
+					onMouseClicked="#habilitarFunciones" tableMenuButtonVisible="true"
 					HBox.hgrow="ALWAYS">
 					<columns>
 						<TableColumn fx:id="numeroActividad" maxWidth="96.0"
@@ -45,10 +46,10 @@
 							<items>
 								<MenuItem mnemonicParsing="false"
 									onAction="#agregarMateria" text="Agregar" />
-								<MenuItem mnemonicParsing="false"
-									text="Editar seleccionada" />
-								<MenuItem mnemonicParsing="false"
-									text="Borrar seleccionada" />
+								<MenuItem fx:id="itemContextualEditar"
+									mnemonicParsing="false" text="Editar seleccionada" />
+								<MenuItem fx:id="itemContextualBorrar"
+									mnemonicParsing="false" text="Borrar seleccionada" />
 							</items>
 						</ContextMenu>
 					</contextMenu>

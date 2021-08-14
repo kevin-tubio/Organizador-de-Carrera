@@ -42,6 +42,16 @@ public class ControladorLista implements Initializable {
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
 	}
 
+	protected Materia obtenerSeleccionado() {
+		return this.lista.getSelectionModel().getSelectedItem();
+	}
+
+	public void habilitarFunciones() {
+		if (this.obtenerSeleccionado() != null && !Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
+			this.controlador.habilitarFunciones();
+		}
+	}
+
 	public void inyectar(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}
