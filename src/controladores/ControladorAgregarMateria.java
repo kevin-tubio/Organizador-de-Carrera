@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -52,6 +53,10 @@ public class ControladorAgregarMateria implements Initializable {
 	private ListView<Materia> listado;
 	@FXML
 	private ListView<Materia> listadoCorrelativas;
+	@FXML
+	private MenuItem itemContextualAgregar;
+	@FXML
+	private MenuItem itemContextualQuitar;
 	private ObservableList<Materia> materias;
 	private ObservableList<Materia> correlativas;
 	private FilteredList<Materia> listaFiltrada;
@@ -64,6 +69,9 @@ public class ControladorAgregarMateria implements Initializable {
 		this.inicializarListaDeMaterias();
 		this.inicializarBotones();
 		this.agregarSubscriptorAlBuscador();
+		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
+		this.itemContextualQuitar.disableProperty()
+				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 	private void agregarSubscriptorAlBuscador() {
@@ -117,6 +125,18 @@ public class ControladorAgregarMateria implements Initializable {
 		this.hs.getValueFactory().setValue(4);
 		this.creditos.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 20.0));
 		this.creditos.getValueFactory().setValue(0.0);
+	}
+
+	public void agregarCorrelativa() {
+		Materia materia = this.listado.getSelectionModel().getSelectedItem();
+		this.correlativas.add(materia);
+		this.materias.remove(materia);
+	}
+
+	public void quitarCorrelativa() {
+		Materia materia = this.listadoCorrelativas.getSelectionModel().getSelectedItem();
+		this.correlativas.remove(materia);
+		this.materias.add(materia);
 	}
 
 	public void cancelar() {

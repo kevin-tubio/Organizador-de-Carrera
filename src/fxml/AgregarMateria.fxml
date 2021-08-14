@@ -147,7 +147,8 @@
 							<contextMenu>
 								<ContextMenu>
 									<items>
-										<MenuItem mnemonicParsing="false"
+										<MenuItem fx:id="itemContextualQuitar"
+											mnemonicParsing="false" onAction="#quitarCorrelativa"
 											text="Quitar correlativa" />
 									</items>
 								</ContextMenu>
@@ -158,7 +159,8 @@
 							<contextMenu>
 								<ContextMenu>
 									<items>
-										<MenuItem mnemonicParsing="false"
+										<MenuItem fx:id="itemContextualAgregar"
+											mnemonicParsing="false" onAction="#agregarCorrelativa"
 											text="Agregar Correlativa" />
 									</items>
 								</ContextMenu>
