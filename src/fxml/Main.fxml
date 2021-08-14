@@ -36,7 +36,8 @@
 						</Menu>
 						<Menu mnemonicParsing="false" text="Editar">
 							<items>
-								<MenuItem mnemonicParsing="false" text="Agregar" />
+								<MenuItem fx:id="itemAgregar" mnemonicParsing="false"
+									onAction="#agregarMateria" text="Agregar" />
 								<MenuItem mnemonicParsing="false"
 									text="Editar seleccionada" />
 								<MenuItem mnemonicParsing="false"

@@ -6,14 +6,21 @@ import java.util.ResourceBundle;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import listado.Listado;
+import listado.Materia;
 
 public class ControladorAgregarMateria implements Initializable {
 
@@ -39,17 +46,40 @@ public class ControladorAgregarMateria implements Initializable {
 	private Spinner<Integer> hs;
 	@FXML
 	private Spinner<Double> creditos;
+	@FXML
+	private ListView<Materia> listado;
+	@FXML
+	private ListView<Materia> listadoCorrelativas;
+	private ObservableList<Materia> materias;
+	private ObservableList<Materia> correlativas;
+	private FilteredList<Materia> listaFiltrada;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.inicializarChoiceBoxes();
 		this.inicializarSpinners();
+		this.inicializarListaDeCorrelativas();
+		this.inicializarListaDeMaterias();
 		this.inicializarBotones();
 	}
 
 	private void inicializarBotones() {
 		this.aceptar.disableProperty().bind(this.id.textProperty().isEmpty().or(this.nombre.textProperty().isEmpty()));
 		this.cancelar.setCancelButton(true);
+	}
+
+	private void inicializarListaDeMaterias() {
+		this.listado.setVisible(false);
+		this.listado.setPlaceholder(new Label("No tiene materias en el listado"));
+		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
+		this.listaFiltrada = new FilteredList<>(this.materias);
+		this.listado.setItems(this.listaFiltrada);
+	}
+
+	private void inicializarListaDeCorrelativas() {
+		this.correlativas = FXCollections.observableArrayList();
+		this.listadoCorrelativas.setItems(this.correlativas);
+		this.listadoCorrelativas.setPlaceholder(new Label("No tiene materias Correlativas"));
 	}
 
 	private void inicializarChoiceBoxes() {

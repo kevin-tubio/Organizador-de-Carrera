@@ -126,9 +126,9 @@
 							layoutY="123.0" prefHeight="25.0" prefWidth="60.0"
 							GridPane.columnIndex="7" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
-						<TextField prefHeight="25.0"
-							prefWidth="169.0" promptText="Buscar correlativa"
-							GridPane.columnSpan="8" GridPane.rowIndex="3" />
+						<TextField prefHeight="25.0" prefWidth="169.0"
+							promptText="Buscar correlativa" GridPane.columnSpan="8"
+							GridPane.rowIndex="3" />
 						<ImageView fitHeight="30.0" fitWidth="21.0"
 							pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8"
 							GridPane.rowIndex="3" />
@@ -142,27 +142,28 @@
 						<Insets bottom="10.0" left="10.0" right="10.0" />
 					</VBox.margin>
 					<children>
-						<ListViewprefHeight = prefWidth="600.0">
+						<ListView fx:id="listadoCorrelativas" prefHeight="93.0"
+							prefWidth="600.0">
 							<contextMenu>
 								<ContextMenu>
 									<items>
-										<MenuItem
-											mnemonicParsing="false" text="Quitar correlativa" />
+										<MenuItem mnemonicParsing="false"
+											text="Quitar correlativa" />
 									</items>
 								</ContextMenu>
 							</contextMenu>
 						</ListView>
-							<ListView prefHeight="140.0" prefWidth="600.0"
-								translateZ="2.0">
-								<contextMenu>
-									<ContextMenu>
-										<items>
-											<MenuItem
-												mnemonicParsing="false" text="Agregar Correlativa" />
-										</items>
-									</ContextMenu>
-								</contextMenu>
-							</ListView>
+						<ListView fx:id="listado" prefHeight="140.0"
+							prefWidth="600.0" translateZ="2.0">
+							<contextMenu>
+								<ContextMenu>
+									<items>
+										<MenuItem mnemonicParsing="false"
+											text="Agregar Correlativa" />
+									</items>
+								</ContextMenu>
+							</contextMenu>
+						</ListView>
 					</children>
 				</StackPane>
 			</children>
