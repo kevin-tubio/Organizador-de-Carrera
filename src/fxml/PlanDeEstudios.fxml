@@ -43,8 +43,8 @@
 					<contextMenu>
 						<ContextMenu>
 							<items>
-								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false" text="Agregar" />
+								<MenuItem mnemonicParsing="false"
+									onAction="#agregarMateria" text="Agregar" />
 								<MenuItem mnemonicParsing="false"
 									text="Editar seleccionada" />
 								<MenuItem mnemonicParsing="false"

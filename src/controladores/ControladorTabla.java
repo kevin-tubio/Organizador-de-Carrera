@@ -1,5 +1,6 @@
 package controladores;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -57,6 +58,10 @@ public class ControladorTabla implements Initializable {
 			}
 		};
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
+	}
+
+	public void agregarMateria() throws IOException {
+		this.controlador.agregarMateria();
 	}
 
 	public void inyectar(ControladorPrincipal controladorPrincipal) {
