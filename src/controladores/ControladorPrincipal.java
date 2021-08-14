@@ -107,4 +107,30 @@ public class ControladorPrincipal implements Initializable {
 		stage.showAndWait();
 	}
 
+	public void editarMateria() throws IOException {
+		switch (this.tab.getSelectionModel().getSelectedItem().getText()) {
+		case "Plan de estudios":
+			editarMateria(planDeEstudiosController.obtenerSeleccionado());
+			break;
+		case "Lista de materias":
+			editarMateria(listaDeMateriasController.obtenerSeleccionado());
+			break;
+		default:
+		}
+		if (Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
+			this.deshabilitarFunciones();
+		}
+	}
+
+	protected void editarMateria(Materia materia) throws IOException {
+		var stage = new Stage();
+		var loader = new FXMLLoader(this.getClass().getResource("../fxml/AgregarMateria.fxml"));
+		Parent root = loader.load();
+		((ControladorAgregarMateria) loader.getController()).inyectarMateria(materia);
+		var scene = new Scene(root);
+		stage.setTitle("Editar Materia");
+		stage.setScene(scene);
+		stage.showAndWait();
+	}
+
 }

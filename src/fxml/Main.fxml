@@ -39,7 +39,7 @@
 								<MenuItem fx:id="itemAgregar" mnemonicParsing="false"
 									onAction="#agregarMateria" text="Agregar" />
 								<MenuItem fx:id="itemEditar" mnemonicParsing="false"
-									text="Editar seleccionada" />
+									onAction="#editarMateria" text="Editar seleccionada" />
 								<MenuItem fx:id="itemBorrar" mnemonicParsing="false"
 									onAction="#borrarMateria" text="Borrar seleccionada" />
 							</items>

@@ -143,4 +143,18 @@ public class ControladorAgregarMateria implements Initializable {
 		((Stage) this.cancelar.getScene().getWindow()).close();
 	}
 
+	protected void inyectarMateria(Materia materia) {
+		this.id.setText(String.valueOf(materia.getNumeroActividad()));
+		this.nombre.setText(materia.getNombre());
+		this.periodo.setValue(materia.getPeriodo());
+		this.estado.setValue(materia.getEstado());
+		this.anio.getValueFactory().setValue(materia.getAnio());
+		if (materia.getEstado() == Estado.APROBADA) {
+			this.nota.getValueFactory().setValue(Integer.parseInt(materia.getCalificacion()));
+		}
+		this.correlativas.addAll(materia.getCorrelativas());
+		this.materias.removeAll(this.correlativas);
+		this.aceptar.setOnAction(event -> cancelar());
+	}
+
 }

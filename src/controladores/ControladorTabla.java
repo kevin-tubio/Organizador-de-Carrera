@@ -81,6 +81,10 @@ public class ControladorTabla implements Initializable {
 		this.controlador.borrarMateria(this.obtenerSeleccionado());
 	}
 
+	public void editarContextual() throws IOException {
+		this.controlador.editarMateria(this.obtenerSeleccionado());
+	}
+
 	public void agregarMateria() throws IOException {
 		this.controlador.agregarMateria();
 	}

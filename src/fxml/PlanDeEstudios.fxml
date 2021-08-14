@@ -47,7 +47,8 @@
 								<MenuItem mnemonicParsing="false"
 									onAction="#agregarMateria" text="Agregar" />
 								<MenuItem fx:id="itemContextualEditar"
-									mnemonicParsing="false" text="Editar seleccionada" />
+									mnemonicParsing="false" onAction="#editarContextual"
+									text="Editar seleccionada" />
 								<MenuItem fx:id="itemContextualBorrar"
 									mnemonicParsing="false" onAction="#borrarContextual"
 									text="Borrar seleccionada" />
