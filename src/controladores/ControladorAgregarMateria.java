@@ -33,6 +33,8 @@ public class ControladorAgregarMateria implements Initializable {
 	@FXML
 	private TextField nombre;
 	@FXML
+	private TextField buscador;
+	@FXML
 	private ChoiceBox<Tipo> tipo;
 	@FXML
 	private ChoiceBox<Periodo> periodo;
@@ -61,6 +63,20 @@ public class ControladorAgregarMateria implements Initializable {
 		this.inicializarListaDeCorrelativas();
 		this.inicializarListaDeMaterias();
 		this.inicializarBotones();
+		this.agregarSubscriptorAlBuscador();
+	}
+
+	private void agregarSubscriptorAlBuscador() {
+		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> {
+			this.listado.setVisible(true);
+			if (nuevo.isEmpty())
+				this.listado.setVisible(false);
+			this.listaFiltrada.setPredicate(materia -> {
+				String busqueda = nuevo.toLowerCase();
+				return materia.getNombre().toLowerCase().indexOf(busqueda) != -1
+						|| String.valueOf(materia.getNumeroActividad()).indexOf(busqueda) != -1;
+			});
+		});
 	}
 
 	private void inicializarBotones() {

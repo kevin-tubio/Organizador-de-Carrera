@@ -126,9 +126,9 @@
 							layoutY="123.0" prefHeight="25.0" prefWidth="60.0"
 							GridPane.columnIndex="7" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
-						<TextField prefHeight="25.0" prefWidth="169.0"
-							promptText="Buscar correlativa" GridPane.columnSpan="8"
-							GridPane.rowIndex="3" />
+						<TextField fx:id="buscador" prefHeight="25.0"
+							prefWidth="169.0" promptText="Buscar correlativa"
+							GridPane.columnSpan="8" GridPane.rowIndex="3" />
 						<ImageView fitHeight="30.0" fitWidth="21.0"
 							pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8"
 							GridPane.rowIndex="3" />
