@@ -26,7 +26,8 @@
 							<items>
 								<MenuItem mnemonicParsing="false" text="Nuevo" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false" text="Abrir" />
+								<MenuItem mnemonicParsing="false"
+									onAction="#abrirArchivo" text="Abrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem mnemonicParsing="false" text="Guardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />

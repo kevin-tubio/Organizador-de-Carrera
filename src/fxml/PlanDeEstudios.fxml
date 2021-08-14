@@ -15,19 +15,21 @@
 	<children>
 		<HBox prefHeight="634.0" prefWidth="1280.0">
 			<children>
-				<TableView tableMenuButtonVisible="true"
+				<TableView fx:id="tabla" tableMenuButtonVisible="true"
 					HBox.hgrow="ALWAYS">
 					<columns>
-						<TableColumn maxWidth="96.0" minWidth="50.0"
-							prefWidth="70.0" text="ID" />
-						<TableColumn minWidth="389.0" prefWidth="690.0"
-							text="Nombre" />
-						<TableColumn maxWidth="60.0" minWidth="40.0"
-							prefWidth="48.0" text="Año" />
-						<TableColumn maxWidth="187.0" minWidth="79.0"
-							prefWidth="134.0" text="Período" />
-						<TableColumn prefWidth="326.0" text="Nota" />
-						<TableColumn prefWidth="75.0" text="Estado" />
+						<TableColumn fx:id="numeroActividad" maxWidth="96.0"
+							minWidth="50.0" prefWidth="70.0" text="ID" />
+						<TableColumn fx:id="nombreActividad" minWidth="389.0"
+							prefWidth="690.0" text="Nombre" />
+						<TableColumn fx:id="anio" maxWidth="60.0"
+							minWidth="40.0" prefWidth="48.0" text="Año" />
+						<TableColumn fx:id="periodo" maxWidth="187.0"
+							minWidth="79.0" prefWidth="134.0" text="Período" />
+						<TableColumn fx:id="nota" prefWidth="326.0"
+							text="Nota" />
+						<TableColumn fx:id="estado" prefWidth="75.0"
+							text="Estado" />
 						<TableColumn prefWidth="75.0" text="Tipo"
 							visible="false" />
 						<TableColumn prefWidth="75.0" text="Horas semanales"
@@ -41,8 +43,6 @@
 					<contextMenu>
 						<ContextMenu>
 							<items>
-								<MenuItem mnemonicParsing="false"
-									text="Ajustar Columnas" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem mnemonicParsing="false" text="Agregar" />
 								<MenuItem mnemonicParsing="false"
