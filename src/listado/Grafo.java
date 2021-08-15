@@ -50,14 +50,14 @@ public class Grafo {
 	}
 
 	private void obtenerListaDeAdyacencia(Map<Integer, Materia> vertices) {
-		HashSet<Materia> adyacentes = null;
+		Set<Materia> adyacentes = new HashSet<>();
 		for (Map.Entry<Integer, Materia> actual : vertices.entrySet()) {
-			this.listaDeAdyacencia.put(actual.getKey(), new HashSet<>());
+			if (!this.listaDeAdyacencia.containsKey(actual.getKey())) {
+				this.listaDeAdyacencia.put(actual.getKey(), new HashSet<>());
+			}
 			for (Materia correlativa : actual.getValue().getCorrelativas()) {
-				if (!this.listaDeAdyacencia.containsKey(correlativa.getNumeroActividad())) {
-					adyacentes = new HashSet<>();
-				} else {
-					adyacentes = new HashSet<>(this.listaDeAdyacencia.get(correlativa.getNumeroActividad()));
+				if (this.listaDeAdyacencia.containsKey(correlativa.getNumeroActividad())) {
+					adyacentes = this.listaDeAdyacencia.get(correlativa.getNumeroActividad());
 				}
 				adyacentes.add(actual.getValue());
 				this.listaDeAdyacencia.put(correlativa.getNumeroActividad(), adyacentes);
