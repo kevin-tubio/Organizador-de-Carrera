@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dao.AccesadorAMaterias;
 import excepciones.ArchivoException;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +22,7 @@ import listado.Materia;
 import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;
+import sistema.RecuperadorDatosGuardados;
 
 public class ControladorPrincipal implements Initializable {
 
@@ -41,19 +44,27 @@ public class ControladorPrincipal implements Initializable {
 		this.planDeEstudiosController.inyectar(this);
 		this.listaDeMateriasController.inyectar(this);
 		this.deshabilitarFunciones();
+		var interpretador = new RecuperadorDatosGuardados();
+		try {
+			interpretador.generarListado("");
+		} catch (ArchivoException e) {
+			System.out.println(e.getMessage());
+		}
 	}
 
 	public void abrirArchivo() {
 		var fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
-		try {
-			var archivo = fileChooser.showOpenDialog(new Stage());
-			Listado.borrarListado();
-			cargarArchivo(archivo);
-		} catch (ArchivoException e) {
-			System.out.println("intenta con otro archivo");
-		}
+		var archivo = fileChooser.showOpenDialog(new Stage());
+		Listado.borrarListado();
+		Platform.runLater(() -> {
+			try {
+				cargarArchivo(archivo);
+			} catch (ArchivoException e) {
+				System.out.println("intenta con otro archivo");
+			}
+		});
 	}
 
 	private void cargarArchivo(File archivo) throws ArchivoException {
@@ -133,4 +144,14 @@ public class ControladorPrincipal implements Initializable {
 		stage.showAndWait();
 	}
 
+	public void persistirCambiosListado() {
+		var hilo = new Thread(() -> {
+			var dao = new AccesadorAMaterias();
+			dao.borrarTodo();
+			for (Materia actual : Listado.obtenerListado().getListadoDeMaterias().values()) {
+				dao.actualizar(actual);
+			}
+		});
+		hilo.start();
+	}
 }

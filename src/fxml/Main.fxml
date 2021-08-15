@@ -29,7 +29,8 @@
 								<MenuItem mnemonicParsing="false"
 									onAction="#abrirArchivo" text="Abrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false" text="Guardar" />
+								<MenuItem mnemonicParsing="false"
+									onAction="#persistirCambiosListado" text="Guardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem mnemonicParsing="false" text="Salir" />
 							</items>
