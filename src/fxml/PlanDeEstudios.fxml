@@ -31,11 +31,11 @@
 							text="Nota" />
 						<TableColumn fx:id="estado" prefWidth="75.0"
 							text="Estado" />
-						<TableColumn prefWidth="75.0" text="Tipo"
+						<TableColumn fx:id="tipo" prefWidth="75.0" text="Tipo"
 							visible="false" />
-						<TableColumn prefWidth="75.0" text="Horas semanales"
+						<TableColumn fx:id="hs" prefWidth="75.0" text="Horas semanales"
 							visible="false" />
-						<TableColumn prefWidth="75.0" text="Créditos"
+						<TableColumn fx:id="creditos" prefWidth="75.0" text="Créditos"
 							visible="false" />
 					</columns>
 					<HBox.margin>

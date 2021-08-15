@@ -34,6 +34,12 @@ public class ControladorTabla implements Initializable {
 	@FXML
 	private TableColumn<Materia, String> estado;
 	@FXML
+	private TableColumn<Materia, String> tipo;
+	@FXML
+	private TableColumn<Materia, Integer> hs;
+	@FXML
+	private TableColumn<Materia, Double> creditos;
+	@FXML
 	private MenuItem itemContextualEditar;
 	@FXML
 	private MenuItem itemContextualBorrar;
@@ -53,6 +59,9 @@ public class ControladorTabla implements Initializable {
 		periodo.setCellValueFactory(new PropertyValueFactory<>("periodo"));
 		nota.setCellValueFactory(new PropertyValueFactory<>("calificacion"));
 		estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
+		tipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+		hs.setCellValueFactory(new PropertyValueFactory<>("horasSemanales"));
+		creditos.setCellValueFactory(new PropertyValueFactory<>("creditos"));
 		tabla.setPlaceholder(new Label("No hay materias cargadas"));
 	}
 
