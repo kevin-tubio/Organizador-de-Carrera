@@ -4,23 +4,56 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import excepciones.MateriaInvalidaException;
 
+@Entity
+@Table(name = "MATERIA")
 public class Materia {
 
+	@Id
+	@Column(name = "ID", unique = true)
 	private int numeroActividad;
+	@Column(nullable = false)
 	private String nombre;
+	@Column(nullable = false)
 	private int anio;
+	@Column(nullable = false)
 	private int calificacion;
+	@Column(name = "HORAS_SEMANALES", nullable = false)
 	private int horasSemanales;
+	@Column(nullable = false)
 	private double creditos;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Periodo periodo;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Estado estado;
+
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
+
+	@ManyToMany(cascade = CascadeType.ALL)
 	private Set<Materia> correlativas;
+
+	public Materia() {
+		// declarado solo para jpa
+	}
 
 	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
 		this(numeroActividad, nombre, anio, periodo, Estado.NO_CURSADA, 0);
