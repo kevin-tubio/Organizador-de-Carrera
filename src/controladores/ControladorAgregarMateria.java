@@ -178,8 +178,20 @@ public class ControladorAgregarMateria implements Initializable {
 			this.nota.getValueFactory().setValue(Integer.parseInt(materia.getCalificacion()));
 		}
 		this.correlativas.addAll(materia.getCorrelativas());
+		this.materias.removeAll(materia);
 		this.materias.removeAll(this.correlativas);
-		this.aceptar.setOnAction(event -> cancelar());
+		this.aceptar.setOnAction(event -> actualizarMateria(materia));
+	}
+
+	public void actualizarMateria(Materia materia) {
+		try {
+			var nuevaMateria = generarNuevaMateria();
+			if (materia.getNumeroActividad() != nuevaMateria.getNumeroActividad())
+				Listado.obtenerListado().reemplazarMateria(materia, nuevaMateria);
+			guardarYCerrar(nuevaMateria);
+		} catch (MateriaInvalidaException | NumberFormatException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	private void guardarYCerrar(Materia materia) {

@@ -6,7 +6,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name = "ALUMNO", schema = "LISTADO")
 public class Alumno {
 
 	@Id
@@ -16,6 +16,10 @@ public class Alumno {
 	private String nombreCompleto;
 	@Column(nullable = false)
 	private String carrera;
+
+	public Alumno() {
+		// declarado solo para jpa
+	}
 
 	public Alumno(String nombreCompleto, int legajo, String carrera) {
 		setNombreCompleto(nombreCompleto);

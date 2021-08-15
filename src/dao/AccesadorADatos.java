@@ -51,7 +51,7 @@ public abstract class AccesadorADatos<T> {
 		return true;
 	}
 
-	private void executeInsideTransaction(Consumer<EntityManager> action) {
+	protected void executeInsideTransaction(Consumer<EntityManager> action) {
 		EntityTransaction tx = manager.getTransaction();
 		try {
 			tx.begin();

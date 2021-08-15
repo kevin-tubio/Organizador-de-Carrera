@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -19,7 +21,7 @@ import enumerados.Tipo;
 import excepciones.MateriaInvalidaException;
 
 @Entity
-@Table(name = "MATERIA")
+@Table(name = "MATERIA", schema = "LISTADO")
 public class Materia {
 
 	@Id
@@ -49,6 +51,7 @@ public class Materia {
 	private Tipo tipo;
 
 	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "MATERIA_MATERIA", joinColumns = @JoinColumn(name = "ID"), schema = "LISTADO")
 	private Set<Materia> correlativas;
 
 	public Materia() {

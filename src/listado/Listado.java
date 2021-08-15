@@ -91,11 +91,8 @@ public class Listado {
 	}
 
 	public Materia obtenerMateria(int numeroDeMateria) throws MateriaInvalidaException {
-		if (listadoDeMaterias.containsKey(numeroDeMateria)) {
-			return listadoDeMaterias.get(numeroDeMateria);
-		} else {
-			throw new MateriaInvalidaException("la materia (" + numeroDeMateria + ") no se encontra en el listado");
-		}
+		comprobarMaterias(numeroDeMateria);
+		return listadoDeMaterias.get(numeroDeMateria);
 	}
 
 	public void borrarMateria(Materia materia) {
@@ -104,6 +101,20 @@ public class Listado {
 			for (Materia correlativa : consultarDesbloqueables(materia.getNumeroActividad()))
 				correlativa.getCorrelativas().remove(materia);
 			listadoDeMaterias.remove(materia.getNumeroActividad());
+		} catch (MateriaInvalidaException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	public void reemplazarMateria(Materia materia, Materia nuevaMateria) {
+		try {
+			obtenerMateria(materia.getNumeroActividad());
+			for (Materia correlativa : consultarDesbloqueables(materia.getNumeroActividad())) {
+				correlativa.getCorrelativas().remove(materia);
+				correlativa.getCorrelativas().add(nuevaMateria);
+			}
+			listadoDeMaterias.remove(materia.getNumeroActividad());
+			agregarMateria(nuevaMateria);
 		} catch (MateriaInvalidaException e) {
 			System.err.println(e.getMessage());
 		}
