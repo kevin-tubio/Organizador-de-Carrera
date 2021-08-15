@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
+import excepciones.MateriaInvalidaException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -143,6 +144,30 @@ public class ControladorAgregarMateria implements Initializable {
 		((Stage) this.cancelar.getScene().getWindow()).close();
 	}
 
+	public void aceptar() {
+		try {
+			guardarYCerrar(generarNuevaMateria());
+		} catch (MateriaInvalidaException | NumberFormatException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private Materia generarNuevaMateria() throws MateriaInvalidaException {
+		var nuevoId = Integer.parseInt(this.id.getText());
+		var nuevoNombre = this.nombre.getText();
+
+		var materia = new Materia(nuevoId, nuevoNombre, anio.getValue(), periodo.getValue(), estado.getValue(),
+				nota.getValue());
+		materia.setTipo(tipo.getValue());
+		materia.setHorasSemanales(hs.getValue());
+		materia.setCreditos(creditos.getValue());
+		for (Materia correlativa : this.correlativas) {
+			materia.setCorrelativa(correlativa);
+		}
+
+		return materia;
+	}
+
 	protected void inyectarMateria(Materia materia) {
 		this.id.setText(String.valueOf(materia.getNumeroActividad()));
 		this.nombre.setText(materia.getNombre());
@@ -155,6 +180,11 @@ public class ControladorAgregarMateria implements Initializable {
 		this.correlativas.addAll(materia.getCorrelativas());
 		this.materias.removeAll(this.correlativas);
 		this.aceptar.setOnAction(event -> cancelar());
+	}
+
+	private void guardarYCerrar(Materia materia) {
+		Listado.obtenerListado().agregarMateria(materia);
+		((Stage) this.aceptar.getScene().getWindow()).close();
 	}
 
 }
