@@ -106,7 +106,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	protected void borrarMateria(Materia seleccionada) {
-		Listado.obtenerListado().getListadoDeMaterias().remove(seleccionada.getNumeroActividad());
+		Listado.obtenerListado().borrarMateria(seleccionada);
 	}
 
 	public void agregarMateria() throws IOException {

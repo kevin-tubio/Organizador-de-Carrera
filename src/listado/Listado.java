@@ -98,4 +98,15 @@ public class Listado {
 		}
 	}
 
+	public void borrarMateria(Materia materia) {
+		try {
+			obtenerMateria(materia.getNumeroActividad());
+			for (Materia correlativa : consultarDesbloqueables(materia.getNumeroActividad()))
+				correlativa.getCorrelativas().remove(materia);
+			listadoDeMaterias.remove(materia.getNumeroActividad());
+		} catch (MateriaInvalidaException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
 }
