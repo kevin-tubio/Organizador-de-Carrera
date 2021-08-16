@@ -51,12 +51,13 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		Iterator<Row> iteradorFilas = hoja.iterator();
 		while (iteradorFilas.hasNext()) {
 			Row filaActual = iteradorFilas.next();
-			if (filaActual.getCell(0).getStringCellValue().matches("^[A-Za-zÀ-ÿ]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\) ?")) {
-				try {
+			var contenido = filaActual.getCell(0).getStringCellValue().strip();
+			try {
+				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
 					listado.agregarMateria(crearMateria(filaActual));
-				} catch (FormatoDeCeldaException e) {
-					System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
 				}
+			} catch (FormatoDeCeldaException e) {
+				System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
 			}
 		}
 		if (listado.consultarCantidadDeMaterias() == 0) {
@@ -65,12 +66,18 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 	}
 
 	private Materia crearMateria(Row filaActual) throws FormatoDeCeldaException {
-		var numero = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
+		return generarMateria(nombre, filaActual);
+	}
+
+	private Materia generarMateria(String nombre, Row filaActual) throws FormatoDeCeldaException {
+		var id = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
 		var anio = obtenerAnioDeMateria(filaActual.getCell(2));
 		var periodo = obtenerPeriodoDeMateria(filaActual.getCell(3).getStringCellValue());
-		var materia = new Materia(numero, nombre, anio, periodo);
-		obtenerEstadoDeMateria(materia, filaActual.getCell(4).getStringCellValue());
+		var materia = new Materia(id, nombre, anio, periodo);
+		materia.setEstado(obtenerEstadoDeMateria(filaActual));
+		if (materia.getEstado().equals(Estado.APROBADA))
+			materia.setCalificacion(obtenerNotaDeMateria(filaActual.getCell(4).getStringCellValue()));
 		return materia;
 	}
 
@@ -79,7 +86,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 	}
 
 	private String obtenerNombreMateria(String contenido) {
-		return contenido.split(" ?[\\d\\(\\)]+")[0];
+		return contenido.split(" ?\\([\\d]+\\)")[0];
 	}
 
 	private int obtenerAnioDeMateria(Cell celda) throws FormatoDeCeldaException {
@@ -108,14 +115,18 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		}
 	}
 
-	private void obtenerEstadoDeMateria(Materia materia, String contenido) throws FormatoDeCeldaException {
-		if (contenido.equals("") || contenido.matches("[ ]+")) {
-			materia.setEstado(Estado.NO_CURSADA);
-		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\) *$")) {
-			materia.setCalificacion(Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]));
-			materia.setEstado(Estado.APROBADA);
-		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\) *$")) {
-			materia.setEstado(Estado.REGULARIZADA);
+	private int obtenerNotaDeMateria(String contenido) {
+		return Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]);
+	}
+
+	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
+		var contenido = fila.getCell(4).getStringCellValue().strip();
+		if (contenido.matches("")) {
+			return (fila.getCell(5).getStringCellValue().equals("En Curso") ? Estado.EN_CURSO : Estado.NO_CURSADA);
+		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\)$")) {
+			return Estado.APROBADA;
+		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\)$")) {
+			return Estado.REGULARIZADA;
 		} else {
 			throw new FormatoDeCeldaException("columna 5. Se esperaba un estado de cursada valido o una celda vacia.");
 		}
