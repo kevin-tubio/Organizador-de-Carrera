@@ -14,6 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import enumerados.Estado;
 import enumerados.Periodo;
+import enumerados.Tipo;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
@@ -67,7 +68,9 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 
 	private Materia crearMateria(Row filaActual) throws FormatoDeCeldaException {
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
-		return generarMateria(nombre, filaActual);
+		var materia = generarMateria(nombre, filaActual);
+		materia.setTipo(obtenerTipoDeMateria(filaActual.getCell(1).getStringCellValue()));
+		return materia;
 	}
 
 	private Materia generarMateria(String nombre, Row filaActual) throws FormatoDeCeldaException {
@@ -117,6 +120,17 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 
 	private int obtenerNotaDeMateria(String contenido) {
 		return Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]);
+	}
+
+	private Tipo obtenerTipoDeMateria(String contenido) throws FormatoDeCeldaException {
+		switch (contenido.strip()) {
+		case "Materia":
+			return Tipo.MATERIA;
+		case "Tesis":
+			return Tipo.TESIS;
+		default:
+			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
+		}
 	}
 
 	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
