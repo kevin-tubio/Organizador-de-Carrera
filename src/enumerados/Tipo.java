@@ -2,7 +2,7 @@ package enumerados;
 
 public enum Tipo {
 	MATERIA("Materia"), TESIS("Tesis"), SEMINARIO_ELECTIVO("Seminario electivo"),
-	SEMINARIO_OPTATIVO("Seminario optativo");
+	SEMINARIO_OPTATIVO("Seminario optativo"), ASIGNATURA_ELECTIVA("Asignatura electiva"),
 
 	private String mensaje;
 

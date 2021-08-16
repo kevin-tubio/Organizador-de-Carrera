@@ -56,6 +56,8 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
 					listado.agregarMateria(crearMateria(filaActual));
+				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
+					listado.agregarMateria(crearSeminario(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {
 				System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
@@ -73,6 +75,13 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		return materia;
 	}
 
+	private Materia crearSeminario(Row filaActual) throws FormatoDeCeldaException {
+		var nombre = obtenerNombreSeminario(filaActual.getCell(0).getStringCellValue());
+		var materia = generarMateria(nombre, filaActual);
+		materia.setTipo(obtenerTipoDeSeminario(filaActual.getCell(0).getStringCellValue().split(":")[0]));
+		return materia;
+	}
+
 	private Materia generarMateria(String nombre, Row filaActual) throws FormatoDeCeldaException {
 		var id = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
 		var anio = obtenerAnioDeMateria(filaActual.getCell(2));
@@ -85,12 +94,31 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		return materia;
 	}
 
+	private Tipo obtenerTipoDeSeminario(String contenido) throws FormatoDeCeldaException {
+		switch (contenido.strip()) {
+		case "Seminario optativo":
+			return Tipo.SEMINARIO_OPTATIVO;
+		case "Seminario electivo":
+			return Tipo.SEMINARIO_ELECTIVO;
+		case "Asignatura Electiva":
+			return Tipo.ASIGNATURA_ELECTIVA;
+		default:
+			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
+		}
+	}
+
 	private int obtenerNumeroMateria(String contenido) {
 		return Integer.parseInt(contenido.split("[^\\d]+")[1]);
 	}
 
 	private String obtenerNombreMateria(String contenido) {
 		return contenido.split(" ?\\([\\d]+\\)")[0];
+	}
+
+	private String obtenerNombreSeminario(String contenido) {
+		contenido = obtenerNombreMateria(contenido);
+		contenido = contenido.split(":")[1].strip();
+		return contenido.replace("\"", "");
 	}
 
 	private int obtenerAnioDeMateria(Cell celda) throws FormatoDeCeldaException {
