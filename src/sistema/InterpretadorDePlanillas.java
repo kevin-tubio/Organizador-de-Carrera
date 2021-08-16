@@ -58,6 +58,8 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 					listado.agregarMateria(crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
 					listado.agregarMateria(crearSeminario(filaActual));
+				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
+					listado.agregarMateria(crearIdiomaExtranjero(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {
 				System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
@@ -79,6 +81,13 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		var nombre = obtenerNombreSeminario(filaActual.getCell(0).getStringCellValue());
 		var materia = generarMateria(nombre, filaActual);
 		materia.setTipo(obtenerTipoDeSeminario(filaActual.getCell(0).getStringCellValue().split(":")[0]));
+		return materia;
+	}
+
+	private Materia crearIdiomaExtranjero(Row filaActual) throws FormatoDeCeldaException {
+		var nombre = obtenerNombreIdiomaExtranjero(filaActual.getCell(0).getStringCellValue());
+		var materia = generarMateria(nombre, filaActual);
+		materia.setTipo(Tipo.IDIOMA_EXTRANJERO);
 		return materia;
 	}
 
@@ -119,6 +128,12 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		contenido = obtenerNombreMateria(contenido);
 		contenido = contenido.split(":")[1].strip();
 		return contenido.replace("\"", "");
+	}
+
+	private String obtenerNombreIdiomaExtranjero(String contenido) {
+		contenido = obtenerNombreMateria(contenido);
+		contenido = contenido.split("\\(")[1];
+		return contenido.replace(")", "");
 	}
 
 	private int obtenerAnioDeMateria(Cell celda) throws FormatoDeCeldaException {
