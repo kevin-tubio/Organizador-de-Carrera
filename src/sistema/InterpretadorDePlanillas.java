@@ -81,6 +81,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		materia.setEstado(obtenerEstadoDeMateria(filaActual));
 		if (materia.getEstado().equals(Estado.APROBADA))
 			materia.setCalificacion(obtenerNotaDeMateria(filaActual.getCell(4).getStringCellValue()));
+		materia.setCreditos(obtenerCreditosDeMateria(filaActual.getCell(6).getStringCellValue()));
 		return materia;
 	}
 
@@ -144,6 +145,13 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		} else {
 			throw new FormatoDeCeldaException("columna 5. Se esperaba un estado de cursada valido o una celda vacia.");
 		}
+	}
+
+	private double obtenerCreditosDeMateria(String contenido) {
+		contenido = contenido.strip();
+		if (contenido.matches(""))
+			return 0;
+		return Double.parseDouble(contenido);
 	}
 
 }
