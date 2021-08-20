@@ -7,19 +7,14 @@ import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
-import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import enumerados.Estado;
-import enumerados.Periodo;
-import enumerados.Tipo;
 import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
 import listado.Listado;
-import listado.Materia;
 
 public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 
@@ -55,11 +50,11 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
-					listado.agregarMateria(crearMateria(filaActual));
+					listado.agregarMateria(new CreadorDeMateriaSimple().crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
-					listado.agregarMateria(crearSeminario(filaActual));
+					listado.agregarMateria(new CreadorDeSeminario().crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
-					listado.agregarMateria(crearIdiomaExtranjero(filaActual));
+					listado.agregarMateria(new CreadorDeIdiomaExtranjero().crearMateria(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {
 				System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
@@ -68,133 +63,6 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 		if (listado.consultarCantidadDeMaterias() == 0) {
 			throw new PlanillaInvalidaException("No se ha podido interpretar las materias de la planilla provista");
 		}
-	}
-
-	private Materia crearMateria(Row filaActual) throws FormatoDeCeldaException {
-		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
-		var materia = generarMateria(nombre, filaActual);
-		materia.setTipo(obtenerTipoDeMateria(filaActual.getCell(1).getStringCellValue()));
-		return materia;
-	}
-
-	private Materia crearSeminario(Row filaActual) throws FormatoDeCeldaException {
-		var nombre = obtenerNombreSeminario(filaActual.getCell(0).getStringCellValue());
-		var materia = generarMateria(nombre, filaActual);
-		materia.setTipo(obtenerTipoDeSeminario(filaActual.getCell(0).getStringCellValue().split(":")[0]));
-		return materia;
-	}
-
-	private Materia crearIdiomaExtranjero(Row filaActual) throws FormatoDeCeldaException {
-		var nombre = obtenerNombreIdiomaExtranjero(filaActual.getCell(0).getStringCellValue());
-		var materia = generarMateria(nombre, filaActual);
-		materia.setTipo(Tipo.IDIOMA_EXTRANJERO);
-		return materia;
-	}
-
-	private Materia generarMateria(String nombre, Row filaActual) throws FormatoDeCeldaException {
-		var id = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
-		var anio = obtenerAnioDeMateria(filaActual.getCell(2));
-		var periodo = obtenerPeriodoDeMateria(filaActual.getCell(3).getStringCellValue());
-		var materia = new Materia(id, nombre, anio, periodo);
-		materia.setEstado(obtenerEstadoDeMateria(filaActual));
-		if (materia.getEstado().equals(Estado.APROBADA))
-			materia.setCalificacion(obtenerNotaDeMateria(filaActual.getCell(4).getStringCellValue()));
-		materia.setCreditos(obtenerCreditosDeMateria(filaActual.getCell(6).getStringCellValue()));
-		return materia;
-	}
-
-	private Tipo obtenerTipoDeSeminario(String contenido) throws FormatoDeCeldaException {
-		switch (contenido.strip()) {
-		case "Seminario optativo":
-			return Tipo.SEMINARIO_OPTATIVO;
-		case "Seminario electivo":
-			return Tipo.SEMINARIO_ELECTIVO;
-		case "Asignatura Electiva":
-			return Tipo.ASIGNATURA_ELECTIVA;
-		default:
-			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
-		}
-	}
-
-	private int obtenerNumeroMateria(String contenido) {
-		return Integer.parseInt(contenido.split("[^\\d]+")[1]);
-	}
-
-	private String obtenerNombreMateria(String contenido) {
-		return contenido.split(" ?\\([\\d]+\\)")[0];
-	}
-
-	private String obtenerNombreSeminario(String contenido) {
-		contenido = obtenerNombreMateria(contenido);
-		contenido = contenido.split(":")[1].strip();
-		return contenido.replace("\"", "");
-	}
-
-	private String obtenerNombreIdiomaExtranjero(String contenido) {
-		contenido = obtenerNombreMateria(contenido);
-		contenido = contenido.split("\\(")[1];
-		return contenido.replace(")", "");
-	}
-
-	private int obtenerAnioDeMateria(Cell celda) throws FormatoDeCeldaException {
-		try {
-			return Integer.parseInt(celda.getStringCellValue().strip());
-		} catch (NumberFormatException e) {
-			throw new FormatoDeCeldaException("columna 3. Se esperaba un numero.", e.getCause());
-		} catch (IllegalStateException e) {
-			return (int) celda.getNumericCellValue();
-		}
-	}
-
-	private Periodo obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
-		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
-			throw new FormatoDeCeldaException("columna 4. Formato invalido");
-		}
-		switch (contenido.strip()) {
-		case "1er Cuatrimestre":
-			return Periodo.PRIMER_CUATRIMESTRE;
-		case "2do Cuatrimestre":
-			return Periodo.SEGUNDO_CUATRIMESTRE;
-		case "Anual":
-			return Periodo.ANUAL;
-		default:
-			return Periodo.ANUAL;
-		}
-	}
-
-	private int obtenerNotaDeMateria(String contenido) {
-		return Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]);
-	}
-
-	private Tipo obtenerTipoDeMateria(String contenido) throws FormatoDeCeldaException {
-		switch (contenido.strip()) {
-		case "Materia":
-			return Tipo.MATERIA;
-		case "Tesis":
-			return Tipo.TESIS;
-		default:
-			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
-		}
-	}
-
-	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
-		var contenido = fila.getCell(4).getStringCellValue().strip();
-		if (contenido.matches("")) {
-			return (fila.getCell(5).getStringCellValue().equals("En Curso") ? Estado.EN_CURSO : Estado.NO_CURSADA);
-		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\)$")) {
-			return Estado.APROBADA;
-		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\)$")) {
-			return Estado.REGULARIZADA;
-		} else {
-			throw new FormatoDeCeldaException("columna 5. Se esperaba un estado de cursada valido o una celda vacia.");
-		}
-	}
-
-	private double obtenerCreditosDeMateria(String contenido) {
-		contenido = contenido.strip();
-		if (contenido.matches(""))
-			return 0;
-		return Double.parseDouble(contenido);
 	}
 
 }
