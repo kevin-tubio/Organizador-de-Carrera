@@ -83,7 +83,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 	}
 
 	private Periodo obtenerPeriodo(String dato) {
-		switch (dato) {
+		switch (dato.replaceAll("[ ]+", " ")) {
 		case "1er Cuatrimestre":
 			return Periodo.PRIMER_CUATRIMESTRE;
 		case "2do Cuatrimestre":

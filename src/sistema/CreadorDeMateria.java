@@ -52,13 +52,11 @@ public abstract class CreadorDeMateria {
 		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
 			throw new FormatoDeCeldaException("columna 4. Formato invalido");
 		}
-		switch (contenido.strip()) {
+		switch (contenido.replaceAll("[ ]+", " ").strip()) {
 		case "1er Cuatrimestre":
 			return Periodo.PRIMER_CUATRIMESTRE;
 		case "2do Cuatrimestre":
 			return Periodo.SEGUNDO_CUATRIMESTRE;
-		case "Anual":
-			return Periodo.ANUAL;
 		default:
 			return Periodo.ANUAL;
 		}
