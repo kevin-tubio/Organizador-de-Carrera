@@ -58,6 +58,10 @@ public class Materia {
 		// declarado solo para jpa
 	}
 
+	public Materia(int numeroActividad, String nombre) {
+		this(numeroActividad, nombre, 1, Periodo.PRIMER_CUATRIMESTRE);
+	}
+
 	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
 		this(numeroActividad, nombre, anio, periodo, Estado.NO_CURSADA, 0);
 	}
@@ -175,6 +179,18 @@ public class Materia {
 		default:
 			return "";
 		}
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public void setAnio(int anio) {
+		this.anio = anio;
+	}
+
+	public void setPeriodo(Periodo periodo) {
+		this.periodo = periodo;
 	}
 
 }

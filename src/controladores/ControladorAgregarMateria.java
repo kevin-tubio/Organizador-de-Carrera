@@ -140,6 +140,66 @@ public class ControladorAgregarMateria implements Initializable {
 		this.materias.add(materia);
 	}
 
+	private Materia generarNuevaMateria() throws MateriaInvalidaException {
+		var nuevoId = Integer.parseInt(this.id.getText());
+		var nuevoNombre = this.nombre.getText();
+		var materia = new Materia(nuevoId, nuevoNombre);
+		actualizarDatos(materia);
+		return materia;
+	}
+
+	protected void inyectarMateria(Materia materia) {
+		this.id.setText(String.valueOf(materia.getNumeroActividad()));
+		this.nombre.setText(materia.getNombre());
+		this.periodo.setValue(materia.getPeriodo());
+		this.estado.setValue(materia.getEstado());
+		this.anio.getValueFactory().setValue(materia.getAnio());
+		if (materia.getEstado() == Estado.APROBADA)
+			this.nota.getValueFactory().setValue(Integer.parseInt(materia.getCalificacion()));
+		this.hs.getValueFactory().setValue(materia.getHorasSemanales());
+		this.tipo.setValue(materia.getTipo());
+		this.correlativas.addAll(materia.getCorrelativas());
+		this.creditos.getValueFactory().setValue(materia.getCreditos());
+		this.materias.removeAll(materia);
+		this.materias.removeAll(this.correlativas);
+		this.aceptar.setOnAction(event -> actualizarMateria(materia));
+	}
+
+	public void actualizarMateria(Materia materia) {
+		try {
+			if (materia.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
+				Listado.obtenerListado().reemplazarMateria(materia, generarNuevaMateria());
+				((Stage) this.aceptar.getScene().getWindow()).close();
+			} else {
+				materia.setNombre(nombre.getText());
+				actualizarDatos(materia);
+				guardarYCerrar(materia);
+			}
+		} catch (MateriaInvalidaException | NumberFormatException e) {
+			System.err.println(e.getMessage());
+		}
+	}
+
+	private void actualizarDatos(Materia materia) throws MateriaInvalidaException {
+		materia.setPeriodo(periodo.getValue());
+		materia.setAnio(anio.getValue());
+		if (estado.getValue() == Estado.APROBADA) {
+			materia.setCalificacion(nota.getValue());
+		}
+		materia.setEstado(estado.getValue());
+		materia.setTipo(tipo.getValue());
+		materia.setHorasSemanales(hs.getValue());
+		materia.setCreditos(creditos.getValue());
+		for (Materia correlativa : this.correlativas) {
+			materia.setCorrelativa(correlativa);
+		}
+	}
+
+	private void guardarYCerrar(Materia materia) {
+		Listado.obtenerListado().agregarMateria(materia);
+		((Stage) this.aceptar.getScene().getWindow()).close();
+	}
+
 	public void cancelar() {
 		((Stage) this.cancelar.getScene().getWindow()).close();
 	}
@@ -150,53 +210,6 @@ public class ControladorAgregarMateria implements Initializable {
 		} catch (MateriaInvalidaException | NumberFormatException e) {
 			System.err.println(e.getMessage());
 		}
-	}
-
-	private Materia generarNuevaMateria() throws MateriaInvalidaException {
-		var nuevoId = Integer.parseInt(this.id.getText());
-		var nuevoNombre = this.nombre.getText();
-
-		var materia = new Materia(nuevoId, nuevoNombre, anio.getValue(), periodo.getValue(), estado.getValue(),
-				nota.getValue());
-		materia.setTipo(tipo.getValue());
-		materia.setHorasSemanales(hs.getValue());
-		materia.setCreditos(creditos.getValue());
-		for (Materia correlativa : this.correlativas) {
-			materia.setCorrelativa(correlativa);
-		}
-
-		return materia;
-	}
-
-	protected void inyectarMateria(Materia materia) {
-		this.id.setText(String.valueOf(materia.getNumeroActividad()));
-		this.nombre.setText(materia.getNombre());
-		this.periodo.setValue(materia.getPeriodo());
-		this.estado.setValue(materia.getEstado());
-		this.anio.getValueFactory().setValue(materia.getAnio());
-		if (materia.getEstado() == Estado.APROBADA) {
-			this.nota.getValueFactory().setValue(Integer.parseInt(materia.getCalificacion()));
-		}
-		this.correlativas.addAll(materia.getCorrelativas());
-		this.materias.removeAll(materia);
-		this.materias.removeAll(this.correlativas);
-		this.aceptar.setOnAction(event -> actualizarMateria(materia));
-	}
-
-	public void actualizarMateria(Materia materia) {
-		try {
-			var nuevaMateria = generarNuevaMateria();
-			if (materia.getNumeroActividad() != nuevaMateria.getNumeroActividad())
-				Listado.obtenerListado().reemplazarMateria(materia, nuevaMateria);
-			guardarYCerrar(nuevaMateria);
-		} catch (MateriaInvalidaException | NumberFormatException e) {
-			System.err.println(e.getMessage());
-		}
-	}
-
-	private void guardarYCerrar(Materia materia) {
-		Listado.obtenerListado().agregarMateria(materia);
-		((Stage) this.aceptar.getScene().getWindow()).close();
 	}
 
 }

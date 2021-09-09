@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import enumerados.Estado;
+import enumerados.Periodo;
+import enumerados.Tipo;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -28,13 +31,13 @@ public class ControladorTabla implements Initializable {
 	@FXML
 	private TableColumn<Materia, Integer> anio;
 	@FXML
-	private TableColumn<Materia, String> periodo;
+	private TableColumn<Materia, Periodo> periodo;
 	@FXML
 	private TableColumn<Materia, String> nota;
 	@FXML
-	private TableColumn<Materia, String> estado;
+	private TableColumn<Materia, Estado> estado;
 	@FXML
-	private TableColumn<Materia, String> tipo;
+	private TableColumn<Materia, Tipo> tipo;
 	@FXML
 	private TableColumn<Materia, Integer> hs;
 	@FXML
@@ -66,13 +69,7 @@ public class ControladorTabla implements Initializable {
 	}
 
 	private void agregarSubscriptorAListado() {
-		MapChangeListener<Integer, Materia> subscriptor = cambio -> {
-			if (cambio.wasAdded()) {
-				this.tabla.getItems().add(cambio.getValueAdded());
-			} else {
-				this.tabla.getItems().remove(cambio.getValueRemoved());
-			}
-		};
+		MapChangeListener<Integer, Materia> subscriptor = cambio -> tabla.getItems().setAll(cambio.getMap().values());
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
 	}
 
@@ -92,6 +89,7 @@ public class ControladorTabla implements Initializable {
 
 	public void editarContextual() throws IOException {
 		this.controlador.editarMateria(this.obtenerSeleccionado());
+		tabla.refresh();
 	}
 
 	public void agregarMateria() throws IOException {
