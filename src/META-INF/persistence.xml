@@ -11,7 +11,7 @@
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=CREATE SCHEMA IF NOT EXISTS LISTADO" />
 			<property name="javax.persistence.jdbc.user" value="dev" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
