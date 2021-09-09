@@ -57,14 +57,16 @@ public class ControladorPrincipal implements Initializable {
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 		var archivo = fileChooser.showOpenDialog(new Stage());
-		Listado.borrarListado();
-		Platform.runLater(() -> {
-			try {
-				cargarArchivo(archivo);
-			} catch (ArchivoException e) {
-				System.out.println("intenta con otro archivo");
-			}
-		});
+		if (archivo != null) {
+			Listado.borrarListado();
+			Platform.runLater(() -> {
+				try {
+					cargarArchivo(archivo);
+				} catch (ArchivoException e) {
+					System.out.println("intenta con otro archivo");
+				}
+			});
+		}
 	}
 
 	private void cargarArchivo(File archivo) throws ArchivoException {
@@ -154,4 +156,5 @@ public class ControladorPrincipal implements Initializable {
 		});
 		hilo.start();
 	}
+
 }
