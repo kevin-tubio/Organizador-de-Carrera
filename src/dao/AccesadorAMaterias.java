@@ -10,7 +10,7 @@ public class AccesadorAMaterias extends AccesadorADatos<Materia> {
 
 	private void borrarCorrelativas() {
 		String qlString = "TRUNCATE TABLE LISTADO.MATERIA_MATERIA";
-		executeInsideTransaction(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
+		ejecutarTransaccion(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
 	}
 
 	@Override

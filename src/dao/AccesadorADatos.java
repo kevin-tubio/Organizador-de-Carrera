@@ -5,7 +5,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -37,22 +36,22 @@ public abstract class AccesadorADatos<T> {
 	}
 
 	public boolean guardar(T dato) {
-		executeInsideTransaction(entityManager -> entityManager.persist(dato));
+		ejecutarTransaccion(entityManager -> entityManager.persist(dato));
 		return true;
 	}
 
 	public boolean actualizar(T dato) {
-		executeInsideTransaction(entityManager -> entityManager.merge(dato));
+		ejecutarTransaccion(entityManager -> entityManager.merge(dato));
 		return true;
 	}
 
 	public boolean borrar(T dato) {
-		executeInsideTransaction(entityManager -> entityManager.remove(dato));
+		ejecutarTransaccion(entityManager -> entityManager.remove(dato));
 		return true;
 	}
 
-	protected void executeInsideTransaction(Consumer<EntityManager> action) {
-		EntityTransaction tx = manager.getTransaction();
+	protected void ejecutarTransaccion(Consumer<EntityManager> action) {
+		var tx = manager.getTransaction();
 		try {
 			tx.begin();
 			action.accept(manager);
