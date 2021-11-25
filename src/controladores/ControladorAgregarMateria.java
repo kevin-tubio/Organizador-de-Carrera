@@ -23,6 +23,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import listado.Listado;
 import listado.Materia;
+import net.synedra.validatorfx.Validator;
 
 public class ControladorAgregarMateria implements Initializable {
 
@@ -58,21 +59,29 @@ public class ControladorAgregarMateria implements Initializable {
 	private MenuItem itemContextualAgregar;
 	@FXML
 	private MenuItem itemContextualQuitar;
+
 	private ObservableList<Materia> materias;
 	private ObservableList<Materia> correlativas;
 	private FilteredList<Materia> listaFiltrada;
+	private Validator validador;
+	private Materia materiaInyectada;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.inicializarCampos();
+		this.agregarSubscriptorAlBuscador();
+		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
+		this.itemContextualQuitar.disableProperty()
+				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
+	}
+
+	private void inicializarCampos() {
+		this.crearValidadorDeCampos();
 		this.inicializarChoiceBoxes();
 		this.inicializarSpinners();
 		this.inicializarListaDeCorrelativas();
 		this.inicializarListaDeMaterias();
 		this.inicializarBotones();
-		this.agregarSubscriptorAlBuscador();
-		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
-		this.itemContextualQuitar.disableProperty()
-				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 	private void agregarSubscriptorAlBuscador() {
@@ -88,8 +97,28 @@ public class ControladorAgregarMateria implements Initializable {
 		});
 	}
 
+	private void crearValidadorDeCampos() {
+		this.validador = new Validator();
+		var checkID = validador.createCheck().withMethod(in -> {
+			if (campoVacio(this.id))
+				in.error("Se debe introducir un ID de materia");
+			if (!this.id.getText().matches("^[0-9]+$"))
+				in.error("Los ID de materia solo pueden ser numericos por el momento");
+		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
+		var checkNombre = validador.createCheck().withMethod(in -> {
+			if (campoVacio(this.nombre))
+				in.error("Se debe introducir un nombre de materia");
+		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
+		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
+		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
+	}
+
+	private boolean campoVacio(TextField campo) {
+		return campo.textProperty().getValue().isBlank();
+	}
+
 	private void inicializarBotones() {
-		this.aceptar.disableProperty().bind(this.id.textProperty().isEmpty().or(this.nombre.textProperty().isEmpty()));
+		this.aceptar.disableProperty().bind(validador.containsErrorsProperty());
 		this.cancelar.setCancelButton(true);
 	}
 
@@ -140,15 +169,14 @@ public class ControladorAgregarMateria implements Initializable {
 		this.materias.add(materia);
 	}
 
-	private Materia generarNuevaMateria() throws MateriaInvalidaException {
+	private Materia generarNuevaMateria() {
 		var nuevoId = Integer.parseInt(this.id.getText());
 		var nuevoNombre = this.nombre.getText();
-		var materia = new Materia(nuevoId, nuevoNombre);
-		actualizarDatos(materia);
-		return materia;
+		return new Materia(nuevoId, nuevoNombre);
 	}
 
 	protected void inyectarMateria(Materia materia) {
+		this.materiaInyectada = materia;
 		this.id.setText(String.valueOf(materia.getNumeroActividad()));
 		this.nombre.setText(materia.getNombre());
 		this.periodo.setValue(materia.getPeriodo());
@@ -162,25 +190,10 @@ public class ControladorAgregarMateria implements Initializable {
 		this.creditos.getValueFactory().setValue(materia.getCreditos());
 		this.materias.removeAll(materia);
 		this.materias.removeAll(this.correlativas);
-		this.aceptar.setOnAction(event -> actualizarMateria(materia));
-	}
-
-	public void actualizarMateria(Materia materia) {
-		try {
-			if (materia.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
-				Listado.obtenerListado().reemplazarMateria(materia, generarNuevaMateria());
-				((Stage) this.aceptar.getScene().getWindow()).close();
-			} else {
-				materia.setNombre(nombre.getText());
-				actualizarDatos(materia);
-				guardarYCerrar(materia);
-			}
-		} catch (MateriaInvalidaException | NumberFormatException e) {
-			System.err.println(e.getMessage());
-		}
 	}
 
 	private void actualizarDatos(Materia materia) throws MateriaInvalidaException {
+		materia.setNombre(nombre.getText());
 		materia.setPeriodo(periodo.getValue());
 		materia.setAnio(anio.getValue());
 		if (estado.getValue() == Estado.APROBADA) {
@@ -195,9 +208,21 @@ public class ControladorAgregarMateria implements Initializable {
 		}
 	}
 
-	private void guardarYCerrar(Materia materia) {
-		Listado.obtenerListado().agregarMateria(materia);
-		((Stage) this.aceptar.getScene().getWindow()).close();
+	private void guardarYCerrar() {
+		try {
+			if (this.materiaInyectada == null)
+				this.materiaInyectada = generarNuevaMateria();
+			if (materiaInyectada.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
+				var nuevaMateria = generarNuevaMateria();
+				actualizarDatos(nuevaMateria);
+				Listado.obtenerListado().reemplazarMateria(materiaInyectada, nuevaMateria);
+			} else {
+				actualizarDatos(materiaInyectada);
+				Listado.obtenerListado().agregarMateria(materiaInyectada);
+			}
+		} catch (MateriaInvalidaException | NumberFormatException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 
 	public void cancelar() {
@@ -205,10 +230,9 @@ public class ControladorAgregarMateria implements Initializable {
 	}
 
 	public void aceptar() {
-		try {
-			guardarYCerrar(generarNuevaMateria());
-		} catch (MateriaInvalidaException | NumberFormatException e) {
-			System.err.println(e.getMessage());
+		if (validador.validate()) {
+			guardarYCerrar();
+			((Stage) this.aceptar.getScene().getWindow()).close();
 		}
 	}
 
