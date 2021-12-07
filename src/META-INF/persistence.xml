@@ -14,8 +14,6 @@
 			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=CREATE SCHEMA IF NOT EXISTS LISTADO" />
 			<property name="javax.persistence.jdbc.user" value="dev" />
 			<property name="javax.persistence.jdbc.password" value="" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
-			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
 </persistence>
