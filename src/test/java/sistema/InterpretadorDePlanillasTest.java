@@ -69,15 +69,15 @@ public class InterpretadorDePlanillasTest {
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				new Materia(3, "Cuestiones de SociologÃ­a, EconomÃ­a y PolÃ­tica", 2, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "IntroducciÃ³n a la ProblemÃ¡tica del Mundo ContemporÃ¡neo", 1,
 				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1265, new Materia(1265, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1269, new Materia(1269, "Física II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1265, new Materia(1265, "AnÃ¡lisis MatemÃ¡tico I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1269, new Materia(1269, "FÃ­sica II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1240,
-				new Materia(1240, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1270, new Materia(1270, "Física III", 3, Periodo.PRIMER_CUATRIMESTRE));
+				new Materia(1240, "Algoritmos y ProgramaciÃ³n III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "MatemÃ¡ticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1270, new Materia(1270, "FÃ­sica III", 3, Periodo.PRIMER_CUATRIMESTRE));
 
 		var listado = Listado.obtenerListado();
 
@@ -91,15 +91,15 @@ public class InterpretadorDePlanillasTest {
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				new Materia(3, "Cuestiones de SociologÃ­a, EconomÃ­a y PolÃ­tica", 2, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "IntroducciÃ³n a la ProblemÃ¡tica del Mundo ContemporÃ¡neo", 1,
 				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1265, new Materia(1265, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1269, new Materia(1269, "Física II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1265, new Materia(1265, "AnÃ¡lisis MatemÃ¡tico I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1269, new Materia(1269, "FÃ­sica II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1240,
-				new Materia(1240, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1270, new Materia(1270, "Física III", 3, Periodo.PRIMER_CUATRIMESTRE));
+				new Materia(1240, "Algoritmos y ProgramaciÃ³n III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "MatemÃ¡ticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1270, new Materia(1270, "FÃ­sica III", 3, Periodo.PRIMER_CUATRIMESTRE));
 
 		var listado = Listado.obtenerListado();
 
@@ -127,8 +127,8 @@ public class InterpretadorDePlanillasTest {
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(15, new Materia(15, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
+				new Materia(3, "Cuestiones de SociologÃ­a, EconomÃ­a y PolÃ­tica", 2, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(15, new Materia(15, "AnÃ¡lisis MatemÃ¡tico I", 1, Periodo.PRIMER_CUATRIMESTRE));
 
 		var listado = Listado.obtenerListado();
 

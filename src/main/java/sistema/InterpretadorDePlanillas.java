@@ -49,11 +49,11 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 			Row filaActual = iteradorFilas.next();
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
-				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
+				if (contenido.matches("^[A-Za-zÃ€-Ã¿Â´]+[A-Za-zÃ€-Ã¿,. ]+ \\(\\d+\\)$")) {
 					listado.agregarMateria(new CreadorDeMateriaSimple().crearMateria(filaActual));
-				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
+				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÃ€-Ã¿Â´ ]+\" \\(\\d+\\)$")) {
 					listado.agregarMateria(new CreadorDeSeminario().crearMateria(filaActual));
-				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
+				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÃ€-Ã¿ ]+\\) \\(\\d+\\)$")) {
 					listado.agregarMateria(new CreadorDeIdiomaExtranjero().crearMateria(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {

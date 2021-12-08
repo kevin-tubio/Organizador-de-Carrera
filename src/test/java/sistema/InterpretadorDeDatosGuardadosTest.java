@@ -44,11 +44,11 @@ public class InterpretadorDeDatosGuardadosTest {
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(1269,
-				new Materia(1269, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				new Materia(1269, "Algoritmos y ProgramaciÃ³n III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "IntroducciÃ³n a la ProblemÃ¡tica del Mundo ContemporÃ¡neo", 1,
 				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(862, new Materia(862, "Ãlgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "MatemÃ¡ticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		var listado = Listado.obtenerListado();
 
 		assertEquals(4, listado.consultarCantidadDeMaterias());
@@ -70,11 +70,11 @@ public class InterpretadorDeDatosGuardadosTest {
 
 		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(1269,
-				new Materia(1269, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				new Materia(1269, "Algoritmos y ProgramaciÃ³n III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Materia(592, "IntroducciÃ³n a la ProblemÃ¡tica del Mundo ContemporÃ¡neo", 1,
 				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(862, new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(862, new Materia(862, "Ãlgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Materia(1242, "MatemÃ¡ticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
 		var listado = Listado.obtenerListado();
 
 		assertEquals(4, listado.consultarCantidadDeMaterias());
@@ -89,11 +89,11 @@ public class InterpretadorDeDatosGuardadosTest {
 		assertEquals("Aprobado", listado.obtenerMateria(1242).getCalificacion());
 
 		Set<Materia> aYP = new HashSet<>();
-		aYP.add(new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		aYP.add(new Materia(862, "Álgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
+		aYP.add(new Materia(1242, "MatemÃ¡ticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+		aYP.add(new Materia(862, "Ãlgebra I", 1, Periodo.PRIMER_CUATRIMESTRE));
 
 		Set<Materia> algebra = new HashSet<>();
-		algebra.add(new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+		algebra.add(new Materia(592, "IntroducciÃ³n a la ProblemÃ¡tica del Mundo ContemporÃ¡neo", 1,
 				Periodo.PRIMER_CUATRIMESTRE));
 
 		assertEquals(aYP, listado.obtenerMateria(1269).getCorrelativas());
