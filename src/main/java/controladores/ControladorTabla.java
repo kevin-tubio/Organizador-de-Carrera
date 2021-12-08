@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import enumerados.Estado;
-import enumerados.Periodo;
-import enumerados.Tipo;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -15,6 +12,10 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+
+import enumerados.Estado;
+import enumerados.Periodo;
+import enumerados.Tipo;
 import listado.Listado;
 import listado.Materia;
 

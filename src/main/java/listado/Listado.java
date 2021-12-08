@@ -6,10 +6,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import excepciones.ListadoInvalidoException;
-import excepciones.MateriaInvalidaException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+
+import excepciones.ListadoInvalidoException;
+import excepciones.MateriaInvalidaException;
 
 public class Listado {
 

@@ -3,10 +3,6 @@ package controladores;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import enumerados.Estado;
-import enumerados.Periodo;
-import enumerados.Tipo;
-import excepciones.MateriaInvalidaException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -21,9 +17,15 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+
+import net.synedra.validatorfx.Validator;
+
+import enumerados.Estado;
+import enumerados.Periodo;
+import enumerados.Tipo;
+import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
-import net.synedra.validatorfx.Validator;
 
 public class ControladorAgregarMateria implements Initializable {
 
