@@ -1,6 +1,7 @@
 package controladores;
 
 import java.net.URL;
+import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
@@ -190,7 +191,7 @@ public class ControladorAgregarMateria implements Initializable {
 		this.tipo.setValue(materia.getTipo());
 		this.correlativas.addAll(materia.getCorrelativas());
 		this.creditos.getValueFactory().setValue(materia.getCreditos());
-		this.materias.removeAll(materia);
+		this.materias.remove(materia);
 		this.materias.removeAll(this.correlativas);
 	}
 
@@ -205,9 +206,7 @@ public class ControladorAgregarMateria implements Initializable {
 		materia.setTipo(tipo.getValue());
 		materia.setHorasSemanales(hs.getValue());
 		materia.setCreditos(creditos.getValue());
-		for (Materia correlativa : this.correlativas) {
-			materia.setCorrelativa(correlativa);
-		}
+		materia.setCorrelativas(new HashSet<>(this.correlativas));
 	}
 
 	private void guardarYCerrar() {
@@ -222,19 +221,19 @@ public class ControladorAgregarMateria implements Initializable {
 				actualizarDatos(materiaInyectada);
 				Listado.obtenerListado().agregarMateria(materiaInyectada);
 			}
-		} catch (MateriaInvalidaException | NumberFormatException e) {
+			cerrar();
+		} catch (MateriaInvalidaException e) {
 			System.err.println(e.getMessage());
 		}
 	}
 
-	public void cancelar() {
+	public void cerrar() {
 		((Stage) this.cancelar.getScene().getWindow()).close();
 	}
 
 	public void aceptar() {
 		if (validador.validate()) {
 			guardarYCerrar();
-			((Stage) this.aceptar.getScene().getWindow()).close();
 		}
 	}
 

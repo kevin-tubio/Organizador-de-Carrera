@@ -107,6 +107,10 @@ public class Materia {
 		return correlativas;
 	}
 
+	public void setCorrelativas(Set<Materia> correlativas) {
+		this.correlativas = correlativas;
+	}
+
 	public void setCorrelativa(Materia correlativa) throws MateriaInvalidaException {
 		if (!this.equals(correlativa)) {
 			this.correlativas.add(correlativa);
