@@ -98,7 +98,7 @@ public class Listado {
 
 	public void borrarMateria(Materia materia) {
 		try {
-			obtenerMateria(materia.getNumeroActividad());
+			comprobarMaterias(materia.getNumeroActividad());
 			for (Materia correlativa : consultarDesbloqueables(materia.getNumeroActividad()))
 				correlativa.getCorrelativas().remove(materia);
 			listadoDeMaterias.remove(materia.getNumeroActividad());
@@ -109,7 +109,7 @@ public class Listado {
 
 	public void reemplazarMateria(Materia materia, Materia nuevaMateria) {
 		try {
-			obtenerMateria(materia.getNumeroActividad());
+			comprobarMaterias(materia.getNumeroActividad());
 			for (Materia correlativa : consultarDesbloqueables(materia.getNumeroActividad())) {
 				correlativa.getCorrelativas().remove(materia);
 				correlativa.getCorrelativas().add(nuevaMateria);
