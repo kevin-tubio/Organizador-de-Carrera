@@ -22,7 +22,6 @@ import javafx.stage.Stage;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
-import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
 
@@ -197,7 +196,7 @@ public class ControladorAgregarMateria implements Initializable {
 		this.materias.removeAll(this.correlativas);
 	}
 
-	private void actualizarDatos(Materia materia) throws MateriaInvalidaException {
+	private void actualizarDatos(Materia materia) {
 		materia.setNombre(nombre.getText());
 		materia.setPeriodo(periodo.getValue());
 		materia.setAnio(anio.getValue());
@@ -212,21 +211,17 @@ public class ControladorAgregarMateria implements Initializable {
 	}
 
 	private void guardarYCerrar() {
-		try {
-			if (this.materiaInyectada == null)
-				this.materiaInyectada = generarNuevaMateria();
-			if (materiaInyectada.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
-				var nuevaMateria = generarNuevaMateria();
-				actualizarDatos(nuevaMateria);
-				Listado.obtenerListado().reemplazarMateria(materiaInyectada, nuevaMateria);
-			} else {
-				actualizarDatos(materiaInyectada);
-				Listado.obtenerListado().agregarMateria(materiaInyectada);
-			}
-			cerrar();
-		} catch (MateriaInvalidaException e) {
-			System.err.println(e.getMessage());
+		if (this.materiaInyectada == null)
+			this.materiaInyectada = generarNuevaMateria();
+		if (materiaInyectada.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
+			var nuevaMateria = generarNuevaMateria();
+			actualizarDatos(nuevaMateria);
+			Listado.obtenerListado().reemplazarMateria(materiaInyectada, nuevaMateria);
+		} else {
+			actualizarDatos(materiaInyectada);
+			Listado.obtenerListado().agregarMateria(materiaInyectada);
 		}
+		cerrar();
 	}
 
 	public void cerrar() {
