@@ -53,7 +53,7 @@ public class ControladorLista implements Initializable {
 		}
 	}
 
-	public void inyectar(ControladorPrincipal controladorPrincipal) {
+	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}
 }

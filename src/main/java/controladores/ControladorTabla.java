@@ -97,7 +97,7 @@ public class ControladorTabla implements Initializable {
 		this.controlador.agregarMateria();
 	}
 
-	public void inyectar(ControladorPrincipal controladorPrincipal) {
+	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}
 }

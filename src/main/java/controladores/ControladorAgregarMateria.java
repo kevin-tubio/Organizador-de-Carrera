@@ -67,6 +67,7 @@ public class ControladorAgregarMateria implements Initializable {
 	private FilteredList<Materia> listaFiltrada;
 	private Validator validador;
 	private Materia materiaInyectada;
+	private ControladorPrincipal controlador;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -99,6 +100,10 @@ public class ControladorAgregarMateria implements Initializable {
 		var nombreMateria = materia.getNombre().toLowerCase();
 		var idMateria = String.valueOf(materia.getNumeroActividad());
 		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
+	}
+
+	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
+		this.controlador = controladorPrincipal;
 	}
 
 	private void crearValidadorDeCampos() {
@@ -221,6 +226,7 @@ public class ControladorAgregarMateria implements Initializable {
 			actualizarDatos(materiaInyectada);
 			Listado.obtenerListado().agregarMateria(materiaInyectada);
 		}
+		this.controlador.declararCambios();
 		cerrar();
 	}
 

@@ -29,7 +29,7 @@
 								<MenuItem mnemonicParsing="false"
 									onAction="#abrirArchivo" text="Abrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false"
+								<MenuItem fx:id="itemGuardar" mnemonicParsing="false"
 									onAction="#persistirCambiosListado" text="Guardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem mnemonicParsing="false" text="Salir" />

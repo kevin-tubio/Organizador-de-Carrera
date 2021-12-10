@@ -6,6 +6,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -39,11 +40,17 @@ public class ControladorPrincipal implements Initializable {
 	private MenuItem itemEditar;
 	@FXML
 	private TabPane tab;
+	@FXML
+	private MenuItem itemGuardar;
+
+	private SimpleBooleanProperty cambios;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.planDeEstudiosController.inyectar(this);
-		this.listaDeMateriasController.inyectar(this);
+		this.planDeEstudiosController.inyectarControlador(this);
+		this.listaDeMateriasController.inyectarControlador(this);
+		this.cambios = new SimpleBooleanProperty(false);
+		this.itemGuardar.disableProperty().bind(this.cambios.not());
 		this.deshabilitarFunciones();
 		var interpretador = new RecuperadorDatosGuardados();
 		try {
@@ -67,6 +74,7 @@ public class ControladorPrincipal implements Initializable {
 					System.out.println("intenta con otro archivo");
 				}
 			});
+			declararCambios();
 		}
 	}
 
@@ -110,11 +118,14 @@ public class ControladorPrincipal implements Initializable {
 
 	protected void borrarMateria(Materia seleccionada) {
 		Listado.obtenerListado().borrarMateria(seleccionada);
+		declararCambios();
 	}
 
 	public void agregarMateria() throws IOException {
 		var stage = new Stage();
-		Parent root = FXMLLoader.load(getClass().getResource("../fxml/AgregarMateria.fxml"));
+		var loader = new FXMLLoader(this.getClass().getResource("../fxml/AgregarMateria.fxml"));
+		Parent root = loader.load();
+		((ControladorAgregarMateria) loader.getController()).inyectarControlador(this);
 		var scene = new Scene(root);
 		stage.setTitle("Agregar Materia");
 		stage.setScene(scene);
@@ -140,7 +151,9 @@ public class ControladorPrincipal implements Initializable {
 		var stage = new Stage();
 		var loader = new FXMLLoader(this.getClass().getResource("../fxml/AgregarMateria.fxml"));
 		Parent root = loader.load();
-		((ControladorAgregarMateria) loader.getController()).inyectarMateria(materia);
+		ControladorAgregarMateria controlador = loader.getController();
+		controlador.inyectarMateria(materia);
+		controlador.inyectarControlador(this);
 		var scene = new Scene(root);
 		stage.setTitle("Editar Materia");
 		stage.setScene(scene);
@@ -156,6 +169,11 @@ public class ControladorPrincipal implements Initializable {
 			}
 		});
 		hilo.start();
+		this.cambios.set(false);
+	}
+
+	public void declararCambios() {
+		this.cambios.set(true);
 	}
 
 }
