@@ -19,14 +19,14 @@ import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
-import net.synedra.validatorfx.Validator;
-
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
+
+import net.synedra.validatorfx.Validator;
 
 public class ControladorAgregarMateria implements Initializable {
 
@@ -92,12 +92,14 @@ public class ControladorAgregarMateria implements Initializable {
 			this.listado.setVisible(true);
 			if (nuevo.isEmpty())
 				this.listado.setVisible(false);
-			this.listaFiltrada.setPredicate(materia -> {
-				String busqueda = nuevo.toLowerCase();
-				return materia.getNombre().toLowerCase().indexOf(busqueda) != -1
-						|| String.valueOf(materia.getNumeroActividad()).indexOf(busqueda) != -1;
-			});
+			this.listaFiltrada.setPredicate(materia -> busquedaCoincide(materia, nuevo.toLowerCase()));
 		});
+	}
+
+	private boolean busquedaCoincide(Materia materia, String busqueda) {
+		var nombreMateria = materia.getNombre().toLowerCase();
+		var idMateria = String.valueOf(materia.getNumeroActividad());
+		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
 	}
 
 	private void crearValidadorDeCampos() {
