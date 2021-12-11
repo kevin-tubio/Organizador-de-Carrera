@@ -34,13 +34,8 @@ public class ControladorLista implements Initializable, Inyectable {
 
 	private void agregarSubscriptorAListado() {
 		this.listaDeMaterias = FXCollections.observableArrayList();
-		MapChangeListener<Integer, Materia> subscriptor = cambio -> {
-			if (cambio.wasAdded()) {
-				this.listaDeMaterias.add(cambio.getValueAdded());
-			} else {
-				this.listaDeMaterias.remove(cambio.getValueRemoved());
-			}
-		};
+		MapChangeListener<Integer, Materia> subscriptor = cambio -> this.listaDeMaterias
+				.setAll(cambio.getMap().values());
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
 	}
 
