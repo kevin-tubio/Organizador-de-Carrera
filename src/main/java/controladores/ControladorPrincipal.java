@@ -3,6 +3,7 @@ package controladores;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -106,18 +107,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void borrarMateria() {
-		switch (this.tab.getSelectionModel().getSelectedItem().getContent().getId()) {
-		case "planDeEstudios":
-			borrarMateria(planDeEstudiosController.obtenerSeleccionado());
-			break;
-		case "listaDeMaterias":
-			borrarMateria(listaDeMateriasController.obtenerSeleccionado());
-			break;
-		default:
-		}
-		if (Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
-			this.deshabilitarFunciones();
-		}
+		ejecutarSegunSeleccionado(this::borrarMateria);
 	}
 
 	protected void borrarMateria(Materia seleccionada) {
@@ -131,12 +121,16 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void editarMateria() {
+		ejecutarSegunSeleccionado(this::editarMateria);
+	}
+
+	private void ejecutarSegunSeleccionado(Consumer<Materia> funcion) {
 		switch (this.tab.getSelectionModel().getSelectedItem().getContent().getId()) {
 		case "planDeEstudios":
-			editarMateria(planDeEstudiosController.obtenerSeleccionado());
+			funcion.accept(planDeEstudiosController.obtenerSeleccionado());
 			break;
 		case "listaDeMaterias":
-			editarMateria(listaDeMateriasController.obtenerSeleccionado());
+			funcion.accept(listaDeMateriasController.obtenerSeleccionado());
 			break;
 		default:
 		}
