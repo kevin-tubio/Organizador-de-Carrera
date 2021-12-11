@@ -14,8 +14,9 @@ import javafx.scene.control.ListView;
 
 import listado.Listado;
 import listado.Materia;
+import util.Inyectable;
 
-public class ControladorLista implements Initializable {
+public class ControladorLista implements Initializable, Inyectable {
 
 	private ControladorPrincipal controlador;
 	private FilteredList<Materia> listaFiltrada;
@@ -53,6 +54,7 @@ public class ControladorLista implements Initializable {
 		}
 	}
 
+	@Override
 	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}

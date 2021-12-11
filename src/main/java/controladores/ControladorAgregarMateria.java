@@ -26,8 +26,9 @@ import listado.Listado;
 import listado.Materia;
 
 import net.synedra.validatorfx.Validator;
+import util.Inyectable;
 
-public class ControladorAgregarMateria implements Initializable {
+public class ControladorAgregarMateria implements Initializable, Inyectable {
 
 	@FXML
 	private Button aceptar;
@@ -102,6 +103,7 @@ public class ControladorAgregarMateria implements Initializable {
 		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
 	}
 
+	@Override
 	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}

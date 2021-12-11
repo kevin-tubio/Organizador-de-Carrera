@@ -18,8 +18,9 @@ import enumerados.Periodo;
 import enumerados.Tipo;
 import listado.Listado;
 import listado.Materia;
+import util.Inyectable;
 
-public class ControladorTabla implements Initializable {
+public class ControladorTabla implements Initializable, Inyectable {
 
 	private ControladorPrincipal controlador;
 
@@ -97,6 +98,7 @@ public class ControladorTabla implements Initializable {
 		this.controlador.agregarMateria();
 	}
 
+	@Override
 	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
 	}
