@@ -7,6 +7,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import controladores.ControladorPrincipal;
+
 public class Main extends Application {
 
 	@Override
@@ -15,6 +17,7 @@ public class Main extends Application {
 		var scene = new Scene(loader.load());
 		stage.setTitle("Organizador");
 		stage.setScene(scene);
+		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
 		stage.show();
 	}
 

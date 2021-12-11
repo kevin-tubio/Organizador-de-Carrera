@@ -6,10 +6,12 @@ import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -40,15 +42,19 @@ public class ControladorPrincipal implements Initializable {
 	private TabPane tab;
 	@FXML
 	private MenuItem itemGuardar;
+	@FXML
+	private MenuItem itemSalir;
+	@FXML
+	private AnchorPane ancla;
 
-	private SimpleBooleanProperty cambios;
+	private SimpleBooleanProperty cambiosSubject;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.planDeEstudiosController.inyectarControlador(this);
 		this.listaDeMateriasController.inyectarControlador(this);
-		this.cambios = new SimpleBooleanProperty(false);
-		this.itemGuardar.disableProperty().bind(this.cambios.not());
+		this.cambiosSubject = new SimpleBooleanProperty(false);
+		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
 		this.deshabilitarFunciones();
 		var interpretador = new RecuperadorDatosGuardados();
 		try {
@@ -154,11 +160,31 @@ public class ControladorPrincipal implements Initializable {
 			}
 		});
 		hilo.start();
-		this.cambios.set(false);
+		this.cambiosSubject.set(false);
 	}
 
 	public void declararCambios() {
-		this.cambios.set(true);
+		this.cambiosSubject.set(true);
 	}
 
+	public void cerrarPrograma(Event cierre) {
+		cierre.consume();
+		if (!hayCambiosSinGuardar())
+			cerrarVentana();
+		else
+			confirmarCierre();
+	}
+
+	private boolean hayCambiosSinGuardar() {
+		return this.cambiosSubject.get();
+	}
+
+	private void confirmarCierre() {
+		PopUp<ControladorCierrePrograma> popUp = new PopUp<>();
+		popUp.mostrarPopUp("../fxml/ConfirmacionCierre.fxml", "Cerrar Programa", this);
+	}
+
+	void cerrarVentana() {
+		((Stage) this.ancla.getScene().getWindow()).close();
+	}
 }
