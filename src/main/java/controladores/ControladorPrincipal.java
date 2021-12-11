@@ -1,17 +1,13 @@
 package controladores;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
@@ -25,6 +21,8 @@ import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;
 import sistema.RecuperadorDatosGuardados;
+import util.FuncionPopUp;
+import util.PopUp;
 
 public class ControladorPrincipal implements Initializable {
 
@@ -121,18 +119,12 @@ public class ControladorPrincipal implements Initializable {
 		declararCambios();
 	}
 
-	public void agregarMateria() throws IOException {
-		var stage = new Stage();
-		var loader = new FXMLLoader(this.getClass().getResource("../fxml/AgregarMateria.fxml"));
-		Parent root = loader.load();
-		((ControladorAgregarMateria) loader.getController()).inyectarControlador(this);
-		var scene = new Scene(root);
-		stage.setTitle("Agregar Materia");
-		stage.setScene(scene);
-		stage.showAndWait();
+	public void agregarMateria() {
+		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
+		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "Agregar Materia", this);
 	}
 
-	public void editarMateria() throws IOException {
+	public void editarMateria() {
 		switch (this.tab.getSelectionModel().getSelectedItem().getText()) {
 		case "Plan de estudios":
 			editarMateria(planDeEstudiosController.obtenerSeleccionado());
@@ -147,17 +139,10 @@ public class ControladorPrincipal implements Initializable {
 		}
 	}
 
-	protected void editarMateria(Materia materia) throws IOException {
-		var stage = new Stage();
-		var loader = new FXMLLoader(this.getClass().getResource("../fxml/AgregarMateria.fxml"));
-		Parent root = loader.load();
-		ControladorAgregarMateria controlador = loader.getController();
-		controlador.inyectarMateria(materia);
-		controlador.inyectarControlador(this);
-		var scene = new Scene(root);
-		stage.setTitle("Editar Materia");
-		stage.setScene(scene);
-		stage.showAndWait();
+	protected void editarMateria(Materia materia) {
+		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
+		FuncionPopUp<ControladorAgregarMateria> funcion = controlador -> controlador.inyectarMateria(materia);
+		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "Editar Materia", this, funcion);
 	}
 
 	public void persistirCambiosListado() {

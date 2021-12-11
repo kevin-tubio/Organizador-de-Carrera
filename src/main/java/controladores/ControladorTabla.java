@@ -1,6 +1,5 @@
 package controladores;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -89,12 +88,12 @@ public class ControladorTabla implements Initializable, Inyectable {
 		this.controlador.borrarMateria(this.obtenerSeleccionado());
 	}
 
-	public void editarContextual() throws IOException {
+	public void editarContextual() {
 		this.controlador.editarMateria(this.obtenerSeleccionado());
 		tabla.refresh();
 	}
 
-	public void agregarMateria() throws IOException {
+	public void agregarMateria() {
 		this.controlador.agregarMateria();
 	}
 
