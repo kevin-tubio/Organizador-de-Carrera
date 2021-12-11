@@ -24,28 +24,28 @@
 				<MenuBar maxWidth="1.7976931348623157E308" minWidth="1024.0"
 					prefWidth="1280.0">
 					<menus>
-						<Menu mnemonicParsing="false" text="Archivo">
+						<Menu mnemonicParsing="false" text="%MenuArchivo">
 							<items>
-								<MenuItem mnemonicParsing="false" text="Nuevo" />
+								<MenuItem mnemonicParsing="false" text="%MenuArchivoNuevo" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem mnemonicParsing="false"
-									onAction="#abrirArchivo" text="Abrir" />
+									onAction="#abrirArchivo" text="%MenuArchivoAbrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem fx:id="itemGuardar" mnemonicParsing="false"
-									onAction="#persistirCambiosListado" text="Guardar" />
+									onAction="#persistirCambiosListado" text="%MenuArchivoGuardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />
 								<MenuItem fx:id="itemSalir" mnemonicParsing="false"
-									onAction="#cerrarPrograma" text="Salir" />
+									onAction="#cerrarPrograma" text="%MenuArchivoSalir" />
 							</items>
 						</Menu>
-						<Menu mnemonicParsing="false" text="Editar">
+						<Menu mnemonicParsing="false" text="%MenuEditar">
 							<items>
 								<MenuItem fx:id="itemAgregar" mnemonicParsing="false"
-									onAction="#agregarMateria" text="Agregar" />
+									onAction="#agregarMateria" text="%MenuEditarAgregar" />
 								<MenuItem fx:id="itemEditar" mnemonicParsing="false"
-									onAction="#editarMateria" text="Editar seleccionada" />
+									onAction="#editarMateria" text="%MenuEditarEditar" />
 								<MenuItem fx:id="itemBorrar" mnemonicParsing="false"
-									onAction="#borrarMateria" text="Borrar seleccionada" />
+									onAction="#borrarMateria" text="%MenuEditarBorrar" />
 							</items>
 						</Menu>
 					</menus>
@@ -57,13 +57,13 @@
 					prefWidth="1280.0" tabClosingPolicy="UNAVAILABLE"
 					BorderPane.alignment="CENTER">
 					<tabs>
-						<Tab closable="false" text="Plan de estudios">
+						<Tab closable="false" text="%TabTabla">
 							<content>
 								<fx:include fx:id="planDeEstudios"
 									source="PlanDeEstudios.fxml" />
 							</content>
 						</Tab>
-						<Tab closable="false" text="Lista de materias">
+						<Tab closable="false" text="%TabLista">
 							<content>
 								<fx:include fx:id="listaDeMaterias"
 									source="ListaDeMaterias.fxml" />

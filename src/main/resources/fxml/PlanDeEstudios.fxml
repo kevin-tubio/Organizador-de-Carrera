@@ -20,22 +20,22 @@
 					HBox.hgrow="ALWAYS">
 					<columns>
 						<TableColumn fx:id="numeroActividad" maxWidth="96.0"
-							minWidth="50.0" prefWidth="70.0" text="ID" />
+							minWidth="50.0" prefWidth="70.0" text="%TextoID" />
 						<TableColumn fx:id="nombreActividad" minWidth="389.0"
-							prefWidth="690.0" text="Nombre" />
+							prefWidth="690.0" text="%TextoNombre" />
 						<TableColumn fx:id="anio" maxWidth="60.0"
-							minWidth="40.0" prefWidth="48.0" text="Año" />
+							minWidth="40.0" prefWidth="48.0" text="%TextoAño" />
 						<TableColumn fx:id="periodo" maxWidth="187.0"
-							minWidth="79.0" prefWidth="134.0" text="Período" />
+							minWidth="79.0" prefWidth="134.0" text="%TextoPeriodo" />
 						<TableColumn fx:id="nota" prefWidth="326.0"
-							text="Nota" />
+							text="%TextoNota" />
 						<TableColumn fx:id="estado" prefWidth="75.0"
-							text="Estado" />
-						<TableColumn fx:id="tipo" prefWidth="75.0" text="Tipo"
+							text="%TextoEstado" />
+						<TableColumn fx:id="tipo" prefWidth="75.0" text="%TextoTipo"
 							visible="false" />
-						<TableColumn fx:id="hs" prefWidth="75.0" text="Horas semanales"
+						<TableColumn fx:id="hs" prefWidth="75.0" text="%TextoHoras"
 							visible="false" />
-						<TableColumn fx:id="creditos" prefWidth="75.0" text="Créditos"
+						<TableColumn fx:id="creditos" prefWidth="75.0" text="%TextoCreditos"
 							visible="false" />
 					</columns>
 					<HBox.margin>
@@ -45,13 +45,13 @@
 						<ContextMenu>
 							<items>
 								<MenuItem mnemonicParsing="false"
-									onAction="#agregarMateria" text="Agregar" />
+									onAction="#agregarMateria" text="%MenuEditarAgregar" />
 								<MenuItem fx:id="itemContextualEditar"
 									mnemonicParsing="false" onAction="#editarContextual"
-									text="Editar seleccionada" />
+									text="%MenuEditarEditar" />
 								<MenuItem fx:id="itemContextualBorrar"
 									mnemonicParsing="false" onAction="#borrarContextual"
-									text="Borrar seleccionada" />
+									text="%MenuEditarBorrar" />
 							</items>
 						</ContextMenu>
 					</contextMenu>

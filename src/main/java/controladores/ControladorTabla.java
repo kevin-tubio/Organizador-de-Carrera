@@ -49,14 +49,14 @@ public class ControladorTabla implements Initializable, Inyectable {
 	private MenuItem itemContextualBorrar;
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.inicializarTabla();
+	public void initialize(URL arg0, ResourceBundle resourceBundle) {
+		this.inicializarTabla(resourceBundle);
 		this.agregarSubscriptorAListado();
 		this.itemContextualEditar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
 		this.itemContextualBorrar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void inicializarTabla() {
+	private void inicializarTabla(ResourceBundle resourceBundle) {
 		numeroActividad.setCellValueFactory(new PropertyValueFactory<>("numeroActividad"));
 		nombreActividad.setCellValueFactory(new PropertyValueFactory<>("nombre"));
 		anio.setCellValueFactory(new PropertyValueFactory<>("anio"));
@@ -66,7 +66,7 @@ public class ControladorTabla implements Initializable, Inyectable {
 		tipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 		hs.setCellValueFactory(new PropertyValueFactory<>("horasSemanales"));
 		creditos.setCellValueFactory(new PropertyValueFactory<>("creditos"));
-		tabla.setPlaceholder(new Label("No hay materias cargadas"));
+		tabla.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 	}
 
 	private void agregarSubscriptorAListado() {

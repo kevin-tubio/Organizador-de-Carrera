@@ -26,9 +26,9 @@
 			BorderPane.alignment="CENTER">
 			<children>
 				<Button fx:id="cancelar" layoutX="484.0" layoutY="2.0"
-					mnemonicParsing="false" onAction="#cerrar" text="Cancelar" />
+					mnemonicParsing="false" onAction="#cerrar" text="%BotonCancelar" />
 				<Button fx:id="aceptar" layoutX="553.0" layoutY="2.0"
-					mnemonicParsing="false" onAction="#aceptar" text="Aceptar" />
+					mnemonicParsing="false" onAction="#aceptar" text="%BotonAceptar" />
 			</children>
 		</Pane>
 	</bottom>
@@ -68,7 +68,7 @@
 							prefHeight="49.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Label text="ID" GridPane.halignment="RIGHT"
+						<Label text="%TextoID" GridPane.halignment="RIGHT"
 							GridPane.valignment="CENTER" />
 						<TextField fx:id="id" alignment="CENTER"
 							GridPane.columnIndex="1">
@@ -76,32 +76,32 @@
 								<Insets />
 							</GridPane.margin>
 						</TextField>
-						<Label text="Nombre" GridPane.columnIndex="2"
+						<Label text="%TextoNombre" GridPane.columnIndex="2"
 							GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
 						<TextField fx:id="nombre" GridPane.columnIndex="3"
 							GridPane.columnSpan="2147483647" />
-						<Label layoutX="10.0" layoutY="127.0" text="Tipo"
+						<Label layoutX="10.0" layoutY="127.0" text="%TextoTipo"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
 						<ChoiceBox fx:id="tipo" prefWidth="150.0"
 							GridPane.columnIndex="1" GridPane.columnSpan="2"
 							GridPane.rowIndex="1" />
-						<Label text="Período" GridPane.columnIndex="3"
+						<Label text="%TextoPeriodo" GridPane.columnIndex="3"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="1"
 							GridPane.valignment="CENTER" />
 						<ChoiceBox fx:id="periodo" prefHeight="25.0"
 							prefWidth="120.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-						<Label text="Estado" GridPane.columnIndex="5"
+						<Label text="%TextoEstado" GridPane.columnIndex="5"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="1"
 							GridPane.valignment="CENTER" />
 						<ChoiceBox fx:id="estado" prefHeight="25.0"
 							prefWidth="120.0" GridPane.columnIndex="6"
 							GridPane.columnSpan="3" GridPane.rowIndex="1" />
-						<Label text="Nota" GridPane.halignment="RIGHT"
+						<Label text="%TextoNota" GridPane.halignment="RIGHT"
 							GridPane.rowIndex="2" GridPane.valignment="CENTER" />
 						<Spinner fx:id="nota" editable="true" prefWidth="60.0"
 							GridPane.columnIndex="1" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
-						<Label text="Año" GridPane.columnIndex="2"
+						<Label text="%TextoAño" GridPane.columnIndex="2"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="2"
 							GridPane.valignment="CENTER">
 							<GridPane.margin>
@@ -112,14 +112,14 @@
 							GridPane.columnIndex="3" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
 						<Label layoutX="142.0" layoutY="127.0"
-							text="Horas semanales" wrapText="true" GridPane.columnIndex="4"
+							text="%TextoHoras" wrapText="true" GridPane.columnIndex="4"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="2"
 							GridPane.valignment="CENTER" />
 						<Spinner fx:id="hs" editable="true" layoutX="56.0"
 							layoutY="123.0" prefHeight="25.0" prefWidth="60.0"
 							GridPane.columnIndex="5" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
-						<Label layoutX="274.0" layoutY="117.0" text="Créditos"
+						<Label layoutX="274.0" layoutY="117.0" text="%TextoCreditos"
 							wrapText="true" GridPane.columnIndex="6"
 							GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
 						<Spinner fx:id="creditos" editable="true" layoutX="394.0"
@@ -127,7 +127,7 @@
 							GridPane.columnIndex="7" GridPane.columnSpan="2"
 							GridPane.rowIndex="2" />
 						<TextField fx:id="buscador" prefHeight="25.0"
-							prefWidth="169.0" promptText="Buscar correlativa"
+							prefWidth="169.0" promptText="%TextoBuscadorCorrelativas"
 							GridPane.columnSpan="8" GridPane.rowIndex="3" />
 						<ImageView fitHeight="30.0" fitWidth="21.0"
 							pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8"
@@ -149,7 +149,7 @@
 									<items>
 										<MenuItem fx:id="itemContextualQuitar"
 											mnemonicParsing="false" onAction="#quitarCorrelativa"
-											text="Quitar correlativa" />
+											text="%MenuContextQuitar" />
 									</items>
 								</ContextMenu>
 							</contextMenu>
@@ -161,7 +161,7 @@
 									<items>
 										<MenuItem fx:id="itemContextualAgregar"
 											mnemonicParsing="false" onAction="#agregarCorrelativa"
-											text="Agregar Correlativa" />
+											text="%MenuContextAgregar" />
 									</items>
 								</ContextMenu>
 							</contextMenu>

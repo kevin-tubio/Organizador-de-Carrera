@@ -71,8 +71,10 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private ControladorPrincipal controlador;
 
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBundle resourceBundle) {
 		this.inicializarCampos();
+		this.inicializarListaDeCorrelativas(resourceBundle);
+		this.inicializarListaDeMaterias(resourceBundle);
 		this.agregarSubscriptorAlBuscador();
 		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
 		this.itemContextualQuitar.disableProperty()
@@ -83,8 +85,6 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.crearValidadorDeCampos();
 		this.inicializarChoiceBoxes();
 		this.inicializarSpinners();
-		this.inicializarListaDeCorrelativas();
-		this.inicializarListaDeMaterias();
 		this.inicializarBotones();
 	}
 
@@ -133,18 +133,18 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.cancelar.setCancelButton(true);
 	}
 
-	private void inicializarListaDeMaterias() {
+	private void inicializarListaDeMaterias(ResourceBundle resourceBundle) {
 		this.listado.setVisible(false);
-		this.listado.setPlaceholder(new Label("No tiene materias en el listado"));
+		this.listado.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
 		this.listaFiltrada = new FilteredList<>(this.materias);
 		this.listado.setItems(this.listaFiltrada);
 	}
 
-	private void inicializarListaDeCorrelativas() {
+	private void inicializarListaDeCorrelativas(ResourceBundle resourceBundle) {
 		this.correlativas = FXCollections.observableArrayList();
 		this.listadoCorrelativas.setItems(this.correlativas);
-		this.listadoCorrelativas.setPlaceholder(new Label("No tiene materias Correlativas"));
+		this.listadoCorrelativas.setPlaceholder(new Label(resourceBundle.getString("ListaCorrelativasVacia")));
 	}
 
 	private void inicializarChoiceBoxes() {

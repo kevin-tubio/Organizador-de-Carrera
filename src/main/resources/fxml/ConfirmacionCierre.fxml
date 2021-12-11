@@ -21,8 +21,8 @@
 			<children>
 				<Pane prefHeight="209.0" prefWidth="337.0">
 					<children>
-						<Label layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="236.0" text="¿Quiere guardar los cambios realizados antes de salir?" wrapText="true" />
-						<Label layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="236.0" text="Sus cambios se perderan si no los guarda." />
+						<Label layoutX="14.0" layoutY="14.0" prefHeight="49.0" prefWidth="236.0" text="%PreguntaCierre" wrapText="true" />
+						<Label layoutX="14.0" layoutY="63.0" prefHeight="25.0" prefWidth="236.0" text="%AfirmacionCierre" />
 						<ImageView fitHeight="71.0" fitWidth="69.0" layoutX="246.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" />
 					</children>
 				</Pane>
@@ -37,9 +37,9 @@
 						<RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Button alignment="CENTER" mnemonicParsing="false" onAction="#guardar" prefHeight="25.0" prefWidth="70.0" text="Si" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-						<Button alignment="CENTER" mnemonicParsing="false" onAction="#descartar" prefHeight="25.0" prefWidth="70.0" text="No" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-						<Button fx:id="botonCancelar" alignment="CENTER" mnemonicParsing="false" onAction="#cancelar" prefHeight="25.0" prefWidth="70.0" text="Cancelar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button alignment="CENTER" mnemonicParsing="false" onAction="#guardar" prefHeight="25.0" prefWidth="70.0" text="%BotonSi" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button alignment="CENTER" mnemonicParsing="false" onAction="#descartar" prefHeight="25.0" prefWidth="70.0" text="%BotonNo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button fx:id="botonCancelar" alignment="CENTER" mnemonicParsing="false" onAction="#cancelar" prefHeight="25.0" prefWidth="70.0" text="%BotonCancelar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 					</children>
 				</GridPane>
 			</children>

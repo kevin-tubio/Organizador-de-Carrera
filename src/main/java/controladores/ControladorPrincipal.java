@@ -106,11 +106,11 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void borrarMateria() {
-		switch (this.tab.getSelectionModel().getSelectedItem().getText()) {
-		case "Plan de estudios":
+		switch (this.tab.getSelectionModel().getSelectedItem().getContent().getId()) {
+		case "planDeEstudios":
 			borrarMateria(planDeEstudiosController.obtenerSeleccionado());
 			break;
-		case "Lista de materias":
+		case "listaDeMaterias":
 			borrarMateria(listaDeMateriasController.obtenerSeleccionado());
 			break;
 		default:
@@ -127,15 +127,15 @@ public class ControladorPrincipal implements Initializable {
 
 	public void agregarMateria() {
 		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
-		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "Agregar Materia", this);
+		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "TituloVentanaAgregar", this);
 	}
 
 	public void editarMateria() {
-		switch (this.tab.getSelectionModel().getSelectedItem().getText()) {
-		case "Plan de estudios":
+		switch (this.tab.getSelectionModel().getSelectedItem().getContent().getId()) {
+		case "planDeEstudios":
 			editarMateria(planDeEstudiosController.obtenerSeleccionado());
 			break;
-		case "Lista de materias":
+		case "listaDeMaterias":
 			editarMateria(listaDeMateriasController.obtenerSeleccionado());
 			break;
 		default:
@@ -148,7 +148,7 @@ public class ControladorPrincipal implements Initializable {
 	protected void editarMateria(Materia materia) {
 		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
 		FuncionPopUp<ControladorAgregarMateria> funcion = controlador -> controlador.inyectarMateria(materia);
-		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "Editar Materia", this, funcion);
+		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "TituloVentanaEditar", this, funcion);
 	}
 
 	public void persistirCambiosListado() {
@@ -181,7 +181,7 @@ public class ControladorPrincipal implements Initializable {
 
 	private void confirmarCierre() {
 		PopUp<ControladorCierrePrograma> popUp = new PopUp<>();
-		popUp.mostrarPopUp("../fxml/ConfirmacionCierre.fxml", "Cerrar Programa", this);
+		popUp.mostrarPopUp("../fxml/ConfirmacionCierre.fxml", "TituloVentanaConfirmarCierre", this);
 	}
 
 	void cerrarVentana() {

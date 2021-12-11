@@ -1,6 +1,8 @@
 package app;
 
 import java.io.IOException;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -13,9 +15,10 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		var loader = new FXMLLoader(this.getClass().getResource("../fxml/Main.fxml"));
+		var resourceBundle = ResourceBundle.getBundle("lang.string", Locale.getDefault());
+		var loader = new FXMLLoader(this.getClass().getResource("../fxml/Main.fxml"), resourceBundle);
 		var scene = new Scene(loader.load());
-		stage.setTitle("Organizador");
+		stage.setTitle(resourceBundle.getString("TituloVentanaPrincipal"));
 		stage.setScene(scene);
 		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
 		stage.show();

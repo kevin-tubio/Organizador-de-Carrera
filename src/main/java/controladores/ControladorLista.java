@@ -18,15 +18,16 @@ import util.Inyectable;
 
 public class ControladorLista implements Initializable, Inyectable {
 
-	private ControladorPrincipal controlador;
-	private FilteredList<Materia> listaFiltrada;
-	private ObservableList<Materia> listaDeMaterias;
 	@FXML
 	private ListView<Materia> lista;
 
+	private ControladorPrincipal controlador;
+	private FilteredList<Materia> listaFiltrada;
+	private ObservableList<Materia> listaDeMaterias;
+
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.lista.setPlaceholder(new Label("No hay materias cargadas"));
+	public void initialize(URL arg0, ResourceBundle resourceBundle) {
+		this.lista.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 		this.agregarSubscriptorAListado();
 		this.listaFiltrada = new FilteredList<>(this.listaDeMaterias);
 		this.lista.setItems(this.listaFiltrada);
