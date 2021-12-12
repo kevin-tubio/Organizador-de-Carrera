@@ -112,14 +112,16 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.validador = new Validator();
 		var checkID = validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.id))
-				in.error("Se debe introducir un ID de materia");
+				in.error(resourceBundle.getString("InputIdVacio"));
 			if (!this.id.getText().matches("^[0-9]+$"))
-				in.error("Los ID de materia solo pueden ser numericos por el momento");
+				in.error(resourceBundle.getString("InputIdInvalido"));
 		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
+
 		var checkNombre = validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.nombre))
-				in.error("Se debe introducir un nombre de materia");
+				in.error(resourceBundle.getString("InputNombreVacio"));
 		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
+
 		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
 		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
 	}
