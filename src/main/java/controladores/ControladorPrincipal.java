@@ -24,7 +24,6 @@ import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;
 import sistema.RecuperadorDatosGuardados;
-import util.FuncionPopUp;
 import util.PopUp;
 
 public class ControladorPrincipal implements Initializable {
@@ -141,7 +140,7 @@ public class ControladorPrincipal implements Initializable {
 
 	protected void editarMateria(Materia materia) {
 		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
-		FuncionPopUp<ControladorAgregarMateria> funcion = controlador -> controlador.inyectarMateria(materia);
+		Consumer<ControladorAgregarMateria> funcion = controlador -> controlador.inyectarMateria(materia);
 		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "TituloVentanaEditar", this, funcion);
 	}
 

@@ -3,11 +3,13 @@ package util;
 import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
-import controladores.ControladorPrincipal;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import controladores.ControladorPrincipal;
 
 public class PopUp<C extends Inyectable> {
 
@@ -16,7 +18,7 @@ public class PopUp<C extends Inyectable> {
 		});
 	}
 
-	public void mostrarPopUp(String url, String titulo, ControladorPrincipal controlador, FuncionPopUp<C> funcion) {
+	public void mostrarPopUp(String url, String titulo, ControladorPrincipal controlador, Consumer<C> funcion) {
 		var stage = new Stage();
 		try {
 			var resourceBundle = ResourceBundle.getBundle("lang.string", Locale.getDefault());
@@ -24,7 +26,7 @@ public class PopUp<C extends Inyectable> {
 			var scene = new Scene(loader.load());
 			C controladorVentana = loader.getController();
 			controladorVentana.inyectarControlador(controlador);
-			funcion.ejecutar(controladorVentana);
+			funcion.accept(controladorVentana);
 			stage.setTitle(resourceBundle.getString(titulo));
 			stage.setScene(scene);
 			stage.showAndWait();
