@@ -70,83 +70,26 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private Materia materiaInyectada;
 	private ControladorPrincipal controlador;
 
-	@Override
-	public void initialize(URL arg0, ResourceBundle resourceBundle) {
-		this.inicializarCampos();
-		this.inicializarListaDeCorrelativas(resourceBundle);
-		this.inicializarListaDeMaterias(resourceBundle);
-		this.agregarSubscriptorAlBuscador();
-		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
-		this.itemContextualQuitar.disableProperty()
-				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
+	public ControladorAgregarMateria() {
+		this.validador = new Validator();
+		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
+		this.correlativas = FXCollections.observableArrayList();
+		this.listaFiltrada = new FilteredList<>(this.materias);
 	}
 
-	private void inicializarCampos() {
-		this.crearValidadorDeCampos();
+	@Override
+	public void initialize(URL arg0, ResourceBundle resourceBundle) {
+		this.inicializarCampos(resourceBundle);
+		this.crearValidadorDeCampos(resourceBundle);
+		this.agregarSubscriptorAlBuscador();
+	}
+
+	private void inicializarCampos(ResourceBundle resourceBundle) {
 		this.inicializarChoiceBoxes();
 		this.inicializarSpinners();
 		this.inicializarBotones();
-	}
-
-	private void agregarSubscriptorAlBuscador() {
-		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> {
-			this.listado.setVisible(true);
-			if (nuevo.isEmpty())
-				this.listado.setVisible(false);
-			this.listaFiltrada.setPredicate(materia -> busquedaCoincide(materia, nuevo.toLowerCase()));
-		});
-	}
-
-	private boolean busquedaCoincide(Materia materia, String busqueda) {
-		var nombreMateria = materia.getNombre().toLowerCase();
-		var idMateria = String.valueOf(materia.getNumeroActividad());
-		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
-	}
-
-	@Override
-	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
-		this.controlador = controladorPrincipal;
-	}
-
-	private void crearValidadorDeCampos() {
-		this.validador = new Validator();
-		var checkID = validador.createCheck().withMethod(in -> {
-			if (campoVacio(this.id))
-				in.error(resourceBundle.getString("InputIdVacio"));
-			if (!this.id.getText().matches("^[0-9]+$"))
-				in.error(resourceBundle.getString("InputIdInvalido"));
-		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
-
-		var checkNombre = validador.createCheck().withMethod(in -> {
-			if (campoVacio(this.nombre))
-				in.error(resourceBundle.getString("InputNombreVacio"));
-		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
-
-		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
-		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
-	}
-
-	private boolean campoVacio(TextField campo) {
-		return campo.textProperty().getValue().isBlank();
-	}
-
-	private void inicializarBotones() {
-		this.aceptar.disableProperty().bind(validador.containsErrorsProperty());
-		this.cancelar.setCancelButton(true);
-	}
-
-	private void inicializarListaDeMaterias(ResourceBundle resourceBundle) {
-		this.listado.setVisible(false);
-		this.listado.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
-		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
-		this.listaFiltrada = new FilteredList<>(this.materias);
-		this.listado.setItems(this.listaFiltrada);
-	}
-
-	private void inicializarListaDeCorrelativas(ResourceBundle resourceBundle) {
-		this.correlativas = FXCollections.observableArrayList();
-		this.listadoCorrelativas.setItems(this.correlativas);
-		this.listadoCorrelativas.setPlaceholder(new Label(resourceBundle.getString("ListaCorrelativasVacia")));
+		this.inicializarListaDeCorrelativas(resourceBundle);
+		this.inicializarListaDeMaterias(resourceBundle);
 	}
 
 	private void inicializarChoiceBoxes() {
@@ -170,22 +113,64 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.creditos.getValueFactory().setValue(0.0);
 	}
 
-	public void agregarCorrelativa() {
-		Materia materia = this.listado.getSelectionModel().getSelectedItem();
-		this.correlativas.add(materia);
-		this.materias.remove(materia);
+	private void inicializarBotones() {
+		this.aceptar.disableProperty().bind(validador.containsErrorsProperty());
+		this.cancelar.setCancelButton(true);
 	}
 
-	public void quitarCorrelativa() {
-		Materia materia = this.listadoCorrelativas.getSelectionModel().getSelectedItem();
-		this.correlativas.remove(materia);
-		this.materias.add(materia);
+	private void inicializarListaDeCorrelativas(ResourceBundle resourceBundle) {
+		this.listadoCorrelativas.setItems(this.correlativas);
+		this.listadoCorrelativas.setPlaceholder(new Label(resourceBundle.getString("ListaCorrelativasVacia")));
+		this.itemContextualQuitar.disableProperty()
+				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private Materia generarNuevaMateria() {
-		var nuevoId = Integer.parseInt(this.id.getText());
-		var nuevoNombre = this.nombre.getText();
-		return new Materia(nuevoId, nuevoNombre);
+	private void inicializarListaDeMaterias(ResourceBundle resourceBundle) {
+		this.listado.setVisible(false);
+		this.listado.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
+		this.listado.setItems(this.listaFiltrada);
+		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
+	}
+
+	private void crearValidadorDeCampos(ResourceBundle resourceBundle) {
+		var checkID = validador.createCheck().withMethod(in -> {
+			if (campoVacio(this.id))
+				in.error(resourceBundle.getString("InputIdVacio"));
+			if (!this.id.getText().matches("^[0-9]+$"))
+				in.error(resourceBundle.getString("InputIdInvalido"));
+		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
+
+		var checkNombre = validador.createCheck().withMethod(in -> {
+			if (campoVacio(this.nombre))
+				in.error(resourceBundle.getString("InputNombreVacio"));
+		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
+
+		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
+		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
+	}
+
+	private boolean campoVacio(TextField campo) {
+		return campo.textProperty().getValue().isBlank();
+	}
+
+	private void agregarSubscriptorAlBuscador() {
+		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> {
+			this.listado.setVisible(true);
+			if (nuevo.isEmpty())
+				this.listado.setVisible(false);
+			this.listaFiltrada.setPredicate(materia -> busquedaCoincide(materia, nuevo.toLowerCase()));
+		});
+	}
+
+	private boolean busquedaCoincide(Materia materia, String busqueda) {
+		var nombreMateria = materia.getNombre().toLowerCase();
+		var idMateria = String.valueOf(materia.getNumeroActividad());
+		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
+	}
+
+	@Override
+	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
+		this.controlador = controladorPrincipal;
 	}
 
 	protected void inyectarMateria(Materia materia) {
@@ -203,6 +188,24 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.creditos.getValueFactory().setValue(materia.getCreditos());
 		this.materias.remove(materia);
 		this.materias.removeAll(this.correlativas);
+	}
+
+	public void agregarCorrelativa() {
+		Materia materia = this.listado.getSelectionModel().getSelectedItem();
+		this.correlativas.add(materia);
+		this.materias.remove(materia);
+	}
+
+	public void quitarCorrelativa() {
+		Materia materia = this.listadoCorrelativas.getSelectionModel().getSelectedItem();
+		this.correlativas.remove(materia);
+		this.materias.add(materia);
+	}
+
+	private Materia generarNuevaMateria() {
+		var nuevoId = Integer.parseInt(this.id.getText());
+		var nuevoNombre = this.nombre.getText();
+		return new Materia(nuevoId, nuevoNombre);
 	}
 
 	private void actualizarDatos(Materia materia) {
@@ -239,9 +242,8 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	}
 
 	public void aceptar() {
-		if (validador.validate()) {
+		if (validador.validate())
 			guardarYCerrar();
-		}
 	}
 
 }
