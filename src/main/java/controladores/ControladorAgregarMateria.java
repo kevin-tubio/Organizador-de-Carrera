@@ -17,6 +17,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import enumerados.Estado;
@@ -62,6 +63,8 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private MenuItem itemContextualAgregar;
 	@FXML
 	private MenuItem itemContextualQuitar;
+	@FXML
+	private BorderPane contenedor;
 
 	private ObservableList<Materia> materias;
 	private ObservableList<Materia> correlativas;
@@ -154,18 +157,42 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	}
 
 	private void agregarSubscriptorAlBuscador() {
-		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> {
-			this.listado.setVisible(true);
-			if (nuevo.isEmpty())
+		this.contenedor.setOnMousePressed(event -> this.contenedor.requestFocus());
+		this.buscador.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (Boolean.TRUE.equals(newValue)) {
+				this.listado.setVisible(true);
+				aplicarFiltro(this.buscador.getText());
+			} else if (!this.listado.isFocused()) {
+				this.buscador.clear();
 				this.listado.setVisible(false);
-			this.listaFiltrada.setPredicate(materia -> busquedaCoincide(materia, nuevo.toLowerCase()));
+			}
 		});
+		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> aplicarFiltro(nuevo));
+		agregarSubscriptorAListaDeMaterias();
 	}
 
-	private boolean busquedaCoincide(Materia materia, String busqueda) {
+	private void aplicarFiltro(String filtro) {
+		this.listaFiltrada.setPredicate(materia -> seFiltra(materia, filtro.toLowerCase()));
+	}
+
+	private boolean seFiltra(Materia materia, String filtro) {
+		var identificador = String.valueOf(materia.getNumeroActividad());
 		var nombreMateria = materia.getNombre().toLowerCase();
-		var idMateria = String.valueOf(materia.getNumeroActividad());
-		return nombreMateria.indexOf(busqueda) != -1 || idMateria.indexOf(busqueda) != -1;
+		return !identificador.equals(this.id.getText()) && busquedaCoincide(nombreMateria, identificador, filtro);
+	}
+
+	private boolean busquedaCoincide(String nombreMateria, String identifiacador, String busqueda) {
+		return nombreMateria.indexOf(busqueda) != -1 || identifiacador.indexOf(busqueda) != -1;
+	}
+
+	private void agregarSubscriptorAListaDeMaterias() {
+		this.listado.focusedProperty().addListener((observable, oldValue, newValue) -> {
+			if (Boolean.FALSE.equals(newValue)) {
+				this.listado.setVisible(false);
+				if (!this.buscador.isFocused())
+					this.buscador.clear();
+			}
+		});
 	}
 
 	@Override
@@ -186,7 +213,6 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.tipo.setValue(materia.getTipo());
 		this.correlativas.addAll(materia.getCorrelativas());
 		this.creditos.getValueFactory().setValue(materia.getCreditos());
-		this.materias.remove(materia);
 		this.materias.removeAll(this.correlativas);
 	}
 
