@@ -1,31 +1,24 @@
 package app;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.function.BiConsumer;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import util.DirectorVentana;
 import controladores.ControladorPrincipal;
 
 public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) throws IOException {
-		var resourceBundle = ResourceBundle.getBundle("lang.string", Locale.getDefault());
-		var loader = new FXMLLoader(this.getClass().getResource("../fxml/Main.fxml"), resourceBundle);
-		var scene = new Scene(loader.load());
-		stage.setTitle(resourceBundle.getString("TituloVentanaPrincipal"));
-		stage.setScene(scene);
-		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
-		stage.show();
+		BiConsumer<Stage, FXMLLoader> funcion = (stageVentana, loader) -> stageVentana
+				.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
+		new DirectorVentana("../fxml/Main.fxml", "TituloVentanaPrincipal", funcion).hacerVentana();
 	}
 
 	public static void main(String[] args) {
 		launch(args);
 	}
-
 }

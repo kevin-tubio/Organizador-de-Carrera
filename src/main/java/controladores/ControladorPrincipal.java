@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
@@ -24,7 +25,8 @@ import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;
 import sistema.RecuperadorDatosGuardados;
-import util.PopUp;
+import util.DirectorVentana;
+import util.Inyectable;
 
 public class ControladorPrincipal implements Initializable {
 
@@ -115,8 +117,9 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void agregarMateria() {
-		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
-		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "TituloVentanaAgregar", this);
+		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController())
+				.inyectarControlador(this);
+		new DirectorVentana("../fxml/AgregarMateria.fxml", "TituloVentanaAgregar", funcion).hacerVentanaModal();
 	}
 
 	public void editarMateria() {
@@ -139,9 +142,12 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	protected void editarMateria(Materia materia) {
-		PopUp<ControladorAgregarMateria> popUp = new PopUp<>();
-		Consumer<ControladorAgregarMateria> funcion = controlador -> controlador.inyectarMateria(materia);
-		popUp.mostrarPopUp("../fxml/AgregarMateria.fxml", "TituloVentanaEditar", this, funcion);
+		Consumer<FXMLLoader> funcion = loader -> {
+			ControladorAgregarMateria controlador = loader.getController();
+			controlador.inyectarControlador(this);
+			controlador.inyectarMateria(materia);
+		};
+		new DirectorVentana("../fxml/AgregarMateria.fxml", "TituloVentanaEditar", funcion).hacerVentanaModal();
 	}
 
 	public void persistirCambiosListado() {
@@ -173,11 +179,12 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	private void confirmarCierre() {
-		PopUp<ControladorCierrePrograma> popUp = new PopUp<>();
-		popUp.mostrarPopUp("../fxml/ConfirmacionCierre.fxml", "TituloVentanaConfirmarCierre", this);
+		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController()).inyectarControlador(this);
+		new DirectorVentana("../fxml/ConfirmacionCierre.fxml", "TituloVentanaConfirmarCierre", funcion)
+				.hacerVentanaModal();
 	}
 
 	void cerrarVentana() {
-		((Stage) this.ancla.getScene().getWindow()).close();
+		Platform.exit();
 	}
 }

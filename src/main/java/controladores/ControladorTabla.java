@@ -21,8 +21,6 @@ import util.Inyectable;
 
 public class ControladorTabla implements Initializable, Inyectable {
 
-	private ControladorPrincipal controlador;
-
 	@FXML
 	private TableView<Materia> tabla;
 	@FXML
@@ -47,6 +45,8 @@ public class ControladorTabla implements Initializable, Inyectable {
 	private MenuItem itemContextualEditar;
 	@FXML
 	private MenuItem itemContextualBorrar;
+
+	private ControladorPrincipal controlador;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
