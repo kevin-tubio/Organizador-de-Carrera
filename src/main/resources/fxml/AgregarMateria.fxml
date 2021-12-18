@@ -30,6 +30,7 @@
 					mnemonicParsing="false" onAction="#cerrar" text="%BotonCancelar" />
 				<Button fx:id="aceptar" layoutX="553.0" layoutY="2.0"
 					mnemonicParsing="false" onAction="#aceptar" text="%BotonAceptar" />
+				<Label fx:id="mensajeError" layoutX="14.0" layoutY="6.0" text="" />
 			</children>
 		</Pane>
 	</bottom>

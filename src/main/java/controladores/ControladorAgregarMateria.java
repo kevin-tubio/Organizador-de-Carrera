@@ -25,9 +25,11 @@ import enumerados.Periodo;
 import enumerados.Tipo;
 import listado.Listado;
 import listado.Materia;
-
-import net.synedra.validatorfx.Validator;
 import util.Inyectable;
+
+import net.synedra.validatorfx.Check;
+import net.synedra.validatorfx.ValidationResult;
+import net.synedra.validatorfx.Validator;
 
 public class ControladorAgregarMateria implements Initializable, Inyectable {
 
@@ -63,6 +65,8 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private MenuItem itemContextualAgregar;
 	@FXML
 	private MenuItem itemContextualQuitar;
+	@FXML
+	private Label mensajeError;
 	@FXML
 	private BorderPane contenedor;
 
@@ -142,6 +146,13 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		var checkNombre = crearCheckNombre();
 		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
 		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
+		this.validador.validationResultProperty()
+				.addListener((observable, viejo, nuevo) -> this.mensajeError.setText(obtenerMensajeDeError(nuevo)));
+	}
+
+	private String obtenerMensajeDeError(ValidationResult nuevo) {
+		var iterador = nuevo.getMessages().listIterator();
+		return (iterador.hasNext()) ? iterador.next().getText() : "";
 	}
 
 	private Check crearCheckId() {
