@@ -121,4 +121,15 @@ public class Listado {
 		}
 	}
 
+	public boolean contieneMateria(String id) {
+		try {
+			return contieneMateria(Integer.valueOf(id));
+		} catch (NumberFormatException e) {
+			return false;
+		}
+	}
+
+	public boolean contieneMateria(int id) {
+		return listadoDeMaterias.containsKey(id);
+	}
 }

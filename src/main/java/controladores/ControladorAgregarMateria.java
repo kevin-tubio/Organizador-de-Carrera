@@ -138,20 +138,43 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	}
 
 	private void crearValidadorDeCampos() {
-		var checkID = validador.createCheck().withMethod(in -> {
+		var checkID = crearCheckId();
+		var checkNombre = crearCheckNombre();
+		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
+		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
+	}
+
+	private Check crearCheckId() {
+		return validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.id))
 				in.error(resourceBundle.getString("InputIdVacio"));
 			if (!this.id.getText().matches("^[0-9]+$"))
 				in.error(resourceBundle.getString("InputIdInvalido"));
+			if (idRepetido())
+				in.error(resourceBundle.getString("InputIdRepetido"));
+			if (materiaFormaCiclo())
+				in.error(resourceBundle.getString("InputIdCiclo"));
 		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
+	}
 
-		var checkNombre = validador.createCheck().withMethod(in -> {
+	private boolean idRepetido() {
+		return !idCoincideConMateria(this.materiaInyectada)
+				&& Listado.obtenerListado().contieneMateria(this.id.getText());
+	}
+
+	private boolean idCoincideConMateria(Materia materia) {
+		return materia != null && this.id.getText().equals(String.valueOf(materia.getNumeroActividad()));
+	}
+
+	private boolean materiaFormaCiclo() {
+		return idCoincideConMateria(this.materiaInyectada) && this.correlativas.contains(this.materiaInyectada);
+	}
+
+	private Check crearCheckNombre() {
+		return validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.nombre))
 				in.error(resourceBundle.getString("InputNombreVacio"));
 		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
-
-		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
-		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
 	}
 
 	private boolean campoVacio(TextField campo) {
@@ -174,13 +197,16 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	}
 
 	private void aplicarFiltro(String filtro) {
-		this.listaFiltrada.setPredicate(materia -> seFiltra(materia, filtro.toLowerCase()));
+		this.listaFiltrada.setPredicate(materia -> noEsFiltrada(materia, filtro.toLowerCase()));
 	}
 
-	private boolean seFiltra(Materia materia, String filtro) {
+	private boolean noEsFiltrada(Materia materia, String filtro) {
 		var identificador = String.valueOf(materia.getNumeroActividad());
 		var nombreMateria = materia.getNombre().toLowerCase();
-		return !identificador.equals(this.id.getText()) && busquedaCoincide(nombreMateria, identificador, filtro);
+		var resultado = true;
+		if (!validador.containsErrors())
+			resultado = !idCoincideConMateria(materia);
+		return resultado && busquedaCoincide(nombreMateria, identificador, filtro);
 	}
 
 	private boolean busquedaCoincide(String nombreMateria, String identifiacador, String busqueda) {
@@ -254,7 +280,7 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private void guardarYCerrar() {
 		if (this.materiaInyectada == null)
 			this.materiaInyectada = generarNuevaMateria();
-		if (materiaInyectada.getNumeroActividad() != Integer.parseInt(this.id.getText())) {
+		if (!idCoincideConMateria(this.materiaInyectada)) {
 			var nuevaMateria = generarNuevaMateria();
 			actualizarDatos(nuevaMateria);
 			Listado.obtenerListado().reemplazarMateria(materiaInyectada, nuevaMateria);
