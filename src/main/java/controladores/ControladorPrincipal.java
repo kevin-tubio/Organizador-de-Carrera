@@ -51,11 +51,14 @@ public class ControladorPrincipal implements Initializable {
 
 	private SimpleBooleanProperty cambiosSubject;
 
+	public ControladorPrincipal() {
+		this.cambiosSubject = new SimpleBooleanProperty(false);
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.planDeEstudiosController.inyectarControlador(this);
 		this.listaDeMateriasController.inyectarControlador(this);
-		this.cambiosSubject = new SimpleBooleanProperty(false);
 		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
 		this.deshabilitarFunciones();
 		var interpretador = new RecuperadorDatosGuardados();

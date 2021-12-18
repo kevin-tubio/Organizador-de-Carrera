@@ -25,16 +25,19 @@ public class ControladorLista implements Initializable, Inyectable {
 	private FilteredList<Materia> listaFiltrada;
 	private ObservableList<Materia> listaDeMaterias;
 
+	public ControladorLista() {
+		this.listaDeMaterias = FXCollections.observableArrayList();
+		this.listaFiltrada = new FilteredList<>(this.listaDeMaterias);
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
 		this.lista.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 		this.agregarSubscriptorAListado();
-		this.listaFiltrada = new FilteredList<>(this.listaDeMaterias);
 		this.lista.setItems(this.listaFiltrada);
 	}
 
 	private void agregarSubscriptorAListado() {
-		this.listaDeMaterias = FXCollections.observableArrayList();
 		MapChangeListener<Integer, Materia> subscriptor = cambio -> this.listaDeMaterias
 				.setAll(cambio.getMap().values());
 		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
