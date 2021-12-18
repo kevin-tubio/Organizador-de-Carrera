@@ -72,6 +72,7 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private Validator validador;
 	private Materia materiaInyectada;
 	private ControladorPrincipal controlador;
+	private ResourceBundle resourceBundle;
 
 	public ControladorAgregarMateria() {
 		this.validador = new Validator();
@@ -82,17 +83,18 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
-		this.inicializarCampos(resourceBundle);
-		this.crearValidadorDeCampos(resourceBundle);
+		this.resourceBundle = resourceBundle;
+		this.inicializarCampos();
+		this.crearValidadorDeCampos();
 		this.agregarSubscriptorAlBuscador();
 	}
 
-	private void inicializarCampos(ResourceBundle resourceBundle) {
+	private void inicializarCampos() {
 		this.inicializarChoiceBoxes();
 		this.inicializarSpinners();
 		this.inicializarBotones();
-		this.inicializarListaDeCorrelativas(resourceBundle);
-		this.inicializarListaDeMaterias(resourceBundle);
+		this.inicializarListaDeCorrelativas();
+		this.inicializarListaDeMaterias();
 	}
 
 	private void inicializarChoiceBoxes() {
@@ -121,21 +123,21 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		this.cancelar.setCancelButton(true);
 	}
 
-	private void inicializarListaDeCorrelativas(ResourceBundle resourceBundle) {
+	private void inicializarListaDeCorrelativas() {
 		this.listadoCorrelativas.setItems(this.correlativas);
 		this.listadoCorrelativas.setPlaceholder(new Label(resourceBundle.getString("ListaCorrelativasVacia")));
 		this.itemContextualQuitar.disableProperty()
 				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void inicializarListaDeMaterias(ResourceBundle resourceBundle) {
+	private void inicializarListaDeMaterias() {
 		this.listado.setVisible(false);
 		this.listado.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 		this.listado.setItems(this.listaFiltrada);
 		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void crearValidadorDeCampos(ResourceBundle resourceBundle) {
+	private void crearValidadorDeCampos() {
 		var checkID = validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.id))
 				in.error(resourceBundle.getString("InputIdVacio"));
@@ -195,6 +197,8 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		});
 	}
 
+//----------------------------------------------------------------------------------------------------------------------
+
 	@Override
 	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
 		this.controlador = controladorPrincipal;
@@ -238,14 +242,13 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 		materia.setNombre(nombre.getText());
 		materia.setPeriodo(periodo.getValue());
 		materia.setAnio(anio.getValue());
-		if (estado.getValue() == Estado.APROBADA) {
-			materia.setCalificacion(nota.getValue());
-		}
 		materia.setEstado(estado.getValue());
 		materia.setTipo(tipo.getValue());
 		materia.setHorasSemanales(hs.getValue());
 		materia.setCreditos(creditos.getValue());
 		materia.setCorrelativas(new HashSet<>(this.correlativas));
+		if (estado.getValue() == Estado.APROBADA)
+			materia.setCalificacion(nota.getValue());
 	}
 
 	private void guardarYCerrar() {
