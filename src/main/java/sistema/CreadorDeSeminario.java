@@ -5,6 +5,7 @@ import org.apache.poi.ss.usermodel.Row;
 import enumerados.Tipo;
 import excepciones.FormatoDeCeldaException;
 import listado.Materia;
+import util.LangResource;
 
 public class CreadorDeSeminario extends CreadorDeMateria {
 
@@ -25,16 +26,17 @@ public class CreadorDeSeminario extends CreadorDeMateria {
 
 	@Override
 	protected Tipo obtenerTipoDeMateria(String contenido) throws FormatoDeCeldaException {
-		switch (contenido.strip()) {
-		case "Seminario optativo":
+		contenido = contenido.strip();
+		if (contenido.equals(LangResource.getString("TipoSeminarioOptativo")))
 			return Tipo.SEMINARIO_OPTATIVO;
-		case "Seminario electivo":
+
+		if (contenido.equals(LangResource.getString("TipoSeminarioElectivo")))
 			return Tipo.SEMINARIO_ELECTIVO;
-		case "Asignatura Electiva":
+
+		if (contenido.equals(LangResource.getString("TipoAsignaturaElectiva")))
 			return Tipo.ASIGNATURA_ELECTIVA;
-		default:
-			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
-		}
+
+		throw new FormatoDeCeldaException(LangResource.getString("TipoMateriaInvalida"));
 	}
 
 }

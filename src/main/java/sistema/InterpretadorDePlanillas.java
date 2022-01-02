@@ -15,6 +15,7 @@ import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
 import excepciones.PlanillaInvalidaException;
 import listado.Listado;
+import util.LangResource;
 
 public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 
@@ -25,7 +26,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 			var hoja = obtenerHoja(ruta);
 			agregarMaterias(listado, hoja);
 		} catch (FileNotFoundException e) {
-			throw new ArchivoException("No se encontro el archivo en: " + ruta);
+			throw new ArchivoException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException | PlanillaInvalidaException e) {
 			Listado.borrarListado();
 			throw new ArchivoException(e.getMessage(), e.getCause());
@@ -61,7 +62,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 			}
 		}
 		if (listado.consultarCantidadDeMaterias() == 0) {
-			throw new PlanillaInvalidaException("No se ha podido interpretar las materias de la planilla provista");
+			throw new PlanillaInvalidaException(LangResource.getString("NoEsPosibleInterpretarMateria"));
 		}
 	}
 

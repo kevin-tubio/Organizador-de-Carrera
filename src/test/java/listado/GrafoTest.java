@@ -12,6 +12,7 @@ import org.junit.Test;
 import enumerados.Periodo;
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;
+import util.LangResource;
 
 public class GrafoTest {
 
@@ -78,7 +79,7 @@ public class GrafoTest {
 		try {
 			grafo.ordenamientoTopologico(vertices);
 		} catch (ListadoInvalidoException e) {
-			assertEquals(e.getMessage(), "Las correlativas a las materias del listado forman un ciclo");
+			assertEquals(e.getMessage(), LangResource.getString("CorrelativasFormanCiclo"));
 		}
 	}
 

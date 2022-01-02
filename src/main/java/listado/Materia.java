@@ -19,6 +19,7 @@ import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import excepciones.MateriaInvalidaException;
+import util.LangResource;
 
 @Entity
 @Table(name = "MATERIA", schema = "LISTADO")
@@ -116,7 +117,7 @@ public class Materia {
 			this.correlativas.add(correlativa);
 		} else {
 			throw new MateriaInvalidaException(
-					"no puede tener como correlativa a (" + correlativa.numeroActividad + ").");
+					String.format(LangResource.getString("CorrelativaInvalida"), correlativa.numeroActividad));
 		}
 	}
 
@@ -167,7 +168,7 @@ public class Materia {
 
 	@Override
 	public String toString() {
-		return nombre + " (" + numeroActividad + ")";
+		return nombre + " ( " + numeroActividad + " )";
 	}
 
 	public void setCalificacion(int calificacion) {
@@ -179,9 +180,9 @@ public class Materia {
 		case APROBADA:
 			return this.calificacion + "";
 		case REGULARIZADA:
-			return "Aprobado";
+			return Estado.REGULARIZADA.toString();
 		default:
-			return "";
+			return Estado.NO_CURSADA.toString();
 		}
 	}
 
@@ -196,5 +197,4 @@ public class Materia {
 	public void setPeriodo(Periodo periodo) {
 		this.periodo = periodo;
 	}
-
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
+import util.LangResource;
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;
 
@@ -54,7 +55,9 @@ public class Listado {
 	private void comprobarMaterias(int... materias) throws MateriaInvalidaException {
 		for (Integer materia : materias) {
 			if (!listadoDeMaterias.containsKey(materia)) {
-				throw new MateriaInvalidaException("La materia (" + materia + ") no se encuentra dentro del listado");
+				throw new MateriaInvalidaException(
+						String.format(LangResource.getString("MateriaInvalida"), materia,
+								LangResource.getString("MateriaNoEncontrada")));
 			}
 		}
 	}

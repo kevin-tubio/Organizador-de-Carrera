@@ -8,6 +8,7 @@ import enumerados.Periodo;
 import enumerados.Tipo;
 import excepciones.FormatoDeCeldaException;
 import listado.Materia;
+import util.LangResource;
 
 public abstract class CreadorDeMateria {
 
@@ -42,7 +43,7 @@ public abstract class CreadorDeMateria {
 		try {
 			return Integer.parseInt(celda.getStringCellValue().strip());
 		} catch (NumberFormatException e) {
-			throw new FormatoDeCeldaException("columna 3. Se esperaba un numero.", e.getCause());
+			throw new FormatoDeCeldaException(LangResource.getString("NumeroEsperadoColumna"), e.getCause());
 		} catch (IllegalStateException e) {
 			return (int) celda.getNumericCellValue();
 		}
@@ -50,7 +51,7 @@ public abstract class CreadorDeMateria {
 
 	private Periodo obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
 		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
-			throw new FormatoDeCeldaException("columna 4. Formato invalido");
+			throw new FormatoDeCeldaException(LangResource.getString("FormatoInvalido"));
 		}
 		switch (contenido.replaceAll("[ ]+", " ").strip()) {
 		case "1er Cuatrimestre":
@@ -65,13 +66,15 @@ public abstract class CreadorDeMateria {
 	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
 		var contenido = fila.getCell(4).getStringCellValue().strip();
 		if (contenido.matches("")) {
-			return (fila.getCell(5).getStringCellValue().equals("En Curso") ? Estado.EN_CURSO : Estado.NO_CURSADA);
+			return (fila.getCell(5).getStringCellValue().equals(LangResource.getString("EstadoEnCurso"))
+					? Estado.EN_CURSO
+					: Estado.NO_CURSADA);
 		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\)$")) {
 			return Estado.APROBADA;
 		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\)$")) {
 			return Estado.REGULARIZADA;
 		} else {
-			throw new FormatoDeCeldaException("columna 5. Se esperaba un estado de cursada valido o una celda vacia.");
+			throw new FormatoDeCeldaException(LangResource.getString("EstadoMateriaInvalido"));
 		}
 	}
 

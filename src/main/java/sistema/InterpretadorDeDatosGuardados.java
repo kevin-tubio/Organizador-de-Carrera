@@ -14,6 +14,7 @@ import excepciones.FormatoDeLineaException;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
 import listado.Materia;
+import util.LangResource;
 
 public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 
@@ -28,7 +29,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 			agregarMaterias(buffer);
 			obtenerCorrelativas(buffer);
 		} catch (FileNotFoundException e) {
-			throw new ArchivoException("No se encontro el archivo en: " + ruta);
+			throw new ArchivoException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException e) {
 			Listado.borrarListado();
 			throw new ArchivoException(e.getMessage(), e.getCause());
@@ -44,7 +45,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 	}
 
 	private void agregarMaterias(BufferedReader buffer) throws IOException, ArchivoException {
-		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, "Linea 2. Se esperaba un numero");
+		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, LangResource.getString("NumeroEsperadoLinea"));
 		var listado = Listado.obtenerListado();
 		for (var i = 0; i < cantidadDeMaterias; i++) {
 			try {
@@ -53,7 +54,6 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 				System.err.println("Linea " + numeroDeLinea + ", " + e.getMessage());
 			}
 		}
-
 	}
 
 	private int obtenerCantidadDeMaterias(BufferedReader buffer, String alerta) throws IOException, ArchivoException {
@@ -67,9 +67,9 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 
 	private Materia crearMateria(BufferedReader buffer) throws IOException, ArchivoException {
 		numeroDeLinea++;
-		var linea = validarLinea(buffer.readLine(), "se esperaban los datos de una materia.");
+		var linea = validarLinea(buffer.readLine(), LangResource.getString("DatosMateriaEsperados"));
 		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/\\d/([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+/\\d{1,2}/[A-Za-z ]{0,}$")) {
-			throw new FormatoDeLineaException("Linea " + numeroDeLinea + ", formato invalido.");
+			throw new FormatoDeLineaException(formatearMensajeExcepcion(LangResource.getString("FormatoInvalido")));
 		}
 		String[] datos = linea.split("/");
 		var numeroDeMateria = obtenerNumero(datos[0]);
@@ -83,25 +83,24 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 	}
 
 	private Periodo obtenerPeriodo(String dato) {
-		switch (dato.replaceAll("[ ]+", " ")) {
-		case "1er Cuatrimestre":
+		dato = dato.replaceAll("[ ]+", " ");
+		if (dato.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
 			return Periodo.PRIMER_CUATRIMESTRE;
-		case "2do Cuatrimestre":
+
+		if (dato.equals(LangResource.getString("PeriodoSegundoCuatrimestre")))
 			return Periodo.SEGUNDO_CUATRIMESTRE;
-		default:
-			return Periodo.ANUAL;
-		}
+
+		return Periodo.ANUAL;
 	}
 
 	private Estado obtenerEstadoDeMateria(String dato) {
-		switch (dato) {
-		case "Aprobada":
+		if (dato.equals(LangResource.getString("EstadoAprobado")))
 			return Estado.APROBADA;
-		case "Regularizada":
+
+		if (dato.equals(LangResource.getString("EstadoRegularizado")))
 			return Estado.REGULARIZADA;
-		default:
-			return Estado.NO_CURSADA;
-		}
+
+		return Estado.NO_CURSADA;
 	}
 
 	private int obtenerNumero(String dato) {
@@ -139,4 +138,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 			System.err.println("Linea " + numeroDeLinea + ", se esperaban los numeros de materias correlativas");
 	}
 
+	private String formatearMensajeExcepcion(String mensaje) {
+		return String.format(LangResource.getString("LineaInvalida"), this.numeroDeLinea, mensaje);
+	}
 }

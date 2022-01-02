@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import excepciones.ListadoInvalidoException;
+import util.LangResource;
 
 public class Grafo {
 
@@ -43,7 +44,7 @@ public class Grafo {
 		}
 
 		if (listaOrdenada.size() != vertices.size()) {
-			throw new ListadoInvalidoException("Las correlativas a las materias del listado forman un ciclo");
+			throw new ListadoInvalidoException(LangResource.getString("CorrelativasFormanCiclo"));
 		}
 
 		return listaOrdenada;

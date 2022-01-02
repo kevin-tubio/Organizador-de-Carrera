@@ -5,6 +5,7 @@ import excepciones.ArchivoException;
 import excepciones.ArchivoVacioException;
 import listado.Listado;
 import listado.Materia;
+import util.LangResource;
 
 public class RecuperadorDatosGuardados implements InterpretadorDeArchivos {
 
@@ -15,7 +16,7 @@ public class RecuperadorDatosGuardados implements InterpretadorDeArchivos {
 		var lista = dao.obtenerTodos();
 
 		if (lista.isEmpty()) {
-			throw new ArchivoVacioException("No se encontraron materias en la base de datos");
+			throw new ArchivoVacioException(LangResource.getString("BaseDatosVacia"));
 		}
 		for (Materia materia : lista) {
 			listado.agregarMateria(materia);

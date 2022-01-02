@@ -2,6 +2,7 @@ package sistema;
 
 import enumerados.Tipo;
 import excepciones.FormatoDeCeldaException;
+import util.LangResource;
 
 public class CreadorDeMateriaSimple extends CreadorDeMateria {
 
@@ -12,14 +13,14 @@ public class CreadorDeMateriaSimple extends CreadorDeMateria {
 
 	@Override
 	protected Tipo obtenerTipoDeMateria(String contenido) throws FormatoDeCeldaException {
-		switch (contenido.strip()) {
-		case "Materia":
+		contenido = contenido.strip();
+		if (contenido.equals(LangResource.getString("TipoMateria")))
 			return Tipo.MATERIA;
-		case "Tesis":
+
+		if (contenido.equals(LangResource.getString("TipoTesis")))
 			return Tipo.TESIS;
-		default:
-			throw new FormatoDeCeldaException("columna 2. Se esperaba un tipo de materia valido.");
-		}
+
+		throw new FormatoDeCeldaException(LangResource.getString("TipoMateriaInvalida"));
 	}
 
 }
