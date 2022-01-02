@@ -1,12 +1,15 @@
 package enumerados;
 
+import util.LangResource;
+
 public enum Periodo {
-	PRIMER_CUATRIMESTRE("1er Cuatrimestre"), SEGUNDO_CUATRIMESTRE("2do Cuatrimestre"), ANUAL("Anual");
+	PRIMER_CUATRIMESTRE("PeriodoPrimerCuatrimestre"), SEGUNDO_CUATRIMESTRE("PeriodoSegundoCuatrimestre"),
+	ANUAL("PeriodoAnual");
 
 	private String tipo;
 
 	private Periodo(String string) {
-		this.tipo = string;
+		this.tipo = LangResource.getString(string);
 	}
 
 	@Override

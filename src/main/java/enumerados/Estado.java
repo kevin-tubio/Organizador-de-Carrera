@@ -1,16 +1,20 @@
 package enumerados;
 
+import util.LangResource;
+
 public enum Estado {
-	NO_CURSADA(""), APROBADA("Aprobada"), REGULARIZADA("Regularizada"), EN_CURSO("En curso");
+	NO_CURSADA("EstadoNoCursado"), APROBADA("EstadoAprobado"), REGULARIZADA("EstadoRegularizado"),
+	EN_CURSO("EstadoEnCurso");
 
 	private String cadena;
 
 	private Estado(String string) {
-		this.cadena = string;
+		this.cadena = LangResource.getString(string);
 	}
 
 	@Override
 	public String toString() {
 		return cadena;
 	}
+
 }

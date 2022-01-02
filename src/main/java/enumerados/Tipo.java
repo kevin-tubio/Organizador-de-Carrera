@@ -1,14 +1,16 @@
 package enumerados;
 
+import util.LangResource;
+
 public enum Tipo {
-	MATERIA("Materia"), TESIS("Tesis"), SEMINARIO_ELECTIVO("Seminario electivo"),
-	SEMINARIO_OPTATIVO("Seminario optativo"), ASIGNATURA_ELECTIVA("Asignatura electiva"),
-	IDIOMA_EXTRANJERO("Idioma extranjero");
+	MATERIA("TipoMateria"), TESIS("TipoTesis"), SEMINARIO_ELECTIVO("TipoSeminarioElectivo"),
+	SEMINARIO_OPTATIVO("TipoSeminarioOptativo"), ASIGNATURA_ELECTIVA("TipoAsignaturaElectiva"),
+	IDIOMA_EXTRANJERO("TipoIdiomaExtranjero");
 
 	private String mensaje;
 
-	private Tipo(String mensaje) {
-		this.mensaje = mensaje;
+	private Tipo(String string) {
+		this.mensaje = LangResource.getString(string);
 	}
 
 	@Override
