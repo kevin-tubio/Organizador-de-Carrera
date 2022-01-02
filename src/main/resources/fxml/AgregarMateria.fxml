@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -18,159 +19,102 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/16"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:id="contenedor"
-	fx:controller="controladores.ControladorAgregarMateria">
-	<bottom>
-		<Pane prefHeight="37.0" prefWidth="620.0"
-			BorderPane.alignment="CENTER">
-			<children>
-				<Button fx:id="cancelar" layoutX="484.0" layoutY="2.0"
-					mnemonicParsing="false" onAction="#cerrar" text="%BotonCancelar" />
-				<Button fx:id="aceptar" layoutX="553.0" layoutY="2.0"
-					mnemonicParsing="false" onAction="#aceptar" text="%BotonAceptar" />
-				<Label fx:id="mensajeError" layoutX="14.0" layoutY="6.0" text="" />
-			</children>
-		</Pane>
-	</bottom>
-	<center>
-		<VBox prefHeight="317.0" prefWidth="620.0">
-			<children>
-				<GridPane alignment="CENTER" hgap="10.0" prefHeight="226.0"
-					prefWidth="600.0" vgap="10.0">
-					<columnConstraints>
-						<ColumnConstraints maxWidth="507.0"
-							minWidth="10.0" prefWidth="33.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="507.0" minWidth="10.0" prefWidth="61.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="507.0" minWidth="10.0" prefWidth="46.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="507.0" minWidth="10.0" prefWidth="60.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="507.0" minWidth="10.0" prefWidth="121.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="325.0" minWidth="10.0" prefWidth="60.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="325.0" minWidth="10.0" prefWidth="50.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="325.0" minWidth="10.0" prefWidth="60.0" />
-						<ColumnConstraints hgrow="SOMETIMES"
-							maxWidth="325.0" minWidth="10.0" prefWidth="29.0" />
-					</columnConstraints>
-					<rowConstraints>
-						<RowConstraints maxHeight="117.0" minHeight="10.0"
-							prefHeight="51.0" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="107.0" minHeight="10.0"
-							prefHeight="58.0" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="148.0" minHeight="10.0"
-							prefHeight="49.0" vgrow="SOMETIMES" />
-						<RowConstraints maxHeight="148.0" minHeight="10.0"
-							prefHeight="49.0" vgrow="SOMETIMES" />
-					</rowConstraints>
+
+<AnchorPane prefHeight="354.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ControladorAgregarMateria">
+	<children>
+		<BorderPane fx:id="contenedor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<bottom>
+				<Pane prefHeight="35.0">
 					<children>
-						<Label text="%TextoID" GridPane.halignment="RIGHT"
-							GridPane.valignment="CENTER" />
-						<TextField fx:id="id" alignment="CENTER"
-							GridPane.columnIndex="1">
-							<GridPane.margin>
-								<Insets />
-							</GridPane.margin>
-						</TextField>
-						<Label text="%TextoNombre" GridPane.columnIndex="2"
-							GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
-						<TextField fx:id="nombre" GridPane.columnIndex="3"
-							GridPane.columnSpan="2147483647" />
-						<Label layoutX="10.0" layoutY="127.0" text="%TextoTipo"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
-						<ChoiceBox fx:id="tipo" prefWidth="150.0"
-							GridPane.columnIndex="1" GridPane.columnSpan="2"
-							GridPane.rowIndex="1" />
-						<Label text="%TextoPeriodo" GridPane.columnIndex="3"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="1"
-							GridPane.valignment="CENTER" />
-						<ChoiceBox fx:id="periodo" prefHeight="25.0"
-							prefWidth="120.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
-						<Label text="%TextoEstado" GridPane.columnIndex="5"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="1"
-							GridPane.valignment="CENTER" />
-						<ChoiceBox fx:id="estado" prefHeight="25.0"
-							prefWidth="120.0" GridPane.columnIndex="6"
-							GridPane.columnSpan="3" GridPane.rowIndex="1" />
-						<Label text="%TextoNota" GridPane.halignment="RIGHT"
-							GridPane.rowIndex="2" GridPane.valignment="CENTER" />
-						<Spinner fx:id="nota" editable="true" prefWidth="60.0"
-							GridPane.columnIndex="1" GridPane.columnSpan="2"
-							GridPane.rowIndex="2" />
-						<Label text="%TextoAño" GridPane.columnIndex="2"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="2"
-							GridPane.valignment="CENTER">
-							<GridPane.margin>
-								<Insets />
-							</GridPane.margin>
-						</Label>
-						<Spinner fx:id="anio" editable="true" prefWidth="60.0"
-							GridPane.columnIndex="3" GridPane.columnSpan="2"
-							GridPane.rowIndex="2" />
-						<Label layoutX="142.0" layoutY="127.0"
-							text="%TextoHoras" wrapText="true" GridPane.columnIndex="4"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="2"
-							GridPane.valignment="CENTER" />
-						<Spinner fx:id="hs" editable="true" layoutX="56.0"
-							layoutY="123.0" prefHeight="25.0" prefWidth="60.0"
-							GridPane.columnIndex="5" GridPane.columnSpan="2"
-							GridPane.rowIndex="2" />
-						<Label layoutX="274.0" layoutY="117.0" text="%TextoCreditos"
-							wrapText="true" GridPane.columnIndex="6"
-							GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
-						<Spinner fx:id="creditos" editable="true" layoutX="394.0"
-							layoutY="123.0" prefHeight="25.0" prefWidth="60.0"
-							GridPane.columnIndex="7" GridPane.columnSpan="2"
-							GridPane.rowIndex="2" />
-						<TextField fx:id="buscador" prefHeight="25.0"
-							prefWidth="169.0" promptText="%TextoBuscadorCorrelativas"
-							GridPane.columnSpan="8" GridPane.rowIndex="3" />
-						<ImageView fitHeight="30.0" fitWidth="21.0"
-							pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8"
-							GridPane.rowIndex="3" />
+						<Button fx:id="cancelar" layoutX="484.0" mnemonicParsing="false" onAction="#cerrar" text="%BotonCancelar" />
+						<Button fx:id="aceptar" layoutX="553.0" mnemonicParsing="false" onAction="#aceptar" text="%BotonAceptar" />
+						<Label fx:id="mensajeError" layoutX="14.0" text="" />
 					</children>
-					<VBox.margin>
-						<Insets left="10.0" right="10.0" top="10.0" />
-					</VBox.margin>
-				</GridPane>
-				<StackPane>
-					<VBox.margin>
-						<Insets bottom="10.0" left="10.0" right="10.0" />
-					</VBox.margin>
+				</Pane>
+			</bottom>
+			<center>
+				<VBox>
 					<children>
-						<ListView fx:id="listadoCorrelativas" prefHeight="93.0"
-							prefWidth="600.0">
-							<contextMenu>
-								<ContextMenu>
-									<items>
-										<MenuItem fx:id="itemContextualQuitar"
-											mnemonicParsing="false" onAction="#quitarCorrelativa"
-											text="%MenuContextQuitar" />
-									</items>
-								</ContextMenu>
-							</contextMenu>
-						</ListView>
-						<ListView fx:id="listado" prefHeight="140.0"
-							prefWidth="600.0" translateZ="2.0">
-							<contextMenu>
-								<ContextMenu>
-									<items>
-										<MenuItem fx:id="itemContextualAgregar"
-											mnemonicParsing="false" onAction="#agregarCorrelativa"
-											text="%MenuContextAgregar" />
-									</items>
-								</ContextMenu>
-							</contextMenu>
-						</ListView>
+						<GridPane alignment="CENTER" hgap="10.0" vgap="10.0" VBox.vgrow="ALWAYS">
+							<columnConstraints>
+								<ColumnConstraints maxWidth="507.0" minWidth="10.0" prefWidth="33.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="61.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="46.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="60.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="507.0" minWidth="10.0" prefWidth="121.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="60.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="50.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="60.0" />
+								<ColumnConstraints hgrow="SOMETIMES" maxWidth="325.0" minWidth="10.0" prefWidth="29.0" />
+							</columnConstraints>
+							<rowConstraints>
+								<RowConstraints maxHeight="117.0" minHeight="10.0" prefHeight="51.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="107.0" minHeight="10.0" prefHeight="58.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="148.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+								<RowConstraints maxHeight="148.0" minHeight="10.0" prefHeight="49.0" vgrow="SOMETIMES" />
+							</rowConstraints>
+							<children>
+								<Label text="%TextoID" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+								<TextField fx:id="id" alignment="CENTER" GridPane.columnIndex="1">
+									<GridPane.margin>
+										<Insets />
+									</GridPane.margin>
+								</TextField>
+								<Label text="%TextoNombre" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.valignment="CENTER" />
+								<TextField fx:id="nombre" GridPane.columnIndex="3" GridPane.columnSpan="2147483647" />
+								<Label layoutX="10.0" layoutY="127.0" text="%TextoTipo" GridPane.halignment="RIGHT" GridPane.rowIndex="1" />
+								<ChoiceBox fx:id="tipo" prefWidth="150.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+								<Label text="%TextoPeriodo" GridPane.columnIndex="3" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+								<ChoiceBox fx:id="periodo" prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="4" GridPane.rowIndex="1" />
+								<Label text="%TextoEstado" GridPane.columnIndex="5" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+								<ChoiceBox fx:id="estado" prefHeight="25.0" prefWidth="120.0" GridPane.columnIndex="6" GridPane.columnSpan="3" GridPane.rowIndex="1" />
+								<Label text="%TextoNota" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+								<Spinner fx:id="nota" editable="true" prefWidth="60.0" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+								<Label text="%TextoAño" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER">
+									<GridPane.margin>
+										<Insets />
+									</GridPane.margin>
+								</Label>
+								<Spinner fx:id="anio" editable="true" prefWidth="60.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+								<Label layoutX="142.0" layoutY="127.0" text="%TextoHoras" wrapText="true" GridPane.columnIndex="4" GridPane.halignment="RIGHT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+								<Spinner fx:id="hs" editable="true" layoutX="56.0" layoutY="123.0" prefHeight="25.0" prefWidth="60.0" GridPane.columnIndex="5" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+								<Label layoutX="274.0" layoutY="117.0" text="%TextoCreditos" wrapText="true" GridPane.columnIndex="6" GridPane.halignment="RIGHT" GridPane.rowIndex="2" />
+								<Spinner fx:id="creditos" editable="true" layoutX="394.0" layoutY="123.0" prefHeight="25.0" prefWidth="60.0" GridPane.columnIndex="7" GridPane.columnSpan="2" GridPane.rowIndex="2" />
+								<TextField fx:id="buscador" prefHeight="25.0" prefWidth="169.0" promptText="%TextoBuscadorCorrelativas" GridPane.columnSpan="8" GridPane.rowIndex="3" />
+								<ImageView fitHeight="30.0" fitWidth="21.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="8" GridPane.rowIndex="3" />
+							</children>
+							<VBox.margin>
+								<Insets left="10.0" right="10.0" top="10.0" />
+							</VBox.margin>
+						</GridPane>
+						<StackPane prefHeight="140.0" VBox.vgrow="ALWAYS">
+							<VBox.margin>
+								<Insets bottom="10.0" left="10.0" right="10.0" />
+							</VBox.margin>
+							<children>
+								<ListView fx:id="listadoCorrelativas" StackPane.alignment="CENTER">
+									<contextMenu>
+										<ContextMenu>
+											<items>
+												<MenuItem fx:id="itemContextualQuitar" mnemonicParsing="false" onAction="#quitarCorrelativa" text="%MenuContextQuitar" />
+											</items>
+										</ContextMenu>
+									</contextMenu>
+								</ListView>
+								<ListView fx:id="listado" translateZ="2.0" StackPane.alignment="CENTER">
+									<contextMenu>
+										<ContextMenu>
+											<items>
+												<MenuItem fx:id="itemContextualAgregar" mnemonicParsing="false" onAction="#agregarCorrelativa" text="%MenuContextAgregar" />
+											</items>
+										</ContextMenu>
+									</contextMenu>
+								</ListView>
+							</children>
+						</StackPane>
 					</children>
-				</StackPane>
-			</children>
-		</VBox>
-	</center>
-</BorderPane>
+				</VBox>
+			</center>
+		</BorderPane>
+	</children>
+</AnchorPane>
