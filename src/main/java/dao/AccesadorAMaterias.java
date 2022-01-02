@@ -13,9 +13,10 @@ public class AccesadorAMaterias extends AccesadorADatos<Materia> {
 		ejecutarTransaccion(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
 	}
 
-	@Override
 	public void borrarTodo() {
 		borrarCorrelativas();
-		super.borrarTodo();
+		String qlString = "SET REFERENTIAL_INTEGRITY FALSE;" + "TRUNCATE TABLE LISTADO.MATERIA;"
+				+ "SET REFERENTIAL_INTEGRITY TRUE;";
+		ejecutarTransaccion(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
 	}
 }

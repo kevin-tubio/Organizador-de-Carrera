@@ -29,12 +29,6 @@ public abstract class AccesadorADatos<T> {
 		return query.getResultList();
 	}
 
-	public void borrarTodo() {
-		for (T dato : obtenerTodos()) {
-			borrar(dato);
-		}
-	}
-
 	public boolean guardar(T dato) {
 		ejecutarTransaccion(entityManager -> entityManager.persist(dato));
 		return true;
