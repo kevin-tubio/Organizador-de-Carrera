@@ -1,9 +1,6 @@
 package util;
 
 import java.io.IOException;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
@@ -17,8 +14,6 @@ public class WindowBuilder {
 
 	private Stage stage;
 	private Modality modalidad;
-	private String url;
-	private ResourceBundle resourceBundle;
 	private Consumer<FXMLLoader> funcion;
 	private Scene scene;
 	private FXMLLoader loader;
@@ -28,26 +23,13 @@ public class WindowBuilder {
 		this.stage = new Stage();
 		this.modalidad = Modality.NONE;
 		this.scene = new Scene(new AnchorPane());
-		setResourceBundle(Locale.getDefault());
-	}
-
-	public void setResourceBundle(Locale locale) {
-		try {
-			this.resourceBundle = ResourceBundle.getBundle("lang.string", locale);
-		} catch (MissingResourceException e) {
-			this.resourceBundle = ResourceBundle.getBundle("lang.string", new Locale("en"));
-		}
-		if (loader != null)
-			setFXMLScene(this.url);
 	}
 
 	public void setFXMLScene(String url) {
-		this.url = url;
-		this.loader = new FXMLLoader(this.getClass().getResource(url), this.resourceBundle);
+		this.loader = new FXMLLoader(this.getClass().getResource(url), LangResource.getResourceBundle());
 		try {
 			this.scene = new Scene(this.loader.load());
 		} catch (IOException e) {
-			this.url = null;
 			this.loader = null;
 			return;
 		}
@@ -70,11 +52,7 @@ public class WindowBuilder {
 	}
 
 	public void setTituloInternacionalizable(String claveDeTitulo) {
-		try {
-			this.stage.setTitle(resourceBundle.getString(claveDeTitulo));
-		} catch (MissingResourceException e) {
-			this.stage.setTitle("");
-		}
+		this.stage.setTitle(LangResource.getString(claveDeTitulo));
 	}
 
 	public void setModalidad(Modality modalidad) {

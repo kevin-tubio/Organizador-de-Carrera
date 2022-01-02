@@ -26,6 +26,7 @@ import enumerados.Tipo;
 import listado.Listado;
 import listado.Materia;
 import util.Inyectable;
+import util.LangResource;
 
 import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;
@@ -76,7 +77,6 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private Validator validador;
 	private Materia materiaInyectada;
 	private ControladorPrincipal controlador;
-	private ResourceBundle resourceBundle;
 
 	public ControladorAgregarMateria() {
 		this.validador = new Validator();
@@ -87,7 +87,6 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
-		this.resourceBundle = resourceBundle;
 		this.inicializarCampos();
 		this.crearValidadorDeCampos();
 		this.agregarSubscriptorAlBuscador();
@@ -129,14 +128,14 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 
 	private void inicializarListaDeCorrelativas() {
 		this.listadoCorrelativas.setItems(this.correlativas);
-		this.listadoCorrelativas.setPlaceholder(new Label(resourceBundle.getString("ListaCorrelativasVacia")));
+		this.listadoCorrelativas.setPlaceholder(new Label(LangResource.getString("ListaCorrelativasVacia")));
 		this.itemContextualQuitar.disableProperty()
 				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 	private void inicializarListaDeMaterias() {
 		this.listado.setVisible(false);
-		this.listado.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
+		this.listado.setPlaceholder(new Label(LangResource.getString("ListadoVacio")));
 		this.listado.setItems(this.listaFiltrada);
 		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
 	}
@@ -158,13 +157,13 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private Check crearCheckId() {
 		return validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.id))
-				in.error(resourceBundle.getString("InputIdVacio"));
+				in.error(LangResource.getString("InputIdVacio"));
 			if (!this.id.getText().matches("^[0-9]+$"))
-				in.error(resourceBundle.getString("InputIdInvalido"));
+				in.error(LangResource.getString("InputIdInvalido"));
 			if (idRepetido())
-				in.error(resourceBundle.getString("InputIdRepetido"));
+				in.error(LangResource.getString("InputIdRepetido"));
 			if (materiaFormaCiclo())
-				in.error(resourceBundle.getString("InputIdCiclo"));
+				in.error(LangResource.getString("InputIdCiclo"));
 		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
 	}
 
@@ -184,7 +183,7 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private Check crearCheckNombre() {
 		return validador.createCheck().withMethod(in -> {
 			if (campoVacio(this.nombre))
-				in.error(resourceBundle.getString("InputNombreVacio"));
+				in.error(LangResource.getString("InputNombreVacio"));
 		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
 	}
 
