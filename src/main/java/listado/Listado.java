@@ -9,6 +9,7 @@ import java.util.Set;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
+import entity.Materia;
 import util.LangResource;
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;

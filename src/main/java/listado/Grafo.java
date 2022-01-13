@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import entity.Materia;
 import excepciones.ListadoInvalidoException;
 import util.LangResource;
 

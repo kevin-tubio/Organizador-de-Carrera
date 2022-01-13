@@ -10,12 +10,12 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import entity.Materia;
 import enumerados.Estado;
 import enumerados.Periodo;
 import excepciones.ArchivoException;
 import excepciones.MateriaInvalidaException;
 import listado.Listado;
-import listado.Materia;
 
 public class InterpretadorDeDatosGuardadosTest {
 

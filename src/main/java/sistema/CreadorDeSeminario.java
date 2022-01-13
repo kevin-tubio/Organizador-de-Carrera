@@ -2,9 +2,9 @@ package sistema;
 
 import org.apache.poi.ss.usermodel.Row;
 
+import entity.Materia;
 import enumerados.Tipo;
 import excepciones.FormatoDeCeldaException;
-import listado.Materia;
 import util.LangResource;
 
 public class CreadorDeSeminario extends CreadorDeMateria {

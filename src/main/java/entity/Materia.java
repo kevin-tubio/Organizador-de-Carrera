@@ -1,4 +1,4 @@
-package listado;
+package entity;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -28,14 +28,19 @@ public class Materia {
 	@Id
 	@Column(name = "ID", unique = true)
 	private int numeroActividad;
+
 	@Column(nullable = false)
 	private String nombre;
+
 	@Column(nullable = false)
 	private int anio;
+
 	@Column(nullable = false)
 	private int calificacion;
+
 	@Column(name = "HORAS_SEMANALES", nullable = false)
 	private int horasSemanales;
+
 	@Column(nullable = false)
 	private double creditos;
 

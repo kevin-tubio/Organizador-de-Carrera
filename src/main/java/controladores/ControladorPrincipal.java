@@ -18,9 +18,9 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import dao.AccesadorAMaterias;
+import entity.Materia;
 import excepciones.ArchivoException;
 import listado.Listado;
-import listado.Materia;
 import sistema.InterpretadorDeArchivos;
 import sistema.InterpretadorDeDatosGuardados;
 import sistema.InterpretadorDePlanillas;

@@ -1,10 +1,10 @@
 package sistema;
 
 import dao.AccesadorAMaterias;
+import entity.Materia;
 import excepciones.ArchivoException;
 import excepciones.ArchivoVacioException;
 import listado.Listado;
-import listado.Materia;
 import util.LangResource;
 
 public class RecuperadorDatosGuardados implements InterpretadorDeArchivos {

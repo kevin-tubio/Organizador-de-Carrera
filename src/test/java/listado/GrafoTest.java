@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import entity.Materia;
 import enumerados.Periodo;
 import excepciones.ListadoInvalidoException;
 import excepciones.MateriaInvalidaException;

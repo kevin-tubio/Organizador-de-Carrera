@@ -12,11 +12,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import entity.Materia;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import listado.Listado;
-import listado.Materia;
 import util.Inyectable;
 
 public class ControladorTabla implements Initializable, Inyectable {

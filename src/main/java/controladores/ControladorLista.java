@@ -12,8 +12,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
+import entity.Materia;
 import listado.Listado;
-import listado.Materia;
 import util.Inyectable;
 
 public class ControladorLista implements Initializable, Inyectable {

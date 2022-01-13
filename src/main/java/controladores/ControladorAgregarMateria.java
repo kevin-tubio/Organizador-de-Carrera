@@ -24,9 +24,9 @@ import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import listado.Listado;
-import listado.Materia;
 import util.Inyectable;
 import util.LangResource;
+import entity.Materia;
 
 import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;

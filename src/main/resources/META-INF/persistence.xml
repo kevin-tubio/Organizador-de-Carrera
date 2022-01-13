@@ -6,8 +6,8 @@
 	
 	<persistence-unit name="OrganizadorDeCarrera">
 		
-		<class>listado.Materia</class>
-		<class>listado.Alumno</class>
+		<class>entity.Materia</class>
+		<class>entity.Alumno</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />

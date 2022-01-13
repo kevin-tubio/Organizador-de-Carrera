@@ -1,4 +1,4 @@
-package listado;
+package entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +12,10 @@ public class Alumno {
 	@Id
 	@Column
 	private int legajo;
+
 	@Column(name = "nombre", nullable = false)
 	private String nombreCompleto;
+
 	@Column(nullable = false)
 	private String carrera;
 

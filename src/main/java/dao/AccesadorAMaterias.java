@@ -1,6 +1,6 @@
 package dao;
 
-import listado.Materia;
+import entity.Materia;
 
 public class AccesadorAMaterias extends AccesadorADatos<Materia> {
 
@@ -15,8 +15,7 @@ public class AccesadorAMaterias extends AccesadorADatos<Materia> {
 
 	public void borrarTodo() {
 		borrarCorrelativas();
-		String qlString = "SET REFERENTIAL_INTEGRITY FALSE;" + "TRUNCATE TABLE LISTADO.MATERIA;"
-				+ "SET REFERENTIAL_INTEGRITY TRUE;";
+		String qlString = "SET REFERENTIAL_INTEGRITY FALSE; TRUNCATE TABLE LISTADO.MATERIA; SET REFERENTIAL_INTEGRITY TRUE;";
 		ejecutarTransaccion(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
 	}
 }

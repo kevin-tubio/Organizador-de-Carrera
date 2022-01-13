@@ -3,11 +3,11 @@ package sistema;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 
+import entity.Materia;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
 import excepciones.FormatoDeCeldaException;
-import listado.Materia;
 import util.LangResource;
 
 public abstract class CreadorDeMateria {
