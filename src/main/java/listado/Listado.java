@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -19,10 +22,12 @@ public class Listado {
 	private static Listado instancia;
 	private static ObservableMap<Integer, Materia> listadoDeMaterias;
 	private List<Materia> ordenDeMaterias;
+	private Logger logger;
 
 	private Listado() {
 		listadoDeMaterias = FXCollections.observableHashMap(); // NOSONAR
 		this.ordenDeMaterias = null;
+		this.logger = LoggerFactory.getLogger(Listado.class);
 	}
 
 	public static Listado obtenerListado() {
@@ -48,7 +53,7 @@ public class Listado {
 			try {
 				listadoDeMaterias.get(materia).setCorrelativa(listadoDeMaterias.get(correlativa));
 			} catch (MateriaInvalidaException e) {
-				System.err.println("La materia (" + materia + ") " + e.getMessage());
+				logger.warn(String.format(LangResource.getString("MateriaInvalida"), materia, e.getMessage()));
 			}
 		}
 	}
@@ -107,7 +112,7 @@ public class Listado {
 				correlativa.getCorrelativas().remove(materia);
 			listadoDeMaterias.remove(materia.getNumeroActividad());
 		} catch (MateriaInvalidaException e) {
-			System.err.println(e.getMessage());
+			logger.warn(e.getMessage());
 		}
 	}
 
@@ -121,7 +126,7 @@ public class Listado {
 			listadoDeMaterias.remove(materia.getNumeroActividad());
 			agregarMateria(nuevaMateria);
 		} catch (MateriaInvalidaException e) {
-			System.err.println(e.getMessage());
+			logger.trace(e.getMessage(), e);
 		}
 	}
 

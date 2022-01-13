@@ -10,6 +10,8 @@ import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import excepciones.ArchivoException;
 import excepciones.FormatoDeCeldaException;
@@ -18,6 +20,12 @@ import listado.Listado;
 import util.LangResource;
 
 public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
+
+	private Logger logger;
+
+	public InterpretadorDePlanillas() {
+		this.logger = LoggerFactory.getLogger(InterpretadorDePlanillas.class);
+	}
 
 	@Override
 	public Listado generarListado(String ruta) throws ArchivoException {
@@ -58,11 +66,12 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 					listado.agregarMateria(new CreadorDeIdiomaExtranjero().crearMateria(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {
-				System.err.println("Fila " + (filaActual.getRowNum() + 1) + ", " + e.getMessage());
+				logger.warn(String.format(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1),
+						e.getMessage()));
 			}
 		}
 		if (listado.consultarCantidadDeMaterias() == 0) {
-			throw new PlanillaInvalidaException(LangResource.getString("NoEsPosibleInterpretarMateria"));
+			throw new PlanillaInvalidaException(LangResource.getString("NoEsPosibleInterpretarPlanilla"));
 		}
 	}
 
