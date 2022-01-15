@@ -3,6 +3,8 @@ package controladores;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import dao.AccesadorAConfiguracion;
+import dto.Tabla;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -23,26 +25,37 @@ public class ControladorTabla implements Initializable, Inyectable {
 
 	@FXML
 	private TableView<Materia> tabla;
+
 	@FXML
 	private TableColumn<Materia, Integer> numeroActividad;
+
 	@FXML
 	private TableColumn<Materia, String> nombreActividad;
+
 	@FXML
 	private TableColumn<Materia, Integer> anio;
+
 	@FXML
 	private TableColumn<Materia, Periodo> periodo;
+
 	@FXML
 	private TableColumn<Materia, String> nota;
+
 	@FXML
 	private TableColumn<Materia, Estado> estado;
+
 	@FXML
 	private TableColumn<Materia, Tipo> tipo;
+
 	@FXML
 	private TableColumn<Materia, Integer> hs;
+
 	@FXML
 	private TableColumn<Materia, Double> creditos;
+
 	@FXML
 	private MenuItem itemContextualEditar;
+
 	@FXML
 	private MenuItem itemContextualBorrar;
 
@@ -95,6 +108,40 @@ public class ControladorTabla implements Initializable, Inyectable {
 
 	public void agregarMateria() {
 		this.controlador.agregarMateria();
+	}
+
+	public void guardarDimensionesTabla() {
+		Tabla configuracion = new Tabla();
+		configuracion.setAnchoColumnaId(this.numeroActividad.getWidth());
+		configuracion.setAnchoColumnaNombre(this.nombreActividad.getWidth());
+		configuracion.setAnchoColumnaAnio(this.anio.getWidth());
+		configuracion.setAnchoColumnaPeriodo(this.periodo.getWidth());
+		configuracion.setAnchoColumnaNota(this.nota.getWidth());
+		configuracion.setAnchoColumnaEstado(this.estado.getWidth());
+		configuracion.setAnchoColumnaTipo(this.tipo.getWidth());
+		configuracion.setAnchoColumnaHS(this.hs.getWidth());
+		configuracion.setAnchoColumnaCreditos(this.creditos.getWidth());
+		AccesadorAConfiguracion<Tabla> dao = new AccesadorAConfiguracion<>();
+		dao.actualizarConfiguracion(configuracion);
+	}
+
+	public void recuperarDimensionesTabla() {
+		AccesadorAConfiguracion<Tabla> dao = new AccesadorAConfiguracion<>();
+		Tabla configuracion = dao.obtenerConfiguracion(new Tabla());
+		if (configuracion.esValida())
+			dimensionarColumnas(configuracion);
+	}
+
+	private void dimensionarColumnas(Tabla config) {
+		this.numeroActividad.setPrefWidth(config.getAnchoColumnaId());
+		this.nombreActividad.setPrefWidth(config.getAnchoColumnaNombre());
+		this.anio.setPrefWidth(config.getAnchoColumnaAnio());
+		this.periodo.setPrefWidth(config.getAnchoColumnaPeriodo());
+		this.nota.setPrefWidth(config.getAnchoColumnaNota());
+		this.estado.setPrefWidth(config.getAnchoColumnaEstado());
+		this.tipo.setPrefWidth(config.getAnchoColumnaTipo());
+		this.hs.setPrefWidth(config.getAnchoColumnaHS());
+		this.creditos.setPrefWidth(config.getAnchoColumnaCreditos());
 	}
 
 	@Override

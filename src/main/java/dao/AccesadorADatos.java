@@ -22,9 +22,13 @@ public abstract class AccesadorADatos<T> {
 		return Optional.ofNullable(manager.find(clase, id));
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<T> obtenerTodos() {
-		String qlString = "FROM " + clase.getName();
+		return obtenerTodos("");
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<T> obtenerTodos(String condicion) {
+		String qlString = "FROM " + clase.getName() + " " + condicion;
 		Query query = manager.createQuery(qlString);
 		return query.getResultList();
 	}

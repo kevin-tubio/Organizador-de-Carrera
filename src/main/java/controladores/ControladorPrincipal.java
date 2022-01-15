@@ -32,20 +32,28 @@ public class ControladorPrincipal implements Initializable {
 
 	@FXML
 	private ControladorTabla planDeEstudiosController;
+
 	@FXML
 	private ControladorLista listaDeMateriasController;
+
 	@FXML
 	private MenuItem itemAgregar;
+
 	@FXML
 	private MenuItem itemBorrar;
+
 	@FXML
 	private MenuItem itemEditar;
+
 	@FXML
 	private TabPane tab;
+
 	@FXML
 	private MenuItem itemGuardar;
+
 	@FXML
 	private MenuItem itemSalir;
+
 	@FXML
 	private AnchorPane ancla;
 
@@ -67,6 +75,7 @@ public class ControladorPrincipal implements Initializable {
 		} catch (ArchivoException e) {
 			System.out.println(e.getMessage());
 		}
+		planDeEstudiosController.recuperarDimensionesTabla();
 	}
 
 	public void abrirArchivo() {
@@ -171,6 +180,7 @@ public class ControladorPrincipal implements Initializable {
 
 	public void cerrarPrograma(Event cierre) {
 		cierre.consume();
+		this.planDeEstudiosController.guardarDimensionesTabla();
 		if (!hayCambiosSinGuardar())
 			cerrarVentana();
 		else
