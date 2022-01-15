@@ -66,8 +66,7 @@ public class InterpretadorDePlanillas implements InterpretadorDeArchivos {
 					listado.agregarMateria(new CreadorDeIdiomaExtranjero().crearMateria(filaActual));
 				}
 			} catch (FormatoDeCeldaException e) {
-				logger.warn(String.format(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1),
-						e.getMessage()));
+				logger.error(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1), e.getMessage());
 			}
 		}
 		if (listado.consultarCantidadDeMaterias() == 0) {

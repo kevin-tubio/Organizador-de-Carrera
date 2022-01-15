@@ -59,7 +59,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 			try {
 				listado.agregarMateria(crearMateria(buffer));
 			} catch (FormatoDeLineaException e) {
-				logger.warn(formatearMensajeExcepcion(e.getMessage()));
+				logger.error(LangResource.getString("LineaInvalida"), this.numeroDeLinea, e.getMessage());
 			}
 		}
 	}
@@ -131,6 +131,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 		var linea = buffer.readLine();
 		var listado = Listado.obtenerListado();
 		if (linea != null && linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
+
 			String[] datos = linea.split(": *");
 			try {
 				String[] correlativas = datos[1].split("/");
@@ -140,13 +141,15 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 				}
 				listado.agregarCorrelativas(Integer.parseInt(datos[0]), numeros);
 			} catch (MateriaInvalidaException e) {
-				System.err.println(e.getMessage());
+				logger.error(e.getMessage());
 			}
 		} else
-			logger.warn(formatearMensajeExcepcion(LangResource.getString("IdCorrelativasEsperado")));
+			logger.warn(LangResource.getString("LineaInvalida"), this.numeroDeLinea, LangResource.getString("IdCorrelativasEsperado"));
 	}
 
 	private String formatearMensajeExcepcion(String mensaje) {
-		return String.format(LangResource.getString("LineaInvalida"), this.numeroDeLinea, mensaje);
+		String mensajeExcepcion = LangResource.getString("LineaInvalida").replaceFirst("\\{\\}", String.valueOf(this.numeroDeLinea));
+		return mensajeExcepcion.replace("{}", mensaje);
 	}
+
 }
