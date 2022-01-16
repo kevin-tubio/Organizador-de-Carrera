@@ -1,58 +1,89 @@
 package dto;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import entity.Configuracion;
 import enumerados.TipoConfiguracion;
 
-public class Tabla implements Configurable {
+public class Tabla {
 
-	private Map<String, Configuracion> config;
+	private Configurable config;
 
-	private TipoConfiguracion tipo;
-	
 	public Tabla() {
-		this.config = new HashMap<>();
-		this.tipo = TipoConfiguracion.TABLA;
+		this.config = new Configurable(TipoConfiguracion.TABLA);
+	}
+	
+	public Tabla(Configurable config) {
+		this.config = config;
 	}
 
 	public void setAnchoColumnaId(Double valor) {
-		this.agregar("anchoColumnaId", valor);
+		this.config.agregar("anchoColumnaId", valor);
 	}
 
 	public void setAnchoColumnaNombre(Double valor) {
-		this.agregar("anchoColumnaNombre", valor);
+		this.config.agregar("anchoColumnaNombre", valor);
 	}
 
 	public void setAnchoColumnaAnio(Double valor) {
-		this.agregar("anchoColumnaAnio", valor);
+		this.config.agregar("anchoColumnaAnio", valor);
 	}
 
 	public void setAnchoColumnaPeriodo(Double valor) {
-		this.agregar("anchoColumnaPeriodo", valor);
+		this.config.agregar("anchoColumnaPeriodo", valor);
 	}
 
 	public void setAnchoColumnaNota(Double valor) {
-		this.agregar("anchoColumnaNota", valor);
+		this.config.agregar("anchoColumnaNota", valor);
 	}
 
 	public void setAnchoColumnaEstado(Double valor) {
-		this.agregar("anchoColumnaEstado", valor);
+		this.config.agregar("anchoColumnaEstado", valor);
 	}
 
 	public void setAnchoColumnaTipo(Double valor) {
-		this.agregar("anchoColumnaTipo", valor);
+		this.config.agregar("anchoColumnaTipo", valor);
 	}
 
 	public void setAnchoColumnaHS(Double valor) {
-		this.agregar("anchoColumnaHS", valor);
+		this.config.agregar("anchoColumnaHS", valor);
 	}
 
 	public void setAnchoColumnaCreditos(Double valor) {
-		this.agregar("anchoColumnaCreditos", valor);
+		this.config.agregar("anchoColumnaCreditos", valor);
+	}
+
+	public void setIdVisible(Boolean visible) {
+		this.config.agregar("idVisible", visible);
+	}
+
+	public void setNombreVisible(Boolean visible) {
+		this.config.agregar("nombreVisible", visible);
+	}
+
+	public void setAnioVisible(Boolean visible) {
+		this.config.agregar("anioVisible", visible);
+	}
+
+	public void setPeriodoVisible(Boolean visible) {
+		this.config.agregar("periodoVisible", visible);
+	}
+
+	public void setNotaVisible(Boolean visible) {
+		this.config.agregar("notaVisible", visible);
+	}
+
+	public void setEstadoVisible(Boolean visible) {
+		this.config.agregar("estadoVisible", visible);
+	}
+
+	public void setTipoVisible(Boolean visible) {
+		this.config.agregar("tipoVisible", visible);
+	}
+
+	public void setHSVisible(Boolean visible) {
+		this.config.agregar("hsVisible", visible);
+	}
+
+	public void setCreditosVisible(Boolean visible) {
+		this.config.agregar("creditosVisible", visible);
 	}
 
 	public Double getAnchoColumnaId() {
@@ -91,31 +122,56 @@ public class Tabla implements Configurable {
 		return this.recuperarDouble("anchoColumnaCreditos");
 	}
 
-	@Override
-	public <T> void agregar(String clave, T valor) {
-		this.config.put(clave, new Configuracion(clave, String.valueOf(valor), this.tipo));
-	}
-
 	private Double recuperarDouble(String clave) {
-		return Double.valueOf(this.recuperar(clave));
-	}
-	
-	private String recuperar(String clave) {
-		return this.config.get(clave).getValor();
+		return Double.valueOf(this.config.recuperar(clave));
 	}
 
-	@Override
-	public TipoConfiguracion getConfigType() {
-		return this.tipo;
+	public Boolean getIdVisible() {
+		return this.recuperarBool("idVisible");
+	}
+
+	public Boolean getNombreVisible() {
+		return this.recuperarBool("nombreVisible");
+	}
+
+	public Boolean getAnioVisible() {
+		return this.recuperarBool("anioVisible");
+	}
+
+	public Boolean getPeriodoVisible() {
+		return this.recuperarBool("periodoVisible");
+	}
+
+	public Boolean getNotaVisible() {
+		return this.recuperarBool("notaVisible");
+	}
+
+	public Boolean getEstadoVisible() {
+		return this.recuperarBool("estadoVisible");
+	}
+
+	public Boolean getTipoVisible() {
+		return this.recuperarBool("tipoVisible");
+	}
+
+	public Boolean getHSVisible() {
+		return this.recuperarBool("hsVisible");
+	}
+
+	public Boolean getCreditosVisible() {
+		return this.recuperarBool("creditosVisible");
+	}
+
+	private Boolean recuperarBool(String clave) {
+		return Boolean.valueOf(this.config.recuperar(clave));
 	}
 
 	public boolean esValida() {
-		return !this.config.isEmpty();
+		return !config.estaVacia();
 	}
 
-	@Override
-	public Set<Configuracion> getConfigurations() {
-		return new HashSet<>(this.config.values());
+	public Configurable getConfig() {
+		return this.config;
 	}
 
 }

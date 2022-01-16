@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import dao.AccesadorAConfiguracion;
+import dto.Configurable;
 import dto.Tabla;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
@@ -18,6 +19,7 @@ import entity.Materia;
 import enumerados.Estado;
 import enumerados.Periodo;
 import enumerados.Tipo;
+import enumerados.TipoConfiguracion;
 import listado.Listado;
 import util.Inyectable;
 
@@ -112,6 +114,13 @@ public class ControladorTabla implements Initializable, Inyectable {
 
 	public void guardarDimensionesTabla() {
 		Tabla configuracion = new Tabla();
+		guardarDimensiones(configuracion);
+		guardarVisibles(configuracion);
+		AccesadorAConfiguracion<Configurable> dao = new AccesadorAConfiguracion<>();
+		dao.actualizarConfiguracion(configuracion.getConfig());
+	}
+	
+	private void guardarDimensiones(Tabla configuracion) {
 		configuracion.setAnchoColumnaId(this.numeroActividad.getWidth());
 		configuracion.setAnchoColumnaNombre(this.nombreActividad.getWidth());
 		configuracion.setAnchoColumnaAnio(this.anio.getWidth());
@@ -121,15 +130,27 @@ public class ControladorTabla implements Initializable, Inyectable {
 		configuracion.setAnchoColumnaTipo(this.tipo.getWidth());
 		configuracion.setAnchoColumnaHS(this.hs.getWidth());
 		configuracion.setAnchoColumnaCreditos(this.creditos.getWidth());
-		AccesadorAConfiguracion<Tabla> dao = new AccesadorAConfiguracion<>();
-		dao.actualizarConfiguracion(configuracion);
+	}
+
+	private void guardarVisibles(Tabla configuracion) {
+		configuracion.setIdVisible(this.numeroActividad.isVisible());
+		configuracion.setNombreVisible(this.nombreActividad.isVisible());
+		configuracion.setAnioVisible(this.anio.isVisible());
+		configuracion.setPeriodoVisible(this.periodo.isVisible());
+		configuracion.setNotaVisible(this.nota.isVisible());
+		configuracion.setEstadoVisible(this.estado.isVisible());
+		configuracion.setTipoVisible(this.tipo.isVisible());
+		configuracion.setHSVisible(this.hs.isVisible());
+		configuracion.setCreditosVisible(this.creditos.isVisible());
 	}
 
 	public void recuperarDimensionesTabla() {
-		AccesadorAConfiguracion<Tabla> dao = new AccesadorAConfiguracion<>();
-		Tabla configuracion = dao.obtenerConfiguracion(new Tabla());
-		if (configuracion.esValida())
+		AccesadorAConfiguracion<Configurable> dao = new AccesadorAConfiguracion<>();
+		Tabla configuracion = new Tabla(dao.obtenerConfiguracion(new Configurable(TipoConfiguracion.TABLA)));
+		if (configuracion.esValida()) {
 			dimensionarColumnas(configuracion);
+			recuperarVisibles(configuracion);
+		}
 	}
 
 	private void dimensionarColumnas(Tabla config) {
@@ -142,6 +163,18 @@ public class ControladorTabla implements Initializable, Inyectable {
 		this.tipo.setPrefWidth(config.getAnchoColumnaTipo());
 		this.hs.setPrefWidth(config.getAnchoColumnaHS());
 		this.creditos.setPrefWidth(config.getAnchoColumnaCreditos());
+	}
+
+	private void recuperarVisibles(Tabla configuracion) {
+		this.numeroActividad.setVisible(configuracion.getIdVisible());
+		this.nombreActividad.setVisible(configuracion.getNombreVisible());
+		this.anio.setVisible(configuracion.getAnioVisible());
+		this.periodo.setVisible(configuracion.getPeriodoVisible());
+		this.nota.setVisible(configuracion.getNotaVisible());
+		this.estado.setVisible(configuracion.getEstadoVisible());
+		this.tipo.setVisible(configuracion.getTipoVisible());
+		this.hs.setVisible(configuracion.getHSVisible());
+		this.creditos.setVisible(configuracion.getCreditosVisible());
 	}
 
 	@Override
