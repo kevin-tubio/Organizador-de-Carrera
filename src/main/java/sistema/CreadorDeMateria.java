@@ -50,17 +50,17 @@ public abstract class CreadorDeMateria {
 	}
 
 	private Periodo obtenerPeriodoDeMateria(String contenido) throws FormatoDeCeldaException {
-		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$")) {
+		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$"))
 			throw new FormatoDeCeldaException(LangResource.getString("FormatoInvalido"));
-		}
-		switch (contenido.replaceAll("[ ]+", " ").strip()) {
-		case "1er Cuatrimestre":
+
+		contenido = contenido.replaceAll("[ ]+", " ").strip();
+		if (contenido.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
 			return Periodo.PRIMER_CUATRIMESTRE;
-		case "2do Cuatrimestre":
+
+		if (contenido.equals(LangResource.getString("PeriodoSegundoCuatrimestre")))
 			return Periodo.SEGUNDO_CUATRIMESTRE;
-		default:
-			return Periodo.ANUAL;
-		}
+
+		return Periodo.ANUAL;
 	}
 
 	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
