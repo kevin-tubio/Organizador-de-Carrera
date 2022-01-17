@@ -60,7 +60,7 @@ public class InterpretadorDeDatosGuardadosTest {
 		assertEquals("10", listado.obtenerMateria(1269).getCalificacion());
 		assertEquals("", listado.obtenerMateria(592).getCalificacion());
 		assertEquals("4", listado.obtenerMateria(862).getCalificacion());
-		assertEquals("Regularizada", listado.obtenerMateria(1242).getCalificacion());
+		assertEquals("-", listado.obtenerMateria(1242).getCalificacion());
 	}
 
 	@Test
@@ -86,7 +86,7 @@ public class InterpretadorDeDatosGuardadosTest {
 		assertEquals("10", listado.obtenerMateria(1269).getCalificacion());
 		assertEquals("", listado.obtenerMateria(592).getCalificacion());
 		assertEquals("4", listado.obtenerMateria(862).getCalificacion());
-		assertEquals("Regularizada", listado.obtenerMateria(1242).getCalificacion());
+		assertEquals("-", listado.obtenerMateria(1242).getCalificacion());
 
 		Set<Materia> aYP = new HashSet<>();
 		aYP.add(new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));

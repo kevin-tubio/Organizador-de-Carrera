@@ -181,14 +181,11 @@ public class Materia {
 	}
 
 	public String getCalificacion() {
-		switch (this.estado) {
-		case APROBADA:
-			return this.calificacion + "";
-		case REGULARIZADA:
-			return Estado.REGULARIZADA.toString();
-		default:
-			return Estado.NO_CURSADA.toString();
-		}
+		if (this.estado.equals(Estado.NO_CURSADA))
+			return "";
+		if (this.estado.equals(Estado.APROBADA))
+			return String.valueOf(this.calificacion);
+		return "-";
 	}
 
 	public void setNombre(String nombre) {
