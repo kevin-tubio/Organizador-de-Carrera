@@ -13,7 +13,7 @@ import enumerados.TipoConfiguracion;
 
 @Entity
 @Table(name = "CONFIG", schema = "LISTADO")
-public class Configuracion {
+public class ConfigurationItem {
 
 	@Id
 	@Column(nullable = false, unique = true)
@@ -26,13 +26,13 @@ public class Configuracion {
 	@Enumerated(EnumType.STRING)
 	private final TipoConfiguracion tipo;
 	
-	public Configuracion() {
+	public ConfigurationItem() {
 		this.parametro = null;
 		this.valor = null;
 		this.tipo = null;
 	}
 
-	public Configuracion(String parametro, String valor, TipoConfiguracion tipo) {
+	public ConfigurationItem(String parametro, String valor, TipoConfiguracion tipo) {
 		this.parametro = parametro;
 		this.valor = valor;
 		this.tipo = tipo;
@@ -55,9 +55,9 @@ public class Configuracion {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (!(obj instanceof Configuracion))
+		if (!(obj instanceof ConfigurationItem))
 			return false;
-		Configuracion other = (Configuracion) obj;
+		ConfigurationItem other = (ConfigurationItem) obj;
 		return parametro.equals(other.parametro) && tipo.equals(other.tipo) && valor.equals(other.valor);
 	}
 

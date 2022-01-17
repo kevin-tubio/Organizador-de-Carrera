@@ -1,26 +1,26 @@
-package dto;
+package config;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import entity.Configuracion;
+import entity.ConfigurationItem;
 import enumerados.TipoConfiguracion;
 
-public class Configurable {
+public class Configuration {
 
-	private Map<String, Configuracion> config;
+	private Map<String, ConfigurationItem> config;
 
 	private TipoConfiguracion tipo;
 	
-	public Configurable(TipoConfiguracion tipo) {
+	public Configuration(TipoConfiguracion tipo) {
 		this.tipo = tipo;
 		this.config = new HashMap<>();
 	}
 
 	public <T> void agregar(String clave, T valor) {
-		this.config.put(clave, new Configuracion(clave, String.valueOf(valor), this.tipo));
+		this.config.put(clave, new ConfigurationItem(clave, String.valueOf(valor), this.tipo));
 	}
 
 	public String recuperar(String clave) {
@@ -31,7 +31,7 @@ public class Configurable {
 		return this.tipo;
 	}
 
-	public Set<Configuracion> getConfigurations() {
+	public Set<ConfigurationItem> getConfigurations() {
 		return new HashSet<>(this.config.values());
 	}
 

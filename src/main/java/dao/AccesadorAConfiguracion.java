@@ -2,13 +2,13 @@ package dao;
 
 import java.util.Set;
 
-import dto.Configurable;
-import entity.Configuracion;
+import config.Configuration;
+import entity.ConfigurationItem;
 
-public class AccesadorAConfiguracion<T extends Configurable> extends AccesadorADatos<Configuracion> {
+public class AccesadorAConfiguracion<T extends Configuration> extends AccesadorADatos<ConfigurationItem> {
 
 	public AccesadorAConfiguracion() {
-		super(Configuracion.class);
+		super(ConfigurationItem.class);
 	}
 
 	public void persistirConfiguracion(T configurable) {
@@ -19,11 +19,11 @@ public class AccesadorAConfiguracion<T extends Configurable> extends AccesadorAD
 		actualizar(configurable.getConfigurations());
 	}
 
-	private void persistir(Set<Configuracion> configuraciones) {
+	private void persistir(Set<ConfigurationItem> configuraciones) {
 		super.ejecutarTransaccion(entityManager -> configuraciones.forEach(entityManager::persist));
 	}
 
-	private void actualizar(Set<Configuracion> configuraciones) {
+	private void actualizar(Set<ConfigurationItem> configuraciones) {
 		super.ejecutarTransaccion(entityManager -> configuraciones.forEach(entityManager::merge));
 	}
 
@@ -32,7 +32,7 @@ public class AccesadorAConfiguracion<T extends Configurable> extends AccesadorAD
 		return configurable;
 	}
 
-	public void agregarConfig(T configurable, Configuracion configuracion) {
+	public void agregarConfig(T configurable, ConfigurationItem configuracion) {
 		configurable.agregar(configuracion.getParametro(), configuracion.getValor());
 	}
 }

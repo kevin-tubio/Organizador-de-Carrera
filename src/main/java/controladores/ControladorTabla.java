@@ -3,9 +3,9 @@ package controladores;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import config.Configuration;
+import config.TableConfiguration;
 import dao.AccesadorAConfiguracion;
-import dto.Configurable;
-import dto.Tabla;
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -113,14 +113,14 @@ public class ControladorTabla implements Initializable, Inyectable {
 	}
 
 	public void guardarDimensionesTabla() {
-		Tabla configuracion = new Tabla();
+		TableConfiguration configuracion = new TableConfiguration();
 		guardarDimensiones(configuracion);
 		guardarVisibles(configuracion);
-		AccesadorAConfiguracion<Configurable> dao = new AccesadorAConfiguracion<>();
+		AccesadorAConfiguracion<Configuration> dao = new AccesadorAConfiguracion<>();
 		dao.actualizarConfiguracion(configuracion.getConfig());
 	}
 	
-	private void guardarDimensiones(Tabla configuracion) {
+	private void guardarDimensiones(TableConfiguration configuracion) {
 		configuracion.setAnchoColumnaId(this.numeroActividad.getWidth());
 		configuracion.setAnchoColumnaNombre(this.nombreActividad.getWidth());
 		configuracion.setAnchoColumnaAnio(this.anio.getWidth());
@@ -132,7 +132,7 @@ public class ControladorTabla implements Initializable, Inyectable {
 		configuracion.setAnchoColumnaCreditos(this.creditos.getWidth());
 	}
 
-	private void guardarVisibles(Tabla configuracion) {
+	private void guardarVisibles(TableConfiguration configuracion) {
 		configuracion.setIdVisible(this.numeroActividad.isVisible());
 		configuracion.setNombreVisible(this.nombreActividad.isVisible());
 		configuracion.setAnioVisible(this.anio.isVisible());
@@ -145,15 +145,15 @@ public class ControladorTabla implements Initializable, Inyectable {
 	}
 
 	public void recuperarDimensionesTabla() {
-		AccesadorAConfiguracion<Configurable> dao = new AccesadorAConfiguracion<>();
-		Tabla configuracion = new Tabla(dao.obtenerConfiguracion(new Configurable(TipoConfiguracion.TABLA)));
+		AccesadorAConfiguracion<Configuration> dao = new AccesadorAConfiguracion<>();
+		TableConfiguration configuracion = new TableConfiguration(dao.obtenerConfiguracion(new Configuration(TipoConfiguracion.TABLA)));
 		if (configuracion.esValida()) {
 			dimensionarColumnas(configuracion);
 			recuperarVisibles(configuracion);
 		}
 	}
 
-	private void dimensionarColumnas(Tabla config) {
+	private void dimensionarColumnas(TableConfiguration config) {
 		this.numeroActividad.setPrefWidth(config.getAnchoColumnaId());
 		this.nombreActividad.setPrefWidth(config.getAnchoColumnaNombre());
 		this.anio.setPrefWidth(config.getAnchoColumnaAnio());
@@ -165,7 +165,7 @@ public class ControladorTabla implements Initializable, Inyectable {
 		this.creditos.setPrefWidth(config.getAnchoColumnaCreditos());
 	}
 
-	private void recuperarVisibles(Tabla configuracion) {
+	private void recuperarVisibles(TableConfiguration configuracion) {
 		this.numeroActividad.setVisible(configuracion.getIdVisible());
 		this.nombreActividad.setVisible(configuracion.getNombreVisible());
 		this.anio.setVisible(configuracion.getAnioVisible());

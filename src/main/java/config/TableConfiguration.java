@@ -1,16 +1,16 @@
-package dto;
+package config;
 
 import enumerados.TipoConfiguracion;
 
-public class Tabla {
+public class TableConfiguration {
 
-	private Configurable config;
+	private Configuration config;
 
-	public Tabla() {
-		this.config = new Configurable(TipoConfiguracion.TABLA);
+	public TableConfiguration() {
+		this.config = new Configuration(TipoConfiguracion.TABLA);
 	}
 	
-	public Tabla(Configurable config) {
+	public TableConfiguration(Configuration config) {
 		this.config = config;
 	}
 
@@ -170,7 +170,7 @@ public class Tabla {
 		return !config.estaVacia();
 	}
 
-	public Configurable getConfig() {
+	public Configuration getConfig() {
 		return this.config;
 	}
 
