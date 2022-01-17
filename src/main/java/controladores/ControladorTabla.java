@@ -81,7 +81,19 @@ public class ControladorTabla implements Initializable, Inyectable {
 		tipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
 		hs.setCellValueFactory(new PropertyValueFactory<>("horasSemanales"));
 		creditos.setCellValueFactory(new PropertyValueFactory<>("creditos"));
+		establecerComparadoresColumnas();
 		tabla.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
+	}
+
+	private void establecerComparadoresColumnas() {
+		periodo.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		estado.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		tipo.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		nota.setComparator((o1, o2) -> {
+			if (o1.matches("\\d+") && o2.matches("\\d+"))
+				return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
+			return o1.compareTo(o2);
+		});
 	}
 
 	private void agregarSubscriptorAListado() {
