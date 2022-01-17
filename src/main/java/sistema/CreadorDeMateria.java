@@ -66,9 +66,7 @@ public abstract class CreadorDeMateria {
 	private Estado obtenerEstadoDeMateria(Row fila) throws FormatoDeCeldaException {
 		var contenido = fila.getCell(4).getStringCellValue().strip();
 		if (contenido.matches("")) {
-			return (fila.getCell(5).getStringCellValue().equals(LangResource.getString("EstadoEnCurso"))
-					? Estado.EN_CURSO
-					: Estado.NO_CURSADA);
+			return obtenerOrigenNota(fila);
 		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\)$")) {
 			return Estado.APROBADA;
 		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\)$")) {
@@ -76,6 +74,17 @@ public abstract class CreadorDeMateria {
 		} else {
 			throw new FormatoDeCeldaException(LangResource.getString("EstadoMateriaInvalido"));
 		}
+	}
+
+	private Estado obtenerOrigenNota(Row fila) {
+		var contenido = fila.getCell(5).getStringCellValue().strip();
+		if (contenido.equals(LangResource.getString("EstadoEnCurso")))
+			return Estado.EN_CURSO;
+
+		if (contenido.equals(LangResource.getString("EstadoEquivalencia")))
+			return Estado.EQUIVALENCIA;
+
+		return Estado.NO_CURSADA;
 	}
 
 	private int obtenerNotaDeMateria(String contenido) {
@@ -86,9 +95,10 @@ public abstract class CreadorDeMateria {
 
 	private double obtenerCreditosDeMateria(String contenido) {
 		contenido = contenido.strip();
-		if (contenido.matches(""))
-			return 0;
-		return Double.parseDouble(contenido);
+		if (contenido.matches("^\\d+(?:\\.\\d+)?$"))
+			return Double.parseDouble(contenido);
+
+		return 0;
 	}
 
 }

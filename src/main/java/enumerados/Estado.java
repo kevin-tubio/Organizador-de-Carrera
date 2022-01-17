@@ -4,7 +4,7 @@ import util.LangResource;
 
 public enum Estado {
 	NO_CURSADA("EstadoNoCursado"), APROBADA("EstadoAprobado"), REGULARIZADA("EstadoRegularizado"),
-	EN_CURSO("EstadoEnCurso");
+	EN_CURSO("EstadoEnCurso"), EQUIVALENCIA("EstadoEquivalencia");
 
 	private String cadena;
 
