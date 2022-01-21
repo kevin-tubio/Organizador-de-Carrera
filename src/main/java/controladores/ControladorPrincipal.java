@@ -5,6 +5,9 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
@@ -17,6 +20,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import dao.AccesadorADatos;
 import dao.AccesadorAMaterias;
 import entity.Materia;
 import excepciones.ArchivoException;
@@ -58,9 +62,11 @@ public class ControladorPrincipal implements Initializable {
 	private AnchorPane ancla;
 
 	private SimpleBooleanProperty cambiosSubject;
+	private Logger logger;
 
 	public ControladorPrincipal() {
 		this.cambiosSubject = new SimpleBooleanProperty(false);
+		this.logger = LoggerFactory.getLogger(ControladorPrincipal.class);
 	}
 
 	@Override
@@ -73,7 +79,7 @@ public class ControladorPrincipal implements Initializable {
 		try {
 			interpretador.generarListado("");
 		} catch (ArchivoException e) {
-			System.out.println(e.getMessage());
+			logger.debug(e.getMessage(), e);
 		}
 		planDeEstudiosController.recuperarDimensionesTabla();
 	}
@@ -89,7 +95,7 @@ public class ControladorPrincipal implements Initializable {
 				try {
 					cargarArchivo(archivo);
 				} catch (ArchivoException e) {
-					System.out.println("intenta con otro archivo");
+					logger.debug(e.getMessage(), e);
 				}
 			});
 			declararCambios();
@@ -129,8 +135,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void agregarMateria() {
-		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController())
-				.inyectarControlador(this);
+		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController()).inyectarControlador(this);
 		new DirectorVentana("../fxml/AgregarMateria.fxml", "TituloVentanaAgregar", funcion).hacerVentanaModal();
 	}
 
@@ -139,7 +144,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	private void ejecutarSegunSeleccionado(Consumer<Materia> funcion) {
-		switch (this.tab.getSelectionModel().getSelectedItem().getContent().getId()) {
+		switch (getTabLocalizedId()) {
 		case "planDeEstudios":
 			funcion.accept(planDeEstudiosController.obtenerSeleccionado());
 			break;
@@ -153,6 +158,10 @@ public class ControladorPrincipal implements Initializable {
 		}
 	}
 
+	private String getTabLocalizedId() {
+		return this.tab.getSelectionModel().getSelectedItem().getContent().getId();
+	}
+
 	protected void editarMateria(Materia materia) {
 		Consumer<FXMLLoader> funcion = loader -> {
 			ControladorAgregarMateria controlador = loader.getController();
@@ -163,14 +172,15 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void persistirCambiosListado() {
-		var hilo = new Thread(() -> {
+		Runnable runnable = () -> {
 			var dao = new AccesadorAMaterias();
-			dao.borrarTodo();
-			for (Materia actual : Listado.obtenerListado().getListadoDeMaterias().values()) {
-				dao.actualizar(actual);
+			synchronized (AccesadorADatos.class) {
+				dao.borrarTodo();
+				dao.persistirTodo(Listado.obtenerListado().getListadoDeMaterias().values());
 			}
-		});
-		hilo.start();
+		};
+		var saving = new Thread(runnable, "persistirCambiosListado");
+		saving.start();
 		this.cambiosSubject.set(false);
 	}
 

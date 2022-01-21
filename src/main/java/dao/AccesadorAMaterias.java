@@ -18,4 +18,5 @@ public class AccesadorAMaterias extends AccesadorADatos<Materia> {
 		String qlString = "SET REFERENTIAL_INTEGRITY FALSE; TRUNCATE TABLE LISTADO.MATERIA; SET REFERENTIAL_INTEGRITY TRUE;";
 		ejecutarTransaccion(entityManager -> entityManager.createNativeQuery(qlString).executeUpdate());
 	}
+
 }

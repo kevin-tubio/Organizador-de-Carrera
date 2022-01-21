@@ -1,5 +1,6 @@
 package dao;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -48,7 +49,15 @@ public abstract class AccesadorADatos<T> {
 		return true;
 	}
 
-	protected void ejecutarTransaccion(Consumer<EntityManager> action) {
+	public void persistirTodo(Collection<T> values) {
+		this.ejecutarTransaccion(em -> {
+			values.forEach(em::persist);
+			em.flush();
+			em.clear();
+		});
+	}
+
+	protected synchronized void ejecutarTransaccion(Consumer<EntityManager> action) {
 		var tx = manager.getTransaction();
 		try {
 			tx.begin();
