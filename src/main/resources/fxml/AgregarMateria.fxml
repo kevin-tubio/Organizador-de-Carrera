@@ -20,7 +20,7 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<AnchorPane prefHeight="354.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controladores.ControladorAgregarMateria">
+<AnchorPane prefHeight="354.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.organizadorcarrera.controladores.ControladorAgregarMateria">
 	<children>
 		<BorderPane fx:id="contenedor" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<bottom>
