@@ -3,8 +3,8 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.organizadorDeCarrera</groupId>
-	<artifactId>OrganizadorDeCarrera</artifactId>
+	<groupId>com.organizadorcarrera</groupId>
+	<artifactId>organizador-de-carrera</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
@@ -101,7 +101,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 				<artifactId>javafx-maven-plugin</artifactId>
 				<version>${javafx.maven.plugin.version}</version>
 				<configuration>
-					<mainClass>Main</mainClass>
+					<mainClass>com.organizadorcarrera.app.Main</mainClass>
 				</configuration>
 			</plugin>
 
