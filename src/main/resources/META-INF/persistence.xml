@@ -12,7 +12,7 @@
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=RUNSCRIPT FROM 'classpath:initDB'" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=RUNSCRIPT FROM 'classpath:schema.sql'" />
 			<property name="javax.persistence.jdbc.user" value="dev" />
 			<property name="javax.persistence.jdbc.password" value="" />
 		</properties>
