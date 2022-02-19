@@ -12,8 +12,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
-
-import com.organizadorcarrera.config.Configuration;
 import com.organizadorcarrera.config.TableConfiguration;
 import com.organizadorcarrera.dao.AccesadorAConfiguracion;
 import com.organizadorcarrera.entity.Materia;
@@ -129,10 +127,10 @@ public class ControladorTabla implements Initializable, Inyectable {
 		TableConfiguration configuracion = new TableConfiguration();
 		guardarDimensiones(configuracion);
 		guardarVisibles(configuracion);
-		AccesadorAConfiguracion<Configuration> dao = new AccesadorAConfiguracion<>();
+		AccesadorAConfiguracion dao = new AccesadorAConfiguracion();
 		dao.actualizarConfiguracion(configuracion.getConfig());
 	}
-	
+
 	private void guardarDimensiones(TableConfiguration configuracion) {
 		configuracion.setAnchoColumnaId(this.numeroActividad.getWidth());
 		configuracion.setAnchoColumnaNombre(this.nombreActividad.getWidth());
@@ -158,8 +156,8 @@ public class ControladorTabla implements Initializable, Inyectable {
 	}
 
 	public void recuperarDimensionesTabla() {
-		AccesadorAConfiguracion<Configuration> dao = new AccesadorAConfiguracion<>();
-		TableConfiguration configuracion = new TableConfiguration(dao.obtenerConfiguracion(new Configuration(TipoConfiguracion.TABLA)));
+		AccesadorAConfiguracion dao = new AccesadorAConfiguracion();
+		TableConfiguration configuracion = new TableConfiguration(dao.obtenerConfiguracion(TipoConfiguracion.TABLA));
 		if (configuracion.esValida()) {
 			dimensionarColumnas(configuracion);
 			recuperarVisibles(configuracion);

@@ -81,7 +81,7 @@ public class ControladorPrincipal implements Initializable {
 		} catch (ArchivoException e) {
 			logger.debug(e.getMessage(), e);
 		}
-		planDeEstudiosController.recuperarDimensionesTabla();
+//		planDeEstudiosController.recuperarDimensionesTabla();
 	}
 
 	public void abrirArchivo() {

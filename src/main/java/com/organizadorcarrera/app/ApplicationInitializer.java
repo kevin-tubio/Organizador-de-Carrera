@@ -1,7 +1,6 @@
 package com.organizadorcarrera.app;
 
 import java.io.IOException;
-import java.util.function.BiConsumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,13 +11,10 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Stage;
 
 import com.organizadorcarrera.app.FXApplication.FXReadyEvent;
 import com.organizadorcarrera.controladores.ControladorPrincipal;
-import com.organizadorcarrera.util.DirectorVentana;
 import com.organizadorcarrera.util.LangResource;
 
 @Component
@@ -40,7 +36,7 @@ public class ApplicationInitializer implements ApplicationListener<FXReadyEvent>
 		logger.info("Application Ready");
 		var stage = event.getSource();
 		var loader = getLoader();
-//		loader.setControllerFactory(this.applicationContext::getBean);
+		loader.setControllerFactory(this.applicationContext::getBean);
 		stage.setTitle(LangResource.getString("TituloVentanaPrincipal"));
 		stage.setScene(getScene(loader));
 		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);

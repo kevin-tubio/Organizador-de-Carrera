@@ -6,15 +6,16 @@
 	
 	<persistence-unit name="OrganizadorDeCarrera">
 		
-		<class>entity.Materia</class>
-		<class>entity.Alumno</class>
-		<class>entity.Tabla</class>
+		<class>com.organizadorcarrera.entity.Materia</class>
+		<class>com.organizadorcarrera.entity.Alumno</class>
+		<class>com.organizadorcarrera.config.Configuration</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=RUNSCRIPT FROM 'classpath:schema.sql'" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:h2:file:./db/organizador;INIT=CREATE SCHEMA IF NOT EXISTS LISTADO" />
 			<property name="javax.persistence.jdbc.user" value="dev" />
 			<property name="javax.persistence.jdbc.password" value="" />
+			<property name="hibernate.hbm2ddl.auto" value="update" />
 		</properties>
 	</persistence-unit>
 </persistence>
