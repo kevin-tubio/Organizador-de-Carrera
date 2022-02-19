@@ -1,4 +1,4 @@
-package com.organizadorcarrera.app;
+package com.organizadorcarrera;
 
 import java.io.IOException;
 import java.util.function.BiConsumer;
