@@ -1,4 +1,4 @@
-package com.organizadorcarrera.controladores;
+package com.organizadorcarrera.controller;
 
 import java.io.File;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.organizadorcarrera.controladores;
+package com.organizadorcarrera.controller;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;

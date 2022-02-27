@@ -3,8 +3,8 @@ package com.organizadorcarrera.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.organizadorcarrera.controladores.ControladorAgregarMateria;
-import com.organizadorcarrera.controladores.ControladorPrincipal;
+import com.organizadorcarrera.controller.ControladorAgregarMateria;
+import com.organizadorcarrera.controller.ControladorPrincipal;
 import com.organizadorcarrera.entity.Materia;
 
 import javafx.stage.Stage;

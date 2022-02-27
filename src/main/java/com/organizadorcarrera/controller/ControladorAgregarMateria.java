@@ -1,4 +1,4 @@
-package com.organizadorcarrera.controladores;
+package com.organizadorcarrera.controller;
 
 import java.net.URL;
 import java.util.HashSet;
