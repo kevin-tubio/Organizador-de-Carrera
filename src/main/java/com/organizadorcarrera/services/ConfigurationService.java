@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.organizadorcarrera.config.Configuration;
 import com.organizadorcarrera.enumerados.TipoConfiguracion;
-import com.organizadorcarrera.repositories.ConfigurationRepository;
+import com.organizadorcarrera.repository.ConfigurationRepository;
 
 @Service
 public class ConfigurationService {

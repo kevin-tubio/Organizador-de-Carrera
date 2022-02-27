@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.repositories.MateriaRepository;
+import com.organizadorcarrera.repository.MateriaRepository;
 
 @Service
 public class ListadoService {
