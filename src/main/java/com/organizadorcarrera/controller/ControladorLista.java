@@ -24,7 +24,7 @@ public class ControladorLista implements Initializable {
 	@FXML
 	private ListView<Materia> lista;
 
-	private ControladorPrincipal controladorPrincipal;
+	private MainController mainController;
 	private FilteredList<Materia> listaFiltrada;
 	private ObservableList<Materia> listaDeMaterias;
 
@@ -52,12 +52,12 @@ public class ControladorLista implements Initializable {
 
 	public void habilitarFunciones() {
 		if (this.obtenerSeleccionado() != null && !Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
-			this.controladorPrincipal.habilitarFunciones();
+			this.mainController.habilitarFunciones();
 		}
 	}
 
 	@Autowired
-	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
-		this.controladorPrincipal = controladorPrincipal;
+	public void setControladorPrincipal(MainController controladorPrincipal) {
+		this.mainController = controladorPrincipal;
 	}
 }

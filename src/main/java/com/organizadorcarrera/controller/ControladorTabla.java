@@ -66,7 +66,7 @@ public class ControladorTabla implements Initializable {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	private ControladorPrincipal controladorPrincipal;
+	private MainController mainController;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
@@ -108,7 +108,7 @@ public class ControladorTabla implements Initializable {
 
 	public void habilitarFunciones() {
 		if (this.obtenerSeleccionado() != null) {
-			this.controladorPrincipal.habilitarFunciones();
+			this.mainController.habilitarFunciones();
 		}
 	}
 
@@ -117,16 +117,16 @@ public class ControladorTabla implements Initializable {
 	}
 
 	public void borrarContextual() {
-		this.controladorPrincipal.borrarMateria(this.obtenerSeleccionado());
+		this.mainController.borrarMateria(this.obtenerSeleccionado());
 	}
 
 	public void editarContextual() {
-		this.controladorPrincipal.editarMateria(this.obtenerSeleccionado());
+		this.mainController.editarMateria(this.obtenerSeleccionado());
 		tabla.refresh();
 	}
 
 	public void agregarMateria() {
-		this.controladorPrincipal.agregarMateria();
+		this.mainController.agregarMateria();
 	}
 
 	public void guardarDimensionesTabla() {
@@ -193,7 +193,7 @@ public class ControladorTabla implements Initializable {
 	}
 
 	@Autowired
-	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
-		this.controladorPrincipal = controladorPrincipal;
+	public void setControladorPrincipal(MainController mainController) {
+		this.mainController = mainController;
 	}
 }

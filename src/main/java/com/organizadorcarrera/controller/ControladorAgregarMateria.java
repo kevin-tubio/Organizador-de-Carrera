@@ -98,7 +98,7 @@ public class ControladorAgregarMateria implements Initializable {
 	private FilteredList<Materia> listaFiltrada;
 	private Validator validador;
 	private Materia materiaInyectada;
-	private ControladorPrincipal controladorPrincipal;
+	private MainController mainController;
 
 	public ControladorAgregarMateria() {
 		this.validador = new Validator();
@@ -258,8 +258,8 @@ public class ControladorAgregarMateria implements Initializable {
 //----------------------------------------------------------------------------------------------------------------------
 
 	@Autowired
-	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
-		this.controladorPrincipal = controladorPrincipal;
+	public void setControladorPrincipal(MainController mainController) {
+		this.mainController = mainController;
 	}
 
 	public void inyectarMateria(Materia materia) {
@@ -320,7 +320,7 @@ public class ControladorAgregarMateria implements Initializable {
 			actualizarDatos(materiaInyectada);
 			Listado.obtenerListado().agregarMateria(materiaInyectada);
 		}
-		this.controladorPrincipal.declararCambios();
+		this.mainController.declararCambios();
 		cerrar();
 	}
 

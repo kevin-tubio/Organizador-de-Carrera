@@ -31,7 +31,7 @@ import com.organizadorcarrera.system.InterpretadorDePlanillas;
 import com.organizadorcarrera.util.DirectorVentana;
 
 @Component
-public class ControladorPrincipal implements Initializable {
+public class MainController implements Initializable {
 
 	@FXML
 	private ControladorTabla planDeEstudiosController;
@@ -69,9 +69,9 @@ public class ControladorPrincipal implements Initializable {
 	private SimpleBooleanProperty cambiosSubject;
 	private Logger logger;
 
-	public ControladorPrincipal() {
+	public MainController() {
 		this.cambiosSubject = new SimpleBooleanProperty(false);
-		this.logger = LoggerFactory.getLogger(ControladorPrincipal.class);
+		this.logger = LoggerFactory.getLogger(MainController.class);
 	}
 
 	@Override

@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.organizadorcarrera.controller.ControladorAgregarMateria;
-import com.organizadorcarrera.controller.ControladorPrincipal;
+import com.organizadorcarrera.controller.MainController;
 import com.organizadorcarrera.entity.Materia;
 
 import javafx.stage.Stage;
@@ -19,7 +19,7 @@ public class DirectorVentana {
 		var loader = this.windowBuilder.createLoader("/fxml/Main.fxml");
 		this.windowBuilder.setFXMLScene(stage, loader);
 		this.windowBuilder.setTituloInternacionalizable("TituloVentanaPrincipal");
-		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
+		stage.setOnCloseRequest(((MainController) loader.getController())::cerrarPrograma);
 		this.windowBuilder.hacerVentana();
 	}
 

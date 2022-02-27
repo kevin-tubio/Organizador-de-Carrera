@@ -13,17 +13,17 @@ public class ControladorCierrePrograma {
 	@FXML
 	private Button botonCancelar;
 
-	private ControladorPrincipal controladorPrincipal;
+	private MainController mainController;
 
 	public void guardar() {
-		this.controladorPrincipal.persistirCambiosListado();
+		this.mainController.persistirCambiosListado();
 		cerrarConfirmacion();
-		this.controladorPrincipal.cerrarVentana();
+		this.mainController.cerrarVentana();
 	}
 
 	public void descartar() {
 		cerrarConfirmacion();
-		this.controladorPrincipal.cerrarVentana();
+		this.mainController.cerrarVentana();
 	}
 
 	public void cancelar() {
@@ -35,7 +35,7 @@ public class ControladorCierrePrograma {
 	}
 
 	@Autowired
-	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
-		this.controladorPrincipal = controladorPrincipal;
+	public void setControladorPrincipal(MainController controladorPrincipal) {
+		this.mainController = controladorPrincipal;
 	}
 }
