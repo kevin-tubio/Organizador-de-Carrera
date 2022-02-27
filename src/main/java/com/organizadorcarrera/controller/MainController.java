@@ -34,7 +34,7 @@ import com.organizadorcarrera.util.DirectorVentana;
 public class MainController implements Initializable {
 
 	@FXML
-	private ControladorTabla planDeEstudiosController;
+	private TableController tableController;
 
 	@FXML
 	private ControladorLista listaDeMateriasController;
@@ -79,7 +79,7 @@ public class MainController implements Initializable {
 		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
 		this.deshabilitarFunciones();
 		materiaService.recuperarListado();
-		planDeEstudiosController.recuperarDimensionesTabla();
+		tableController.recuperarDimensionesTabla();
 	}
 
 	public void abrirArchivo() {
@@ -143,7 +143,7 @@ public class MainController implements Initializable {
 	private void ejecutarSegunSeleccionado(Consumer<Materia> funcion) {
 		switch (getTabLocalizedId()) {
 		case "planDeEstudios":
-			funcion.accept(planDeEstudiosController.obtenerSeleccionado());
+			funcion.accept(tableController.obtenerSeleccionado());
 			break;
 		case "listaDeMaterias":
 			funcion.accept(listaDeMateriasController.obtenerSeleccionado());
@@ -174,7 +174,7 @@ public class MainController implements Initializable {
 
 	public void cerrarPrograma(Event cierre) {
 		cierre.consume();
-		this.planDeEstudiosController.guardarDimensionesTabla();
+		this.tableController.guardarDimensionesTabla();
 		if (!hayCambiosSinGuardar())
 			cerrarVentana();
 		else

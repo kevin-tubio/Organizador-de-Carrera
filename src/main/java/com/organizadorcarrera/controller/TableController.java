@@ -25,7 +25,7 @@ import com.organizadorcarrera.listado.Listado;
 import com.organizadorcarrera.service.ConfigurationService;
 
 @Component
-public class ControladorTabla implements Initializable {
+public class TableController implements Initializable {
 
 	@FXML
 	private TableView<Materia> tabla;
