@@ -1,44 +1,47 @@
 package com.organizadorcarrera.util;
 
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-import javafx.fxml.FXMLLoader;
-import javafx.stage.Modality;
+import com.organizadorcarrera.controladores.ControladorAgregarMateria;
+import com.organizadorcarrera.controladores.ControladorPrincipal;
+import com.organizadorcarrera.entity.Materia;
+
 import javafx.stage.Stage;
 
+@Component
 public class DirectorVentana {
 
-	private WindowBuilder builder;
+	@Autowired
+	private WindowBuilder windowBuilder;
 
-	public DirectorVentana(String url, String claveDeTitulo) {
-		this(url, claveDeTitulo, loader -> {
-		});
+	public void hacerVentanaMain(Stage stage) {
+		var loader = this.windowBuilder.createLoader("/fxml/Main.fxml");
+		this.windowBuilder.setFXMLScene(stage, loader);
+		this.windowBuilder.setTituloInternacionalizable("TituloVentanaPrincipal");
+		stage.setOnCloseRequest(((ControladorPrincipal) loader.getController())::cerrarPrograma);
+		this.windowBuilder.hacerVentana();
 	}
 
-	public DirectorVentana(String url, String claveDeTitulo, Consumer<FXMLLoader> funcion) {
-		this(url, claveDeTitulo, (stage, loader) -> funcion.accept(loader));
+	public void hacerVentanaAgregarMateria() {
+		this.windowBuilder.setFXMLScene(this.windowBuilder.createLoader("/fxml/AgregarMateria.fxml"));
+		this.windowBuilder.setTituloInternacionalizable("TituloVentanaAgregar");
+		this.windowBuilder.hacerVentanaModal();
 	}
 
-	public DirectorVentana(String url, String claveDeTitulo, BiConsumer<Stage, FXMLLoader> funcion) {
-		this.builder = new WindowBuilder();
-		this.builder.setTituloInternacionalizable(claveDeTitulo);
-		this.builder.setFXMLScene(url);
-		this.builder.establecerFuncion(funcion);
+	public void hacerVentanaEditarMateria(Materia materia) {
+		var loader = this.windowBuilder.createLoader("/fxml/AgregarMateria.fxml");
+		this.windowBuilder.setFXMLScene(loader);
+		this.windowBuilder.setTituloInternacionalizable("TituloVentanaEditar");
+		ControladorAgregarMateria controlador = loader.getController();
+		controlador.inyectarMateria(materia);
+		this.windowBuilder.hacerVentanaModal();
 	}
 
-	public void hacerVentana() {
-		builder.construirVentana().show();
-	}
-
-	public void hacerVentanaModal() {
-		this.builder.setModalidad(Modality.APPLICATION_MODAL);
-		builder.construirVentana().showAndWait();
-	}
-
-	public void hacerSubVentanaModal() {
-		this.builder.setModalidad(Modality.WINDOW_MODAL);
-		builder.construirVentana().showAndWait();
+	public void hacerVentanaCierre() {
+		this.windowBuilder.setFXMLScene(this.windowBuilder.createLoader("/fxml/ConfirmacionCierre.fxml"));
+		this.windowBuilder.setTituloInternacionalizable("TituloVentanaConfirmarCierre");
+		this.windowBuilder.hacerVentanaModal();
 	}
 
 }

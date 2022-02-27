@@ -4,6 +4,10 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -24,7 +28,6 @@ import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.util.Inyectable;
 import com.organizadorcarrera.util.LangResource;
 import com.organizadorcarrera.entity.Materia;
 
@@ -32,42 +35,61 @@ import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;
 import net.synedra.validatorfx.Validator;
 
-public class ControladorAgregarMateria implements Initializable, Inyectable {
+@Component
+@Scope("prototype")
+public class ControladorAgregarMateria implements Initializable {
 
 	@FXML
 	private Button aceptar;
+
 	@FXML
 	private Button cancelar;
+
 	@FXML
 	private TextField id;
+
 	@FXML
 	private TextField nombre;
+
 	@FXML
 	private TextField buscador;
+
 	@FXML
 	private ChoiceBox<Tipo> tipo;
+
 	@FXML
 	private ChoiceBox<Periodo> periodo;
+
 	@FXML
 	private ChoiceBox<Estado> estado;
+
 	@FXML
 	private Spinner<Integer> nota;
+
 	@FXML
 	private Spinner<Integer> anio;
+
 	@FXML
 	private Spinner<Integer> hs;
+
 	@FXML
 	private Spinner<Double> creditos;
+
 	@FXML
 	private ListView<Materia> listado;
+
 	@FXML
 	private ListView<Materia> listadoCorrelativas;
+
 	@FXML
 	private MenuItem itemContextualAgregar;
+
 	@FXML
 	private MenuItem itemContextualQuitar;
+
 	@FXML
 	private Label mensajeError;
+
 	@FXML
 	private BorderPane contenedor;
 
@@ -76,7 +98,7 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 	private FilteredList<Materia> listaFiltrada;
 	private Validator validador;
 	private Materia materiaInyectada;
-	private ControladorPrincipal controlador;
+	private ControladorPrincipal controladorPrincipal;
 
 	public ControladorAgregarMateria() {
 		this.validador = new Validator();
@@ -235,12 +257,12 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 
 //----------------------------------------------------------------------------------------------------------------------
 
-	@Override
-	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
-		this.controlador = controladorPrincipal;
+	@Autowired
+	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
+		this.controladorPrincipal = controladorPrincipal;
 	}
 
-	protected void inyectarMateria(Materia materia) {
+	public void inyectarMateria(Materia materia) {
 		this.materiaInyectada = materia;
 		this.id.setText(String.valueOf(materia.getNumeroActividad()));
 		this.nombre.setText(materia.getNombre());
@@ -298,7 +320,7 @@ public class ControladorAgregarMateria implements Initializable, Inyectable {
 			actualizarDatos(materiaInyectada);
 			Listado.obtenerListado().agregarMateria(materiaInyectada);
 		}
-		this.controlador.declararCambios();
+		this.controladorPrincipal.declararCambios();
 		cerrar();
 	}
 

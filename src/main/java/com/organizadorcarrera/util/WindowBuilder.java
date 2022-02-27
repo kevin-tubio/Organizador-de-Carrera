@@ -1,68 +1,67 @@
 package com.organizadorcarrera.util;
 
 import java.io.IOException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+@Component
 public class WindowBuilder {
 
+	@Autowired
+	private ApplicationContext applicationContext;
+
 	private Stage stage;
-	private Modality modalidad;
-	private Consumer<FXMLLoader> funcion;
-	private Scene scene;
-	private FXMLLoader loader;
-	private BiConsumer<Stage, FXMLLoader> biFuncion;
 
-	public WindowBuilder() {
-		this.stage = new Stage();
-		this.modalidad = Modality.NONE;
-		this.scene = new Scene(new AnchorPane());
+	public void setFXMLScene(Stage stage, FXMLLoader loader) {
+		this.stage = stage;
+		stage.setScene(getScene(loader));
 	}
 
-	public void setFXMLScene(String url) {
-		this.loader = new FXMLLoader(this.getClass().getResource(url), LangResource.getResourceBundle());
+	public void setFXMLScene(FXMLLoader loader) {
+		this.setFXMLScene(new Stage(), loader);
+	}
+
+	private Scene getScene(FXMLLoader loader) {
 		try {
-			this.scene = new Scene(this.loader.load());
+			return new Scene(loader.load());
 		} catch (IOException e) {
-			this.loader = null;
-			return;
+			throw new RuntimeException(e);
 		}
-		if (this.funcion != null)
-			establecerFuncion(this.funcion);
-		if (this.biFuncion != null)
-			establecerFuncion(this.biFuncion);
-	}
-
-	public void establecerFuncion(Consumer<FXMLLoader> funcion) {
-		this.funcion = funcion;
-		if (loader != null)
-			funcion.accept(this.loader);
-	}
-
-	public void establecerFuncion(BiConsumer<Stage, FXMLLoader> funcion) {
-		this.biFuncion = funcion;
-		if (loader != null)
-			funcion.accept(this.stage, this.loader);
 	}
 
 	public void setTituloInternacionalizable(String claveDeTitulo) {
-		this.stage.setTitle(LangResource.getString(claveDeTitulo));
+		stage.setTitle(LangResource.getString(claveDeTitulo));
 	}
 
 	public void setModalidad(Modality modalidad) {
-		this.modalidad = modalidad;
+		stage.initModality(modalidad);
 	}
 
-	public Stage construirVentana() {
-		stage.initModality(modalidad);
-		stage.setScene(scene);
-		return this.stage;
+	public FXMLLoader createLoader(String url) {
+		var loader = new FXMLLoader(this.getClass().getResource(url), LangResource.getResourceBundle());
+		loader.setControllerFactory(applicationContext::getBean);
+		return loader;
+	}
+
+	public void hacerVentana() {
+		stage.show();
+	}
+
+	public void hacerVentanaModal() {
+		setModalidad(Modality.APPLICATION_MODAL);
+		stage.showAndWait();
+	}
+
+	public void hacerSubVentanaModal() {
+		setModalidad(Modality.WINDOW_MODAL);
+		stage.showAndWait();
 	}
 
 }

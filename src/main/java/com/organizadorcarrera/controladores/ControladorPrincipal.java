@@ -7,12 +7,13 @@ import java.util.function.Consumer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
@@ -30,8 +31,8 @@ import com.organizadorcarrera.sistema.InterpretadorDeDatosGuardados;
 import com.organizadorcarrera.sistema.InterpretadorDePlanillas;
 import com.organizadorcarrera.sistema.RecuperadorDatosGuardados;
 import com.organizadorcarrera.util.DirectorVentana;
-import com.organizadorcarrera.util.Inyectable;
 
+@Component
 public class ControladorPrincipal implements Initializable {
 
 	@FXML
@@ -61,6 +62,9 @@ public class ControladorPrincipal implements Initializable {
 	@FXML
 	private AnchorPane ancla;
 
+	@Autowired
+	private DirectorVentana directorVentana;
+
 	private SimpleBooleanProperty cambiosSubject;
 	private Logger logger;
 
@@ -71,8 +75,6 @@ public class ControladorPrincipal implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.planDeEstudiosController.inyectarControlador(this);
-		this.listaDeMateriasController.inyectarControlador(this);
 		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
 		this.deshabilitarFunciones();
 		var interpretador = new RecuperadorDatosGuardados();
@@ -135,8 +137,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	public void agregarMateria() {
-		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController()).inyectarControlador(this);
-		new DirectorVentana("/fxml/AgregarMateria.fxml", "TituloVentanaAgregar", funcion).hacerVentanaModal();
+		this.directorVentana.hacerVentanaAgregarMateria();
 	}
 
 	public void editarMateria() {
@@ -202,9 +203,7 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	private void confirmarCierre() {
-		Consumer<FXMLLoader> funcion = loader -> ((Inyectable) loader.getController()).inyectarControlador(this);
-		new DirectorVentana("/fxml/ConfirmacionCierre.fxml", "TituloVentanaConfirmarCierre", funcion)
-				.hacerVentanaModal();
+		this.directorVentana.hacerVentanaCierre();
 	}
 
 	void cerrarVentana() {

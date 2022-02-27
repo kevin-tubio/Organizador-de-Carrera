@@ -3,6 +3,9 @@ package com.organizadorcarrera.controladores;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javafx.collections.MapChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -20,9 +23,9 @@ import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
 import com.organizadorcarrera.enumerados.TipoConfiguracion;
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.util.Inyectable;
 
-public class ControladorTabla implements Initializable, Inyectable {
+@Component
+public class ControladorTabla implements Initializable {
 
 	@FXML
 	private TableView<Materia> tabla;
@@ -60,7 +63,7 @@ public class ControladorTabla implements Initializable, Inyectable {
 	@FXML
 	private MenuItem itemContextualBorrar;
 
-	private ControladorPrincipal controlador;
+	private ControladorPrincipal controladorPrincipal;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
@@ -102,7 +105,7 @@ public class ControladorTabla implements Initializable, Inyectable {
 
 	public void habilitarFunciones() {
 		if (this.obtenerSeleccionado() != null) {
-			this.controlador.habilitarFunciones();
+			this.controladorPrincipal.habilitarFunciones();
 		}
 	}
 
@@ -111,16 +114,16 @@ public class ControladorTabla implements Initializable, Inyectable {
 	}
 
 	public void borrarContextual() {
-		this.controlador.borrarMateria(this.obtenerSeleccionado());
+		this.controladorPrincipal.borrarMateria(this.obtenerSeleccionado());
 	}
 
 	public void editarContextual() {
-		this.controlador.editarMateria(this.obtenerSeleccionado());
+		this.controladorPrincipal.editarMateria(this.obtenerSeleccionado());
 		tabla.refresh();
 	}
 
 	public void agregarMateria() {
-		this.controlador.agregarMateria();
+		this.controladorPrincipal.agregarMateria();
 	}
 
 	public void guardarDimensionesTabla() {
@@ -188,8 +191,8 @@ public class ControladorTabla implements Initializable, Inyectable {
 		this.creditos.setVisible(configuracion.getCreditosVisible());
 	}
 
-	@Override
-	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
-		this.controlador = controladorPrincipal;
+	@Autowired
+	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
+		this.controladorPrincipal = controladorPrincipal;
 	}
 }

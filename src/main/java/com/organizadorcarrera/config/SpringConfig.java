@@ -1,39 +1,34 @@
 package com.organizadorcarrera.config;
 
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.organizadorcarrera.controladores.ControladorAgregarMateria;
-import com.organizadorcarrera.controladores.ControladorCierrePrograma;
-import com.organizadorcarrera.controladores.ControladorLista;
-import com.organizadorcarrera.controladores.ControladorPrincipal;
-import com.organizadorcarrera.controladores.ControladorTabla;
+import com.organizadorcarrera.util.DirectorVentana;
+import com.organizadorcarrera.util.WindowBuilder;
 
 @Configuration
 public class SpringConfig {
 
 	@Bean
-	public ControladorPrincipal getControladorPrincipal() {
-		return new ControladorPrincipal();
+	public ResourceBundle getResourceBundle() {
+		try {
+			return ResourceBundle.getBundle("lang.string", Locale.getDefault());
+		} catch (MissingResourceException e) {
+			return ResourceBundle.getBundle("lang.string", new Locale("en"));
+		}
 	}
 
 	@Bean
-	public ControladorTabla getControladorTabla() {
-		return new ControladorTabla();
+	public WindowBuilder getWindowBuilder() {
+		return new WindowBuilder();
 	}
 
 	@Bean
-	public ControladorLista getControladorLista() {
-		return new ControladorLista();
-	}
-
-	@Bean
-	public ControladorAgregarMateria getControladorAgregarMateria() {
-		return new ControladorAgregarMateria();
-	}
-
-	@Bean
-	public ControladorCierrePrograma getControladorCierrePrograma() {
-		return new ControladorCierrePrograma();
+	public DirectorVentana getDirectorVentana() {
+		return new DirectorVentana();
 	}
 }

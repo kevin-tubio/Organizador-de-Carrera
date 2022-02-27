@@ -4,24 +4,26 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.util.Inyectable;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-public class ControladorCierrePrograma implements Inyectable {
+@Component
+public class ControladorCierrePrograma {
 
 	@FXML
 	private Button botonCancelar;
 
-	private ControladorPrincipal controlador;
+	private ControladorPrincipal controladorPrincipal;
 
 	public void guardar() {
-		this.controlador.persistirCambiosListado();
+		this.controladorPrincipal.persistirCambiosListado();
 		cerrarConfirmacion();
-		this.controlador.cerrarVentana();
+		this.controladorPrincipal.cerrarVentana();
 	}
 
 	public void descartar() {
 		cerrarConfirmacion();
-		this.controlador.cerrarVentana();
+		this.controladorPrincipal.cerrarVentana();
 	}
 
 	public void cancelar() {
@@ -32,8 +34,8 @@ public class ControladorCierrePrograma implements Inyectable {
 		((Stage) this.botonCancelar.getScene().getWindow()).close();
 	}
 
-	@Override
-	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
-		this.controlador = controladorPrincipal;
+	@Autowired
+	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
+		this.controladorPrincipal = controladorPrincipal;
 	}
 }

@@ -3,6 +3,9 @@ package com.organizadorcarrera.controladores;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
@@ -14,14 +17,14 @@ import javafx.scene.control.ListView;
 
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.util.Inyectable;
 
-public class ControladorLista implements Initializable, Inyectable {
+@Component
+public class ControladorLista implements Initializable {
 
 	@FXML
 	private ListView<Materia> lista;
 
-	private ControladorPrincipal controlador;
+	private ControladorPrincipal controladorPrincipal;
 	private FilteredList<Materia> listaFiltrada;
 	private ObservableList<Materia> listaDeMaterias;
 
@@ -49,12 +52,12 @@ public class ControladorLista implements Initializable, Inyectable {
 
 	public void habilitarFunciones() {
 		if (this.obtenerSeleccionado() != null && !Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
-			this.controlador.habilitarFunciones();
+			this.controladorPrincipal.habilitarFunciones();
 		}
 	}
 
-	@Override
-	public void inyectarControlador(ControladorPrincipal controladorPrincipal) {
-		this.controlador = controladorPrincipal;
+	@Autowired
+	public void setControladorPrincipal(ControladorPrincipal controladorPrincipal) {
+		this.controladorPrincipal = controladorPrincipal;
 	}
 }
