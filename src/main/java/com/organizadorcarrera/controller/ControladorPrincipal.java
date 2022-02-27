@@ -25,9 +25,9 @@ import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.exception.ArchivoException;
 import com.organizadorcarrera.listado.Listado;
 import com.organizadorcarrera.service.ListadoService;
-import com.organizadorcarrera.sistema.InterpretadorDeArchivos;
-import com.organizadorcarrera.sistema.InterpretadorDeDatosGuardados;
-import com.organizadorcarrera.sistema.InterpretadorDePlanillas;
+import com.organizadorcarrera.system.InterpretadorDeArchivos;
+import com.organizadorcarrera.system.InterpretadorDeDatosGuardados;
+import com.organizadorcarrera.system.InterpretadorDePlanillas;
 import com.organizadorcarrera.util.DirectorVentana;
 
 @Component

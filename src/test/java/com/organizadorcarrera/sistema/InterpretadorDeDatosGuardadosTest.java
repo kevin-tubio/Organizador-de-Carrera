@@ -16,6 +16,9 @@ import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.exception.ArchivoException;
 import com.organizadorcarrera.exception.MateriaInvalidaException;
 import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.system.InterpretadorDeArchivos;
+import com.organizadorcarrera.system.InterpretadorDeDatosGuardados;
+import com.organizadorcarrera.system.InterpretadorDePlanillas;
 
 public class InterpretadorDeDatosGuardadosTest {
 

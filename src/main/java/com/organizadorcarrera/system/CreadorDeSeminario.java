@@ -1,4 +1,4 @@
-package com.organizadorcarrera.sistema;
+package com.organizadorcarrera.system;
 
 import org.apache.poi.ss.usermodel.Row;
 

@@ -1,4 +1,4 @@
-package com.organizadorcarrera.sistema;
+package com.organizadorcarrera.system;
 
 import com.organizadorcarrera.exception.ArchivoException;
 import com.organizadorcarrera.listado.Listado;

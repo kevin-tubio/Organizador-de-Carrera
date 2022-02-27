@@ -1,4 +1,4 @@
-package com.organizadorcarrera.sistema;
+package com.organizadorcarrera.system;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
