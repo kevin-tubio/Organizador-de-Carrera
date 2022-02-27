@@ -37,7 +37,7 @@ import net.synedra.validatorfx.Validator;
 
 @Component
 @Scope("prototype")
-public class ControladorAgregarMateria implements Initializable {
+public class CourseController implements Initializable {
 
 	@FXML
 	private Button aceptar;
@@ -100,7 +100,7 @@ public class ControladorAgregarMateria implements Initializable {
 	private Materia materiaInyectada;
 	private MainController mainController;
 
-	public ControladorAgregarMateria() {
+	public CourseController() {
 		this.validador = new Validator();
 		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
 		this.correlativas = FXCollections.observableArrayList();

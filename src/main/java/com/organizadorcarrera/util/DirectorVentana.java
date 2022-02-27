@@ -3,7 +3,7 @@ package com.organizadorcarrera.util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.organizadorcarrera.controller.ControladorAgregarMateria;
+import com.organizadorcarrera.controller.CourseController;
 import com.organizadorcarrera.controller.MainController;
 import com.organizadorcarrera.entity.Materia;
 
@@ -33,8 +33,8 @@ public class DirectorVentana {
 		var loader = this.windowBuilder.createLoader("/fxml/AgregarMateria.fxml");
 		this.windowBuilder.setFXMLScene(loader);
 		this.windowBuilder.setTituloInternacionalizable("TituloVentanaEditar");
-		ControladorAgregarMateria controlador = loader.getController();
-		controlador.inyectarMateria(materia);
+		CourseController controller = loader.getController();
+		controller.inyectarMateria(materia);
 		this.windowBuilder.hacerVentanaModal();
 	}
 
