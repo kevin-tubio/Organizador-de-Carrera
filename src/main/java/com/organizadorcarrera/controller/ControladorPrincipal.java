@@ -24,7 +24,7 @@ import javafx.stage.Stage;
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.exception.ArchivoException;
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.services.ListadoService;
+import com.organizadorcarrera.service.ListadoService;
 import com.organizadorcarrera.sistema.InterpretadorDeArchivos;
 import com.organizadorcarrera.sistema.InterpretadorDeDatosGuardados;
 import com.organizadorcarrera.sistema.InterpretadorDePlanillas;

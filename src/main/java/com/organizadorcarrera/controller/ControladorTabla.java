@@ -22,7 +22,7 @@ import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
 import com.organizadorcarrera.enumerados.TipoConfiguracion;
 import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.services.ConfigurationService;
+import com.organizadorcarrera.service.ConfigurationService;
 
 @Component
 public class ControladorTabla implements Initializable {
