@@ -20,7 +20,7 @@ import com.organizadorcarrera.excepciones.MateriaInvalidaException;
 public class Listado {
 
 	private static Listado instancia;
-	private static ObservableMap<Integer, Materia> listadoDeMaterias;
+	private ObservableMap<Integer, Materia> listadoDeMaterias;
 	private List<Materia> ordenDeMaterias;
 	private Logger logger;
 
@@ -38,7 +38,7 @@ public class Listado {
 	}
 
 	public static void borrarListado() {
-		listadoDeMaterias.clear();
+		instancia.listadoDeMaterias.clear();
 	}
 
 	public void agregarMateria(Materia materia) {
