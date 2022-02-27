@@ -4,7 +4,7 @@ import org.apache.poi.ss.usermodel.Row;
 
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.excepciones.FormatoDeCeldaException;
+import com.organizadorcarrera.exception.FormatoDeCeldaException;
 import com.organizadorcarrera.util.LangResource;
 
 public class CreadorDeSeminario extends CreadorDeMateria {

@@ -13,9 +13,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.organizadorcarrera.excepciones.ArchivoException;
-import com.organizadorcarrera.excepciones.FormatoDeCeldaException;
-import com.organizadorcarrera.excepciones.PlanillaInvalidaException;
+import com.organizadorcarrera.exception.ArchivoException;
+import com.organizadorcarrera.exception.FormatoDeCeldaException;
+import com.organizadorcarrera.exception.PlanillaInvalidaException;
 import com.organizadorcarrera.listado.Listado;
 import com.organizadorcarrera.util.LangResource;
 

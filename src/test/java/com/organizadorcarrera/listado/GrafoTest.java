@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.excepciones.ListadoInvalidoException;
-import com.organizadorcarrera.excepciones.MateriaInvalidaException;
+import com.organizadorcarrera.exception.ListadoInvalidoException;
+import com.organizadorcarrera.exception.MateriaInvalidaException;
 import com.organizadorcarrera.util.LangResource;
 
 public class GrafoTest {

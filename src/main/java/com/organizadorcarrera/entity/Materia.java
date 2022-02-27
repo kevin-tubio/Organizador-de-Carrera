@@ -19,7 +19,7 @@ import javax.persistence.Table;
 import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.excepciones.MateriaInvalidaException;
+import com.organizadorcarrera.exception.MateriaInvalidaException;
 import com.organizadorcarrera.util.LangResource;
 
 @Entity

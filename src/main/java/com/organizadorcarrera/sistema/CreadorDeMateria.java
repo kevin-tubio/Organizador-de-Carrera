@@ -7,7 +7,7 @@ import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.excepciones.FormatoDeCeldaException;
+import com.organizadorcarrera.exception.FormatoDeCeldaException;
 import com.organizadorcarrera.util.LangResource;
 
 public abstract class CreadorDeMateria {

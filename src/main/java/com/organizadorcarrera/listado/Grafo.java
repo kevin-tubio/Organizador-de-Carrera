@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.excepciones.ListadoInvalidoException;
+import com.organizadorcarrera.exception.ListadoInvalidoException;
 import com.organizadorcarrera.util.LangResource;
 
 public class Grafo {

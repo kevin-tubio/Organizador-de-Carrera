@@ -14,8 +14,8 @@ import javafx.collections.ObservableMap;
 
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.util.LangResource;
-import com.organizadorcarrera.excepciones.ListadoInvalidoException;
-import com.organizadorcarrera.excepciones.MateriaInvalidaException;
+import com.organizadorcarrera.exception.ListadoInvalidoException;
+import com.organizadorcarrera.exception.MateriaInvalidaException;
 
 public class Listado {
 

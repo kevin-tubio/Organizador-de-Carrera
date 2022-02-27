@@ -1,7 +1,7 @@
 package com.organizadorcarrera.sistema;
 
 import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.excepciones.FormatoDeCeldaException;
+import com.organizadorcarrera.exception.FormatoDeCeldaException;
 import com.organizadorcarrera.util.LangResource;
 
 public class CreadorDeMateriaSimple extends CreadorDeMateria {

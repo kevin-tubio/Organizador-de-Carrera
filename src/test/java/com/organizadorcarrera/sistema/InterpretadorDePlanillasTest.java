@@ -12,8 +12,8 @@ import org.junit.Test;
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.excepciones.ArchivoException;
-import com.organizadorcarrera.excepciones.MateriaInvalidaException;
+import com.organizadorcarrera.exception.ArchivoException;
+import com.organizadorcarrera.exception.MateriaInvalidaException;
 import com.organizadorcarrera.listado.Listado;
 
 public class InterpretadorDePlanillasTest {

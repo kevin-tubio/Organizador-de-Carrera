@@ -22,7 +22,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.excepciones.ArchivoException;
+import com.organizadorcarrera.exception.ArchivoException;
 import com.organizadorcarrera.listado.Listado;
 import com.organizadorcarrera.services.ListadoService;
 import com.organizadorcarrera.sistema.InterpretadorDeArchivos;

@@ -13,9 +13,9 @@ import org.slf4j.LoggerFactory;
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.excepciones.ArchivoException;
-import com.organizadorcarrera.excepciones.FormatoDeLineaException;
-import com.organizadorcarrera.excepciones.MateriaInvalidaException;
+import com.organizadorcarrera.exception.ArchivoException;
+import com.organizadorcarrera.exception.FormatoDeLineaException;
+import com.organizadorcarrera.exception.MateriaInvalidaException;
 import com.organizadorcarrera.listado.Listado;
 import com.organizadorcarrera.util.LangResource;
 

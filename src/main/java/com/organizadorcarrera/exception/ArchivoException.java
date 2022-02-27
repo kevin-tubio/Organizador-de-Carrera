@@ -1,4 +1,4 @@
-package com.organizadorcarrera.excepciones;
+package com.organizadorcarrera.exception;
 
 public class ArchivoException extends Exception {
 
