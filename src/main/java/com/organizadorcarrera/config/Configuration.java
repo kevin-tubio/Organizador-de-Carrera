@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
@@ -22,24 +23,21 @@ import com.organizadorcarrera.enumerados.TipoConfiguracion;
 @Table(name="CONFIG", schema="LISTADO")
 public class Configuration {
 
-	@ElementCollection
+	@Id
+	@Enumerated(EnumType.STRING)
+	private TipoConfiguracion tipoConfiguracion;
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "CONFIGURATION", schema = "LISTADO", joinColumns = {
-			@JoinColumn(name = "TIPO_CONFIGURACION", referencedColumnName = "TIPO") })
-	@MapKeyColumn(name = "PARAMETRO")
-	@Column(name = "VALOR")
+			@JoinColumn(name = "tipo", referencedColumnName = "tipoConfiguracion") })
+	@MapKeyColumn(name = "parametro")
+	@Column(name = "valor")
 	private Map<String, String> config;
 
-	@Id
-	@Column(nullable = false)
-	@Enumerated(EnumType.STRING)
-	private TipoConfiguracion tipo;
+	public Configuration() { /* JPA exclusive */ }
 	
-	public Configuration() {
-		this(null);
-	}
-	
-	public Configuration(TipoConfiguracion tipo) {
-		this.tipo = tipo;
+	public Configuration(TipoConfiguracion tipoConfiguracion) {
+		this.tipoConfiguracion = tipoConfiguracion;
 		this.config = new HashMap<>();
 	}
 
@@ -52,7 +50,7 @@ public class Configuration {
 	}
 
 	public TipoConfiguracion getConfigType() {
-		return this.tipo;
+		return this.tipoConfiguracion;
 	}
 
 	public Set<String> getConfigurations() {

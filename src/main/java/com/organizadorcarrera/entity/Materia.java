@@ -9,6 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -27,19 +28,19 @@ public class Materia {
 
 	@Id
 	@Column(name = "ID", unique = true)
-	private int numeroActividad;
+	private Integer numeroActividad;
 
 	@Column(nullable = false)
 	private String nombre;
 
 	@Column(nullable = false)
-	private int anio;
+	private Integer anio;
 
 	@Column(nullable = false)
-	private int calificacion;
+	private Integer calificacion;
 
 	@Column(name = "HORAS_SEMANALES", nullable = false)
-	private int horasSemanales;
+	private Integer horasSemanales;
 
 	@Column(nullable = false)
 	private double creditos;
@@ -56,23 +57,21 @@ public class Materia {
 	@Enumerated(EnumType.STRING)
 	private Tipo tipo;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "MATERIA_MATERIA", joinColumns = @JoinColumn(name = "ID"), schema = "LISTADO")
 	private Set<Materia> correlativas;
 
-	public Materia() {
-		// declarado solo para jpa
-	}
+	public Materia() { /* JPA exclusive */ }
 
-	public Materia(int numeroActividad, String nombre) {
+	public Materia(Integer numeroActividad, String nombre) {
 		this(numeroActividad, nombre, 1, Periodo.PRIMER_CUATRIMESTRE);
 	}
 
-	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo) {
+	public Materia(Integer numeroActividad, String nombre, Integer anio, Periodo periodo) {
 		this(numeroActividad, nombre, anio, periodo, Estado.NO_CURSADA, 0);
 	}
 
-	public Materia(int numeroActividad, String nombre, int anio, Periodo periodo, Estado estado, int calificacion) {
+	public Materia(Integer numeroActividad, String nombre, Integer anio, Periodo periodo, Estado estado, Integer calificacion) {
 		this.numeroActividad = numeroActividad;
 		this.nombre = nombre;
 		this.estado = estado;
@@ -93,11 +92,11 @@ public class Materia {
 		this.estado = estado;
 	}
 
-	public int getNumeroActividad() {
+	public Integer getNumeroActividad() {
 		return numeroActividad;
 	}
 
-	public int getAnio() {
+	public Integer getAnio() {
 		return anio;
 	}
 
@@ -138,11 +137,11 @@ public class Materia {
 		this.tipo = tipo;
 	}
 
-	public int getHorasSemanales() {
+	public Integer getHorasSemanales() {
 		return horasSemanales;
 	}
 
-	public void setHorasSemanales(int horasSemanales) {
+	public void setHorasSemanales(Integer horasSemanales) {
 		this.horasSemanales = horasSemanales;
 	}
 
@@ -168,7 +167,7 @@ public class Materia {
 		if (getClass() != obj.getClass())
 			return false;
 		Materia other = (Materia) obj;
-		return numeroActividad == other.numeroActividad;
+		return numeroActividad.equals(other.numeroActividad);
 	}
 
 	@Override
@@ -176,7 +175,7 @@ public class Materia {
 		return nombre + " ( " + numeroActividad + " )";
 	}
 
-	public void setCalificacion(int calificacion) {
+	public void setCalificacion(Integer calificacion) {
 		this.calificacion = calificacion;
 	}
 
@@ -192,7 +191,7 @@ public class Materia {
 		this.nombre = nombre;
 	}
 
-	public void setAnio(int anio) {
+	public void setAnio(Integer anio) {
 		this.anio = anio;
 	}
 

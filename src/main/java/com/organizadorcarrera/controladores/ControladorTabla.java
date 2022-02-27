@@ -16,13 +16,13 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import com.organizadorcarrera.config.TableConfiguration;
-import com.organizadorcarrera.dao.AccesadorAConfiguracion;
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.enumerados.Estado;
 import com.organizadorcarrera.enumerados.Periodo;
 import com.organizadorcarrera.enumerados.Tipo;
 import com.organizadorcarrera.enumerados.TipoConfiguracion;
 import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.services.ConfigurationService;
 
 @Component
 public class ControladorTabla implements Initializable {
@@ -62,6 +62,9 @@ public class ControladorTabla implements Initializable {
 
 	@FXML
 	private MenuItem itemContextualBorrar;
+
+	@Autowired
+	private ConfigurationService configurationService;
 
 	private ControladorPrincipal controladorPrincipal;
 
@@ -130,8 +133,7 @@ public class ControladorTabla implements Initializable {
 		TableConfiguration configuracion = new TableConfiguration();
 		guardarDimensiones(configuracion);
 		guardarVisibles(configuracion);
-		AccesadorAConfiguracion dao = new AccesadorAConfiguracion();
-		dao.actualizarConfiguracion(configuracion.getConfig());
+		configurationService.save(configuracion.getConfig());
 	}
 
 	private void guardarDimensiones(TableConfiguration configuracion) {
@@ -159,8 +161,7 @@ public class ControladorTabla implements Initializable {
 	}
 
 	public void recuperarDimensionesTabla() {
-		AccesadorAConfiguracion dao = new AccesadorAConfiguracion();
-		TableConfiguration configuracion = new TableConfiguration(dao.obtenerConfiguracion(TipoConfiguracion.TABLA));
+		TableConfiguration configuracion = new TableConfiguration(configurationService.findByTipoConfiguracion(TipoConfiguracion.TABLA));
 		if (configuracion.esValida()) {
 			dimensionarColumnas(configuracion);
 			recuperarVisibles(configuracion);

@@ -167,7 +167,7 @@ public class TableConfiguration {
 	}
 
 	public boolean esValida() {
-		return !config.estaVacia();
+		return config != null && !config.estaVacia();
 	}
 
 	public Configuration getConfig() {

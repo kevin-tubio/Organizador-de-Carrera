@@ -21,15 +21,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.dao.AccesadorADatos;
-import com.organizadorcarrera.dao.AccesadorAMaterias;
 import com.organizadorcarrera.entity.Materia;
 import com.organizadorcarrera.excepciones.ArchivoException;
 import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.services.ListadoService;
 import com.organizadorcarrera.sistema.InterpretadorDeArchivos;
 import com.organizadorcarrera.sistema.InterpretadorDeDatosGuardados;
 import com.organizadorcarrera.sistema.InterpretadorDePlanillas;
-import com.organizadorcarrera.sistema.RecuperadorDatosGuardados;
 import com.organizadorcarrera.util.DirectorVentana;
 
 @Component
@@ -65,6 +63,9 @@ public class ControladorPrincipal implements Initializable {
 	@Autowired
 	private DirectorVentana directorVentana;
 
+	@Autowired
+	private ListadoService materiaService;
+
 	private SimpleBooleanProperty cambiosSubject;
 	private Logger logger;
 
@@ -77,13 +78,8 @@ public class ControladorPrincipal implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
 		this.deshabilitarFunciones();
-		var interpretador = new RecuperadorDatosGuardados();
-		try {
-			interpretador.generarListado("");
-		} catch (ArchivoException e) {
-			logger.debug(e.getMessage(), e);
-		}
-//		planDeEstudiosController.recuperarDimensionesTabla();
+		materiaService.recuperarListado();
+		planDeEstudiosController.recuperarDimensionesTabla();
 	}
 
 	public void abrirArchivo() {
@@ -164,24 +160,11 @@ public class ControladorPrincipal implements Initializable {
 	}
 
 	protected void editarMateria(Materia materia) {
-		Consumer<FXMLLoader> funcion = loader -> {
-			ControladorAgregarMateria controlador = loader.getController();
-			controlador.inyectarControlador(this);
-			controlador.inyectarMateria(materia);
-		};
-		new DirectorVentana("/fxml/AgregarMateria.fxml", "TituloVentanaEditar", funcion).hacerVentanaModal();
+		this.directorVentana.hacerVentanaEditarMateria(materia);
 	}
 
 	public void persistirCambiosListado() {
-		Runnable runnable = () -> {
-			var dao = new AccesadorAMaterias();
-			synchronized (AccesadorADatos.class) {
-				dao.borrarTodo();
-				dao.persistirTodo(Listado.obtenerListado().getListadoDeMaterias().values());
-			}
-		};
-		var saving = new Thread(runnable, "persistirCambiosListado");
-		saving.start();
+		materiaService.persistirCambiosListado();
 		this.cambiosSubject.set(false);
 	}
 

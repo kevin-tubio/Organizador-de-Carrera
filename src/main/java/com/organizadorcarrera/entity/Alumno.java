@@ -11,7 +11,7 @@ public class Alumno {
 
 	@Id
 	@Column
-	private int legajo;
+	private Integer legajo;
 
 	@Column(name = "nombre", nullable = false)
 	private String nombreCompleto;
@@ -19,11 +19,9 @@ public class Alumno {
 	@Column(nullable = false)
 	private String carrera;
 
-	public Alumno() {
-		// declarado solo para jpa
-	}
+	public Alumno() { /* JPA exclusive */ }
 
-	public Alumno(String nombreCompleto, int legajo, String carrera) {
+	public Alumno(String nombreCompleto, Integer legajo, String carrera) {
 		setNombreCompleto(nombreCompleto);
 		this.legajo = legajo;
 		this.carrera = carrera;
@@ -46,8 +44,8 @@ public class Alumno {
 		return nombreCompleto;
 	}
 
-	public int getLegajo() {
-		return legajo;
+	public Integer getLegajo() {
+		return legajo.intValue();
 	}
 
 	public String getCarrera() {

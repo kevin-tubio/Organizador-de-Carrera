@@ -141,4 +141,8 @@ public class Listado {
 	public boolean contieneMateria(int id) {
 		return listadoDeMaterias.containsKey(id);
 	}
+
+	public boolean isEmpty() {
+		return listadoDeMaterias.isEmpty();
+	}
 }
