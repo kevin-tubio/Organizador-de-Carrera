@@ -5,7 +5,7 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/x
 	
 	<groupId>com.organizadorcarrera</groupId>
 	<artifactId>organizador-de-carrera</artifactId>
-	<version>0.1.0</version>
+	<version>0.2.0</version>
 	<name>OrganizadorDeCarrera</name>
 	<packaging>jar</packaging>
 
