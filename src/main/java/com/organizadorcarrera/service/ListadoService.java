@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.repository.MateriaRepository;
+import com.organizadorcarrera.program.Program;
+import com.organizadorcarrera.repository.CourseRepository;
 
 @Service
 public class ListadoService {
 
 	@Autowired
-	private MateriaRepository materiaRepository;
+	private CourseRepository materiaRepository;
 
 	private Logger logger;
 
@@ -22,12 +22,12 @@ public class ListadoService {
 
 	public void persistirCambiosListado() {
 		materiaRepository.deleteAll();
-		materiaRepository.saveAll(Listado.obtenerListado().getListadoDeMaterias().values());
+		materiaRepository.saveAll(Program.getInstance().getProgramMap().values());
 	}
 
-	public Listado recuperarListado() {
-		var listado = Listado.obtenerListado();
-		materiaRepository.findAll().forEach(listado::agregarMateria);
+	public Program recuperarListado() {
+		var listado = Program.getInstance();
+		materiaRepository.findAll().forEach(listado::addCourse);
 
 		if (listado.isEmpty())
 			logger.info("El listado esta vacio.");

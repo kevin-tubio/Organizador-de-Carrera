@@ -1,4 +1,4 @@
-package com.organizadorcarrera.system;
+package com.organizadorcarrera.parser;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -10,105 +10,105 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.enumerados.Estado;
-import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.exception.ArchivoException;
-import com.organizadorcarrera.exception.FormatoDeLineaException;
-import com.organizadorcarrera.exception.MateriaInvalidaException;
-import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.enumerados.CourseStatus;
+import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.exception.FileException;
+import com.organizadorcarrera.exception.LineFormatException;
+import com.organizadorcarrera.program.Program;
+import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
-public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
+public class TextFileParser implements FileParser {
 
 	private int numeroDeLinea;
 	private Logger logger;
 
-	public InterpretadorDeDatosGuardados() {
-		this.logger = LoggerFactory.getLogger(InterpretadorDeDatosGuardados.class);
+	public TextFileParser() {
+		this.logger = LoggerFactory.getLogger(TextFileParser.class);
 	}
 
 	@Override
-	public Listado generarListado(String ruta) throws ArchivoException {
-		Listado.obtenerListado();
+	public Program generarListado(String ruta) throws FileException {
+		Program.getInstance();
 		numeroDeLinea = 0;
 		try (var buffer = new BufferedReader(
 				new InputStreamReader(new FileInputStream(ruta), StandardCharsets.UTF_8))) {
 			agregarMaterias(buffer);
 			obtenerCorrelativas(buffer);
 		} catch (FileNotFoundException e) {
-			throw new ArchivoException(LangResource.getString("ArchivoNoEncontrado") + ruta);
+			throw new FileException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException e) {
-			Listado.borrarListado();
-			throw new ArchivoException(e.getMessage(), e.getCause());
+			Program.clearProgram();
+			throw new FileException(e.getMessage(), e.getCause());
 		}
-		return Listado.obtenerListado();
+		return Program.getInstance();
 	}
 
-	private String validarLinea(String lineaActual, String mensaje) throws FormatoDeLineaException {
+	private String validarLinea(String lineaActual, String mensaje) throws LineFormatException {
 		if (lineaActual == null || lineaActual.strip().isEmpty()) {
-			throw new FormatoDeLineaException(mensaje);
+			throw new LineFormatException(mensaje);
 		}
 		return lineaActual.strip();
 	}
 
-	private void agregarMaterias(BufferedReader buffer) throws IOException, ArchivoException {
+	private void agregarMaterias(BufferedReader buffer) throws IOException, FileException {
 		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, LangResource.getString("NumeroEsperadoLinea"));
-		var listado = Listado.obtenerListado();
+		var listado = Program.getInstance();
 		for (var i = 0; i < cantidadDeMaterias; i++) {
 			try {
-				listado.agregarMateria(crearMateria(buffer));
-			} catch (FormatoDeLineaException e) {
+				listado.addCourse(crearMateria(buffer));
+			} catch (LineFormatException e) {
 				logger.error(LangResource.getString("LineaInvalida"), this.numeroDeLinea, e.getMessage());
 			}
 		}
 	}
 
-	private int obtenerCantidadDeMaterias(BufferedReader buffer, String alerta) throws IOException, ArchivoException {
+	private int obtenerCantidadDeMaterias(BufferedReader buffer, String alerta) throws IOException, FileException {
 		try {
 			numeroDeLinea++;
 			return Integer.parseInt(validarLinea(buffer.readLine(), alerta));
 		} catch (NumberFormatException e) {
-			throw new FormatoDeLineaException(alerta);
+			throw new LineFormatException(alerta);
 		}
 	}
 
-	private Materia crearMateria(BufferedReader buffer) throws IOException, ArchivoException {
+	private Course crearMateria(BufferedReader buffer) throws IOException, FileException {
 		numeroDeLinea++;
 		var linea = validarLinea(buffer.readLine(), LangResource.getString("DatosMateriaEsperados"));
 		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/\\d/([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+/\\d{1,2}/[A-Za-z ]{0,}$")) {
-			throw new FormatoDeLineaException(formatearMensajeExcepcion(LangResource.getString("FormatoInvalido")));
+			throw new LineFormatException(formatearMensajeExcepcion(LangResource.getString("FormatoInvalido")));
 		}
 		String[] datos = linea.split("/");
 		var numeroDeMateria = obtenerNumero(datos[0]);
 		var nombre = datos[1];
 		var anio = obtenerNumero(datos[2]);
 		var periodo = obtenerPeriodo(datos[3]);
-		var materia = new Materia(numeroDeMateria, nombre, anio, periodo);
-		materia.setCalificacion(obtenerNumero(datos[4]));
-		materia.setEstado(obtenerEstadoDeMateria(datos[5]));
+		var materia = new Course(numeroDeMateria, nombre, anio, periodo);
+		materia.setGrade(obtenerNumero(datos[4]));
+		materia.setCourseStatus(obtenerEstadoDeMateria(datos[5]));
 		return materia;
 	}
 
-	private Periodo obtenerPeriodo(String dato) {
+	private CoursePeriod obtenerPeriodo(String dato) {
 		dato = dato.replaceAll("[ ]+", " ");
 		if (dato.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
-			return Periodo.PRIMER_CUATRIMESTRE;
+			return CoursePeriod.PRIMER_CUATRIMESTRE;
 
 		if (dato.equals(LangResource.getString("PeriodoSegundoCuatrimestre")))
-			return Periodo.SEGUNDO_CUATRIMESTRE;
+			return CoursePeriod.SEGUNDO_CUATRIMESTRE;
 
-		return Periodo.ANUAL;
+		return CoursePeriod.ANUAL;
 	}
 
-	private Estado obtenerEstadoDeMateria(String dato) {
+	private CourseStatus obtenerEstadoDeMateria(String dato) {
 		if (dato.equals(LangResource.getString("EstadoAprobado")))
-			return Estado.APROBADA;
+			return CourseStatus.APROBADA;
 
 		if (dato.equals(LangResource.getString("EstadoRegularizado")))
-			return Estado.REGULARIZADA;
+			return CourseStatus.REGULARIZADA;
 
-		return Estado.NO_CURSADA;
+		return CourseStatus.NO_CURSADA;
 	}
 
 	private int obtenerNumero(String dato) {
@@ -129,7 +129,7 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 	private void agregarCorrelativa(BufferedReader buffer) throws IOException {
 		numeroDeLinea++;
 		var linea = buffer.readLine();
-		var listado = Listado.obtenerListado();
+		var listado = Program.getInstance();
 		if (linea != null && linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
 
 			String[] datos = linea.split(": *");
@@ -139,8 +139,8 @@ public class InterpretadorDeDatosGuardados implements InterpretadorDeArchivos {
 				for (var i = 0; i < numeros.length; i++) {
 					numeros[i] = Integer.parseInt(correlativas[i].strip());
 				}
-				listado.agregarCorrelativas(Integer.parseInt(datos[0]), numeros);
-			} catch (MateriaInvalidaException e) {
+				listado.addCorrelatives(Integer.parseInt(datos[0]), numeros);
+			} catch (InvalidCourseException e) {
 				logger.error(e.getMessage());
 			}
 		} else

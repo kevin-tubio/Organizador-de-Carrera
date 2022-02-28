@@ -24,12 +24,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.enumerados.Estado;
-import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.enumerados.CourseStatus;
+import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
-import com.organizadorcarrera.entity.Materia;
+import com.organizadorcarrera.entity.Course;
 
 import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;
@@ -40,217 +40,217 @@ import net.synedra.validatorfx.Validator;
 public class CourseController implements Initializable {
 
 	@FXML
-	private Button aceptar;
+	private Button okButton;
 
 	@FXML
-	private Button cancelar;
+	private Button cancelButton;
 
 	@FXML
-	private TextField id;
+	private TextField idField;
 
 	@FXML
-	private TextField nombre;
+	private TextField nameField;
 
 	@FXML
-	private TextField buscador;
+	private TextField searchField;
 
 	@FXML
-	private ChoiceBox<Tipo> tipo;
+	private ChoiceBox<CourseType> courseTypeField;
 
 	@FXML
-	private ChoiceBox<Periodo> periodo;
+	private ChoiceBox<CoursePeriod> coursePeriodField;
 
 	@FXML
-	private ChoiceBox<Estado> estado;
+	private ChoiceBox<CourseStatus> courseStatusField;
 
 	@FXML
-	private Spinner<Integer> nota;
+	private Spinner<Integer> gradeField;
 
 	@FXML
-	private Spinner<Integer> anio;
+	private Spinner<Integer> yearField;
 
 	@FXML
-	private Spinner<Integer> hs;
+	private Spinner<Integer> hoursField;
 
 	@FXML
-	private Spinner<Double> creditos;
+	private Spinner<Double> creditsField;
 
 	@FXML
-	private ListView<Materia> listado;
+	private ListView<Course> courseList;
 
 	@FXML
-	private ListView<Materia> listadoCorrelativas;
+	private ListView<Course> correlativeCourseList;
 
 	@FXML
-	private MenuItem itemContextualAgregar;
+	private MenuItem addCorrelativeMenuItem;
 
 	@FXML
-	private MenuItem itemContextualQuitar;
+	private MenuItem removeCorrelativeMenuItem;
 
 	@FXML
-	private Label mensajeError;
+	private Label errorMessage;
 
 	@FXML
-	private BorderPane contenedor;
+	private BorderPane container;
 
-	private ObservableList<Materia> materias;
-	private ObservableList<Materia> correlativas;
-	private FilteredList<Materia> listaFiltrada;
-	private Validator validador;
-	private Materia materiaInyectada;
+	private ObservableList<Course> courses;
+	private ObservableList<Course> correlativeCourses;
+	private FilteredList<Course> filteredList;
+	private Validator validator;
+	private Course injectedCourse;
 	private MainController mainController;
 
 	public CourseController() {
-		this.validador = new Validator();
-		this.materias = FXCollections.observableArrayList(Listado.obtenerListado().getListadoDeMaterias().values());
-		this.correlativas = FXCollections.observableArrayList();
-		this.listaFiltrada = new FilteredList<>(this.materias);
+		this.validator = new Validator();
+		this.courses = FXCollections.observableArrayList(Program.getInstance().getProgramMap().values());
+		this.correlativeCourses = FXCollections.observableArrayList();
+		this.filteredList = new FilteredList<>(this.courses);
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
-		this.inicializarCampos();
-		this.crearValidadorDeCampos();
-		this.agregarSubscriptorAlBuscador();
+		this.initializeFields();
+		this.createFieldsValidator();
+		this.subscribeToSearchBox();
 	}
 
-	private void inicializarCampos() {
-		this.inicializarChoiceBoxes();
-		this.inicializarSpinners();
-		this.inicializarBotones();
-		this.inicializarListaDeCorrelativas();
-		this.inicializarListaDeMaterias();
+	private void initializeFields() {
+		this.initializeChoiceBoxes();
+		this.initializeSpinners();
+		this.initializeButtons();
+		this.initializeCorrelativeCousesList();
+		this.initializeCourseList();
 	}
 
-	private void inicializarChoiceBoxes() {
-		this.tipo.getItems().addAll(Tipo.values());
-		this.tipo.setValue(Tipo.MATERIA);
-		this.periodo.getItems().addAll(Periodo.values());
-		this.periodo.setValue(Periodo.PRIMER_CUATRIMESTRE);
-		this.estado.getItems().addAll(Estado.values());
-		this.estado.setValue(Estado.NO_CURSADA);
+	private void initializeChoiceBoxes() {
+		this.courseTypeField.getItems().addAll(CourseType.values());
+		this.courseTypeField.setValue(CourseType.MATERIA);
+		this.coursePeriodField.getItems().addAll(CoursePeriod.values());
+		this.coursePeriodField.setValue(CoursePeriod.PRIMER_CUATRIMESTRE);
+		this.courseStatusField.getItems().addAll(CourseStatus.values());
+		this.courseStatusField.setValue(CourseStatus.NO_CURSADA);
 	}
 
-	private void inicializarSpinners() {
-		this.nota.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(4, 10));
-		this.nota.disableProperty()
-				.bind(estado.getSelectionModel().selectedItemProperty().isNotEqualTo(Estado.APROBADA));
-		this.anio.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
-		this.anio.getValueFactory().setValue(1);
-		this.hs.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20));
-		this.hs.getValueFactory().setValue(4);
-		this.creditos.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 20.0));
-		this.creditos.getValueFactory().setValue(0.0);
+	private void initializeSpinners() {
+		this.gradeField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(4, 10));
+		this.gradeField.disableProperty()
+				.bind(courseStatusField.getSelectionModel().selectedItemProperty().isNotEqualTo(CourseStatus.APROBADA));
+		this.yearField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
+		this.yearField.getValueFactory().setValue(1);
+		this.hoursField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20));
+		this.hoursField.getValueFactory().setValue(4);
+		this.creditsField.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 20.0));
+		this.creditsField.getValueFactory().setValue(0.0);
 	}
 
-	private void inicializarBotones() {
-		this.aceptar.disableProperty().bind(validador.containsErrorsProperty());
-		this.cancelar.setCancelButton(true);
+	private void initializeButtons() {
+		this.okButton.disableProperty().bind(validator.containsErrorsProperty());
+		this.cancelButton.setCancelButton(true);
 	}
 
-	private void inicializarListaDeCorrelativas() {
-		this.listadoCorrelativas.setItems(this.correlativas);
-		this.listadoCorrelativas.setPlaceholder(new Label(LangResource.getString("ListaCorrelativasVacia")));
-		this.itemContextualQuitar.disableProperty()
-				.bind(listadoCorrelativas.getSelectionModel().selectedItemProperty().isNull());
+	private void initializeCorrelativeCousesList() {
+		this.correlativeCourseList.setItems(this.correlativeCourses);
+		this.correlativeCourseList.setPlaceholder(new Label(LangResource.getString("ListaCorrelativasVacia")));
+		this.removeCorrelativeMenuItem.disableProperty()
+				.bind(correlativeCourseList.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void inicializarListaDeMaterias() {
-		this.listado.setVisible(false);
-		this.listado.setPlaceholder(new Label(LangResource.getString("ListadoVacio")));
-		this.listado.setItems(this.listaFiltrada);
-		this.itemContextualAgregar.disableProperty().bind(listado.getSelectionModel().selectedItemProperty().isNull());
+	private void initializeCourseList() {
+		this.courseList.setVisible(false);
+		this.courseList.setPlaceholder(new Label(LangResource.getString("ListadoVacio")));
+		this.courseList.setItems(this.filteredList);
+		this.addCorrelativeMenuItem.disableProperty().bind(courseList.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void crearValidadorDeCampos() {
-		var checkID = crearCheckId();
-		var checkNombre = crearCheckNombre();
-		this.id.textProperty().addListener((observable, viejo, nuevo) -> checkID.recheck());
-		this.nombre.textProperty().addListener((observable, viejo, nuevo) -> checkNombre.recheck());
-		this.validador.validationResultProperty()
-				.addListener((observable, viejo, nuevo) -> this.mensajeError.setText(obtenerMensajeDeError(nuevo)));
+	private void createFieldsValidator() {
+		var checkID = createIdCheck();
+		var checkNombre = createNameCheck();
+		this.idField.textProperty().addListener((observable, oldValue, newValue) -> checkID.recheck());
+		this.nameField.textProperty().addListener((observable, oldValue, newValue) -> checkNombre.recheck());
+		this.validator.validationResultProperty()
+				.addListener((observable, oldValue, newValue) -> this.errorMessage.setText(getErrorMessage(newValue)));
 	}
 
-	private String obtenerMensajeDeError(ValidationResult nuevo) {
-		var iterador = nuevo.getMessages().listIterator();
+	private String getErrorMessage(ValidationResult result) {
+		var iterador = result.getMessages().listIterator();
 		return (iterador.hasNext()) ? iterador.next().getText() : "";
 	}
 
-	private Check crearCheckId() {
-		return validador.createCheck().withMethod(in -> {
-			if (campoVacio(this.id))
+	private Check createIdCheck() {
+		return validator.createCheck().withMethod(in -> {
+			if (fieldIsEmpty(this.idField))
 				in.error(LangResource.getString("InputIdVacio"));
-			if (!this.id.getText().matches("^[0-9]+$"))
+			if (!this.idField.getText().matches("^[0-9]+$"))
 				in.error(LangResource.getString("InputIdInvalido"));
-			if (idRepetido())
+			if (idIsRepeated())
 				in.error(LangResource.getString("InputIdRepetido"));
-			if (materiaFormaCiclo())
+			if (courseCicles())
 				in.error(LangResource.getString("InputIdCiclo"));
-		}).dependsOn("id", this.id.textProperty()).decorates(this.id);
+		}).dependsOn("id", this.idField.textProperty()).decorates(this.idField);
 	}
 
-	private boolean idRepetido() {
-		return !idCoincideConMateria(this.materiaInyectada)
-				&& Listado.obtenerListado().contieneMateria(this.id.getText());
+	private boolean idIsRepeated() {
+		return !idMatchesCourse(this.injectedCourse)
+				&& Program.getInstance().containsCourse(this.idField.getText());
 	}
 
-	private boolean idCoincideConMateria(Materia materia) {
-		return materia != null && this.id.getText().equals(String.valueOf(materia.getNumeroActividad()));
+	private boolean idMatchesCourse(Course course) {
+		return course != null && this.idField.getText().equals(String.valueOf(course.getId()));
 	}
 
-	private boolean materiaFormaCiclo() {
-		return idCoincideConMateria(this.materiaInyectada) && this.correlativas.contains(this.materiaInyectada);
+	private boolean courseCicles() {
+		return idMatchesCourse(this.injectedCourse) && this.correlativeCourses.contains(this.injectedCourse);
 	}
 
-	private Check crearCheckNombre() {
-		return validador.createCheck().withMethod(in -> {
-			if (campoVacio(this.nombre))
+	private Check createNameCheck() {
+		return validator.createCheck().withMethod(in -> {
+			if (fieldIsEmpty(this.nameField))
 				in.error(LangResource.getString("InputNombreVacio"));
-		}).dependsOn("nombre", this.nombre.textProperty()).decorates(this.nombre);
+		}).dependsOn("nombre", this.nameField.textProperty()).decorates(this.nameField);
 	}
 
-	private boolean campoVacio(TextField campo) {
-		return campo.textProperty().getValue().isBlank();
+	private boolean fieldIsEmpty(TextField field) {
+		return field.textProperty().getValue().isBlank();
 	}
 
-	private void agregarSubscriptorAlBuscador() {
-		this.contenedor.setOnMousePressed(event -> this.contenedor.requestFocus());
-		this.buscador.focusedProperty().addListener((observable, oldValue, newValue) -> {
+	private void subscribeToSearchBox() {
+		this.container.setOnMousePressed(event -> this.container.requestFocus());
+		this.searchField.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (Boolean.TRUE.equals(newValue)) {
-				this.listado.setVisible(true);
-				aplicarFiltro(this.buscador.getText());
-			} else if (!this.listado.isFocused()) {
-				this.buscador.clear();
-				this.listado.setVisible(false);
+				this.courseList.setVisible(true);
+				applyFilter(this.searchField.getText());
+			} else if (!this.courseList.isFocused()) {
+				this.searchField.clear();
+				this.courseList.setVisible(false);
 			}
 		});
-		this.buscador.textProperty().addListener((observable, viejo, nuevo) -> aplicarFiltro(nuevo));
-		agregarSubscriptorAListaDeMaterias();
+		this.searchField.textProperty().addListener((observable, oldValue, newValue) -> applyFilter(newValue));
+		subscribeToCourseList();
 	}
 
-	private void aplicarFiltro(String filtro) {
-		this.listaFiltrada.setPredicate(materia -> noEsFiltrada(materia, filtro.toLowerCase()));
+	private void applyFilter(String filter) {
+		this.filteredList.setPredicate(course -> isNotFiltered(course, filter.toLowerCase()));
 	}
 
-	private boolean noEsFiltrada(Materia materia, String filtro) {
-		var identificador = String.valueOf(materia.getNumeroActividad());
-		var nombreMateria = materia.getNombre().toLowerCase();
+	private boolean isNotFiltered(Course course, String filter) {
+		var id = String.valueOf(course.getId());
+		var nombreMateria = course.getName().toLowerCase();
 		var resultado = true;
-		if (!validador.containsErrors())
-			resultado = !idCoincideConMateria(materia);
-		return resultado && busquedaCoincide(nombreMateria, identificador, filtro);
+		if (!validator.containsErrors())
+			resultado = !idMatchesCourse(course);
+		return resultado && searchMatches(nombreMateria, id, filter);
 	}
 
-	private boolean busquedaCoincide(String nombreMateria, String identifiacador, String busqueda) {
-		return nombreMateria.indexOf(busqueda) != -1 || identifiacador.indexOf(busqueda) != -1;
+	private boolean searchMatches(String courseName, String id, String search) {
+		return courseName.indexOf(search) != -1 || id.indexOf(search) != -1;
 	}
 
-	private void agregarSubscriptorAListaDeMaterias() {
-		this.listado.focusedProperty().addListener((observable, oldValue, newValue) -> {
+	private void subscribeToCourseList() {
+		this.courseList.focusedProperty().addListener((observable, oldValue, newValue) -> {
 			if (Boolean.FALSE.equals(newValue)) {
-				this.listado.setVisible(false);
-				if (!this.buscador.isFocused())
-					this.buscador.clear();
+				this.courseList.setVisible(false);
+				if (!this.searchField.isFocused())
+					this.searchField.clear();
 			}
 		});
 	}
@@ -258,79 +258,79 @@ public class CourseController implements Initializable {
 //----------------------------------------------------------------------------------------------------------------------
 
 	@Autowired
-	public void setControladorPrincipal(MainController mainController) {
+	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
 
-	public void inyectarMateria(Materia materia) {
-		this.materiaInyectada = materia;
-		this.id.setText(String.valueOf(materia.getNumeroActividad()));
-		this.nombre.setText(materia.getNombre());
-		this.periodo.setValue(materia.getPeriodo());
-		this.estado.setValue(materia.getEstado());
-		this.anio.getValueFactory().setValue(materia.getAnio());
-		if (materia.getEstado() == Estado.APROBADA)
-			this.nota.getValueFactory().setValue(Integer.parseInt(materia.getCalificacion()));
-		this.hs.getValueFactory().setValue(materia.getHorasSemanales());
-		this.tipo.setValue(materia.getTipo());
-		this.correlativas.addAll(materia.getCorrelativas());
-		this.creditos.getValueFactory().setValue(materia.getCreditos());
-		this.materias.removeAll(this.correlativas);
+	public void injectCourse(Course course) {
+		this.injectedCourse = course;
+		this.idField.setText(String.valueOf(course.getId()));
+		this.nameField.setText(course.getName());
+		this.coursePeriodField.setValue(course.getCoursePeriod());
+		this.courseStatusField.setValue(course.getCourseStatus());
+		this.yearField.getValueFactory().setValue(course.getYear());
+		if (course.getCourseStatus() == CourseStatus.APROBADA)
+			this.gradeField.getValueFactory().setValue(Integer.parseInt(course.getGrade()));
+		this.hoursField.getValueFactory().setValue(course.getHours());
+		this.courseTypeField.setValue(course.getCourseType());
+		this.correlativeCourses.addAll(course.getCorrelatives());
+		this.creditsField.getValueFactory().setValue(course.getCredits());
+		this.courses.removeAll(this.correlativeCourses);
 	}
 
-	public void agregarCorrelativa() {
-		Materia materia = this.listado.getSelectionModel().getSelectedItem();
-		this.correlativas.add(materia);
-		this.materias.remove(materia);
+	public void addCorrelativeCourse() {
+		Course course = this.courseList.getSelectionModel().getSelectedItem();
+		this.correlativeCourses.add(course);
+		this.courses.remove(course);
 	}
 
-	public void quitarCorrelativa() {
-		Materia materia = this.listadoCorrelativas.getSelectionModel().getSelectedItem();
-		this.correlativas.remove(materia);
-		this.materias.add(materia);
+	public void removeCorrelativeCourse() {
+		Course course = this.correlativeCourseList.getSelectionModel().getSelectedItem();
+		this.correlativeCourses.remove(course);
+		this.courses.add(course);
 	}
 
-	private Materia generarNuevaMateria() {
-		var nuevoId = Integer.parseInt(this.id.getText());
-		var nuevoNombre = this.nombre.getText();
-		return new Materia(nuevoId, nuevoNombre);
+	private Course createCourse() {
+		var newID = Integer.parseInt(this.idField.getText());
+		var newName = this.nameField.getText();
+		return new Course(newID, newName);
 	}
 
-	private void actualizarDatos(Materia materia) {
-		materia.setNombre(nombre.getText());
-		materia.setPeriodo(periodo.getValue());
-		materia.setAnio(anio.getValue());
-		materia.setEstado(estado.getValue());
-		materia.setTipo(tipo.getValue());
-		materia.setHorasSemanales(hs.getValue());
-		materia.setCreditos(creditos.getValue());
-		materia.setCorrelativas(new HashSet<>(this.correlativas));
-		if (estado.getValue() == Estado.APROBADA)
-			materia.setCalificacion(nota.getValue());
+	private void updateCourse(Course course) {
+		course.setName(nameField.getText());
+		course.setCoursePeriod(coursePeriodField.getValue());
+		course.setYear(yearField.getValue());
+		course.setCourseStatus(courseStatusField.getValue());
+		course.setCourseType(courseTypeField.getValue());
+		course.setHours(hoursField.getValue());
+		course.setCreditos(creditsField.getValue());
+		course.setCorrelatives(new HashSet<>(this.correlativeCourses));
+		if (courseStatusField.getValue() == CourseStatus.APROBADA)
+			course.setGrade(gradeField.getValue());
 	}
 
-	private void guardarYCerrar() {
-		if (this.materiaInyectada == null)
-			this.materiaInyectada = generarNuevaMateria();
-		if (!idCoincideConMateria(this.materiaInyectada)) {
-			var nuevaMateria = generarNuevaMateria();
-			actualizarDatos(nuevaMateria);
-			Listado.obtenerListado().reemplazarMateria(materiaInyectada, nuevaMateria);
+	private void saveAndExit() {
+		if (this.injectedCourse == null)
+			this.injectedCourse = createCourse();
+		if (!idMatchesCourse(this.injectedCourse)) {
+			var newCourse = createCourse();
+			updateCourse(newCourse);
+			Program.getInstance().replaceCourse(injectedCourse, newCourse);
 		} else {
-			actualizarDatos(materiaInyectada);
-			Listado.obtenerListado().agregarMateria(materiaInyectada);
+			updateCourse(injectedCourse);
+			Program.getInstance().addCourse(injectedCourse);
 		}
 		this.mainController.declararCambios();
-		cerrar();
+		close();
 	}
 
-	public void cerrar() {
-		((Stage) this.cancelar.getScene().getWindow()).close();
+	public void close() {
+		((Stage) this.cancelButton.getScene().getWindow()).close();
 	}
 
-	public void aceptar() {
-		if (validador.validate())
-			guardarYCerrar();
+	public void accept() {
+		if (validator.validate())
+			saveAndExit();
 	}
 
 }

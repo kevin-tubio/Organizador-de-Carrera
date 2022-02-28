@@ -1,19 +1,19 @@
-package com.organizadorcarrera.system;
+package com.organizadorcarrera.builder;
 
 import org.apache.poi.ss.usermodel.Row;
 
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.exception.FormatoDeCeldaException;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 
-public class CreadorDeSeminario extends CreadorDeMateria {
+public class SeminaryCourseBuilder extends CourseBuilder {
 
 	@Override
-	public Materia crearMateria(Row filaActual) throws FormatoDeCeldaException {
+	public Course crearMateria(Row filaActual) throws CellFormatException {
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
 		var materia = super.generarMateria(nombre, filaActual);
-		materia.setTipo(obtenerTipoDeMateria(filaActual.getCell(0).getStringCellValue().split(":")[0]));
+		materia.setCourseType(obtenerTipoDeMateria(filaActual.getCell(0).getStringCellValue().split(":")[0]));
 		return materia;
 	}
 
@@ -25,18 +25,18 @@ public class CreadorDeSeminario extends CreadorDeMateria {
 	}
 
 	@Override
-	protected Tipo obtenerTipoDeMateria(String contenido) throws FormatoDeCeldaException {
+	protected CourseType obtenerTipoDeMateria(String contenido) throws CellFormatException {
 		contenido = contenido.strip();
 		if (contenido.equals(LangResource.getString("TipoSeminarioOptativo")))
-			return Tipo.SEMINARIO_OPTATIVO;
+			return CourseType.SEMINARIO_OPTATIVO;
 
 		if (contenido.equals(LangResource.getString("TipoSeminarioElectivo")))
-			return Tipo.SEMINARIO_ELECTIVO;
+			return CourseType.SEMINARIO_ELECTIVO;
 
 		if (contenido.equals(LangResource.getString("TipoAsignaturaElectiva")))
-			return Tipo.ASIGNATURA_ELECTIVA;
+			return CourseType.ASIGNATURA_ELECTIVA;
 
-		throw new FormatoDeCeldaException(LangResource.getString("TipoMateriaInvalida"));
+		throw new CellFormatException(LangResource.getString("TipoMateriaInvalida"));
 	}
 
 }

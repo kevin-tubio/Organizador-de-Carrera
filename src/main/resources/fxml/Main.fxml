@@ -11,7 +11,10 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane fx:id="ancla" minHeight="600.0" minWidth="1024.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.organizadorcarrera.controladores.ControladorPrincipal">
+<AnchorPane fx:id="anchor" minHeight="600.0"
+	minWidth="1024.0" prefHeight="720.0" prefWidth="1280.0"
+	xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.organizadorcarrera.controller.MainController">
 	<children>
 		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
 			<top>
@@ -21,34 +24,34 @@
 							<items>
 								<MenuItem mnemonicParsing="false" text="%MenuArchivoNuevo" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false" onAction="#abrirArchivo" text="%MenuArchivoAbrir" />
+								<MenuItem mnemonicParsing="false" onAction="#openFile" text="%MenuArchivoAbrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="itemGuardar" mnemonicParsing="false" onAction="#persistirCambiosListado" text="%MenuArchivoGuardar" />
+								<MenuItem fx:id="saveChangesMenuItem" mnemonicParsing="false" onAction="#saveChanges" text="%MenuArchivoGuardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="itemSalir" mnemonicParsing="false" onAction="#cerrarPrograma" text="%MenuArchivoSalir" />
+								<MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" onAction="#closeWindow" text="%MenuArchivoSalir" />
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="%MenuEditar">
 							<items>
-								<MenuItem fx:id="itemAgregar" mnemonicParsing="false" onAction="#agregarMateria" text="%MenuEditarAgregar" />
-								<MenuItem fx:id="itemEditar" mnemonicParsing="false" onAction="#editarMateria" text="%MenuEditarEditar" />
-								<MenuItem fx:id="itemBorrar" mnemonicParsing="false" onAction="#borrarMateria" text="%MenuEditarBorrar" />
+								<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" onAction="#addCourse" text="%MenuEditarAgregar" />
+								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" onAction="#editCourse" text="%MenuEditarEditar" />
+								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" onAction="#deleteCourse" text="%MenuEditarBorrar" />
 							</items>
 						</Menu>
 					</menus>
 				</MenuBar>
 			</top>
 			<center>
-				<TabPane fx:id="tab" onMouseClicked="#deshabilitarFunciones" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+				<TabPane fx:id="tabPane" onMouseClicked="#disableActions" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
 					<tabs>
 						<Tab closable="false" text="%TabTabla">
 							<content>
-								<fx:include fx:id="planDeEstudios" source="PlanDeEstudios.fxml" />
+								<fx:include fx:id="table" source="Table.fxml" />
 							</content>
 						</Tab>
 						<Tab closable="false" text="%TabLista">
 							<content>
-								<fx:include fx:id="listaDeMaterias" source="ListaDeMaterias.fxml" />
+								<fx:include fx:id="list" source="List.fxml" />
 							</content>
 						</Tab>
 					</tabs>

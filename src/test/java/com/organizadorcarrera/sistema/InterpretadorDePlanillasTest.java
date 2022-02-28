@@ -9,34 +9,34 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.enumerados.Estado;
-import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.exception.ArchivoException;
-import com.organizadorcarrera.exception.MateriaInvalidaException;
-import com.organizadorcarrera.listado.Listado;
-import com.organizadorcarrera.system.InterpretadorDeArchivos;
-import com.organizadorcarrera.system.InterpretadorDePlanillas;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.enumerados.CourseStatus;
+import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.exception.FileException;
+import com.organizadorcarrera.exception.InvalidCourseException;
+import com.organizadorcarrera.parser.ExcelFileParser;
+import com.organizadorcarrera.parser.FileParser;
+import com.organizadorcarrera.program.Program;
 
 public class InterpretadorDePlanillasTest {
 
-	private InterpretadorDeArchivos interpretador;
+	private FileParser interpretador;
 
 	@Before
 	public void set() {
-		interpretador = new InterpretadorDePlanillas();
+		interpretador = new ExcelFileParser();
 	}
 
 	@After
 	public void reset() {
-		Listado.borrarListado();
+		Program.clearProgram();
 	}
 
 	@Test
 	public void interpretarArchivoXls() {
 		try {
 			interpretador.generarListado("archivoDeEntrada/valido/plan_estudios.xls");
-		} catch (ArchivoException e) {
+		} catch (FileException e) {
 			fail();
 		}
 	}
@@ -45,99 +45,99 @@ public class InterpretadorDePlanillasTest {
 	public void interpretarArchivoXlsx() {
 		try {
 			interpretador.generarListado("archivoDeEntrada/valido/plan_estudios.xlsx");
-		} catch (ArchivoException e) {
+		} catch (FileException e) {
 			fail();
 		}
 	}
 
-	@Test(expected = ArchivoException.class)
-	public void interpretarArchivoSinMaterias() throws ArchivoException {
+	@Test(expected = FileException.class)
+	public void interpretarArchivoSinMaterias() throws FileException {
 		interpretador.generarListado("archivoDeEntrada/invalido/sin_materias.xls");
 	}
 
-	@Test(expected = ArchivoException.class)
-	public void interpretarArchivoSinNumerosDeMateria() throws ArchivoException {
+	@Test(expected = FileException.class)
+	public void interpretarArchivoSinNumerosDeMateria() throws FileException {
 		interpretador.generarListado("archivoDeEntrada/invalido/sin_numeros_de_materias.xls");
 	}
 
-	@Test(expected = ArchivoException.class)
-	public void interpretarArchivoAnioDeMateria() throws ArchivoException {
+	@Test(expected = FileException.class)
+	public void interpretarArchivoAnioDeMateria() throws FileException {
 		interpretador.generarListado("archivoDeEntrada/invalido/sin_anio_de_materias.xls");
 	}
 
 	@Test
-	public void planillaSemiValida1() throws ArchivoException {
+	public void planillaSemiValida1() throws FileException {
 		interpretador.generarListado("archivoDeEntrada/valido/prueba_1.xls");
 
-		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
+		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
-				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1265, new Materia(1265, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1269, new Materia(1269, "Física II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1265, new Course(1265, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1269, new Course(1269, "Física II", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1240,
-				new Materia(1240, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1270, new Materia(1270, "Física III", 3, Periodo.PRIMER_CUATRIMESTRE));
+				new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		var listado = Listado.obtenerListado();
+		var listado = Program.getInstance();
 
-		assertEquals(7, listado.consultarCantidadDeMaterias());
-		assertEquals(listadoDeMaterias, listado.getListadoDeMaterias());
+		assertEquals(7, listado.getCoursesCount());
+		assertEquals(listadoDeMaterias, listado.getProgramMap());
 	}
 
 	@Test
-	public void planillaValida1() throws ArchivoException, MateriaInvalidaException {
+	public void planillaValida1() throws FileException, InvalidCourseException {
 		interpretador.generarListado("archivoDeEntrada/valido/prueba_1.xlsx");
 
-		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
+		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Materia(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
-				Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1265, new Materia(1265, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(1269, new Materia(1269, "Física II", 2, Periodo.SEGUNDO_CUATRIMESTRE));
+				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
+				CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1265, new Course(1265, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(1269, new Course(1269, "Física II", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1240,
-				new Materia(1240, "Algoritmos y Programación III", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1242, new Materia(1242, "Matemáticas Especiales", 2, Periodo.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1270, new Materia(1270, "Física III", 3, Periodo.PRIMER_CUATRIMESTRE));
+				new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		var listado = Listado.obtenerListado();
+		var listado = Program.getInstance();
 
-		assertEquals(7, listado.consultarCantidadDeMaterias());
-		assertEquals(listadoDeMaterias, listado.getListadoDeMaterias());
-		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(3).getEstado());
-		assertEquals(Estado.APROBADA, listado.obtenerMateria(592).getEstado());
-		assertEquals(Estado.APROBADA, listado.obtenerMateria(1265).getEstado());
-		assertEquals(Estado.APROBADA, listado.obtenerMateria(1269).getEstado());
-		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(1240).getEstado());
-		assertEquals(Estado.REGULARIZADA, listado.obtenerMateria(1242).getEstado());
-		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(1270).getEstado());
-		assertEquals("", listado.obtenerMateria(3).getCalificacion());
-		assertEquals("5", listado.obtenerMateria(592).getCalificacion());
-		assertEquals("6", listado.obtenerMateria(1265).getCalificacion());
-		assertEquals("8", listado.obtenerMateria(1269).getCalificacion());
-		assertEquals("", listado.obtenerMateria(1240).getCalificacion());
-		assertEquals("-", listado.obtenerMateria(1242).getCalificacion());
-		assertEquals("", listado.obtenerMateria(1270).getCalificacion());
+		assertEquals(7, listado.getCoursesCount());
+		assertEquals(listadoDeMaterias, listado.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, listado.getCourse(3).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, listado.getCourse(592).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, listado.getCourse(1265).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, listado.getCourse(1269).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, listado.getCourse(1240).getCourseStatus());
+		assertEquals(CourseStatus.REGULARIZADA, listado.getCourse(1242).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, listado.getCourse(1270).getCourseStatus());
+		assertEquals("", listado.getCourse(3).getGrade());
+		assertEquals("5", listado.getCourse(592).getGrade());
+		assertEquals("6", listado.getCourse(1265).getGrade());
+		assertEquals("8", listado.getCourse(1269).getGrade());
+		assertEquals("", listado.getCourse(1240).getGrade());
+		assertEquals("-", listado.getCourse(1242).getGrade());
+		assertEquals("", listado.getCourse(1270).getGrade());
 	}
 
 	@Test
-	public void planillaSemiValida2() throws ArchivoException, MateriaInvalidaException {
+	public void planillaSemiValida2() throws FileException, InvalidCourseException {
 		interpretador.generarListado("archivoDeEntrada/valido/prueba_2.xls");
 
-		HashMap<Integer, Materia> listadoDeMaterias = new HashMap<>();
+		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
 		listadoDeMaterias.put(3,
-				new Materia(3, "Cuestiones de Sociología, Economía y Política", 2, Periodo.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(15, new Materia(15, "Análisis Matemático I", 1, Periodo.PRIMER_CUATRIMESTRE));
+				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(15, new Course(15, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		var listado = Listado.obtenerListado();
+		var listado = Program.getInstance();
 
-		assertEquals(2, listado.consultarCantidadDeMaterias());
-		assertEquals(listadoDeMaterias, listado.getListadoDeMaterias());
-		assertEquals(Estado.NO_CURSADA, listado.obtenerMateria(3).getEstado());
-		assertEquals("", listado.obtenerMateria(3).getCalificacion());
+		assertEquals(2, listado.getCoursesCount());
+		assertEquals(listadoDeMaterias, listado.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, listado.getCourse(3).getCourseStatus());
+		assertEquals("", listado.getCourse(3).getGrade());
 	}
 
 }

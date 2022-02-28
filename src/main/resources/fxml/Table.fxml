@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/17"
+	xmlns:fx="http://javafx.com/fxml/1"
+	fx:controller="com.organizadorcarrera.controller.TableController">
+	<children>
+		<HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+			<children>
+				<TableView fx:id="tableView" onMouseClicked="#enableActions" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
+					<columns>
+						<TableColumn fx:id="idColumn" maxWidth="96.0" minWidth="50.0" prefWidth="70.0" text="%TextoID" />
+						<TableColumn fx:id="nameColumn" minWidth="389.0" prefWidth="690.0" text="%TextoNombre" />
+						<TableColumn fx:id="yearColumn" maxWidth="60.0" minWidth="40.0" prefWidth="48.0" text="%TextoAño" />
+						<TableColumn fx:id="coursePeriodColumn" maxWidth="187.0" minWidth="79.0" prefWidth="134.0" text="%TextoPeriodo" />
+						<TableColumn fx:id="gradeColumn" prefWidth="326.0" text="%TextoNota" />
+						<TableColumn fx:id="courseStatusColumn" prefWidth="75.0" text="%TextoEstado" />
+						<TableColumn fx:id="courseTypeColumn" prefWidth="75.0" text="%TextoTipo" visible="false" />
+						<TableColumn fx:id="hoursColumn" prefWidth="75.0" text="%TextoHoras" visible="false" />
+						<TableColumn fx:id="creditsColumn" prefWidth="75.0" text="%TextoCreditos" visible="false" />
+					</columns>
+					<HBox.margin>
+						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+					</HBox.margin>
+					<contextMenu>
+						<ContextMenu>
+							<items>
+								<MenuItem mnemonicParsing="false" onAction="#addCourse" text="%MenuEditarAgregar" />
+								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" onAction="#editCourse" text="%MenuEditarEditar" />
+								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" onAction="#deleteCourse" text="%MenuEditarBorrar" />
+							</items>
+						</ContextMenu>
+					</contextMenu>
+					<columnResizePolicy>
+						<TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+					</columnResizePolicy>
+					<opaqueInsets>
+						<Insets />
+					</opaqueInsets>
+				</TableView>
+			</children>
+		</HBox>
+	</children>
+</AnchorPane>

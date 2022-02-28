@@ -7,7 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
 import com.organizadorcarrera.app.FXApplication.FXReadyEvent;
-import com.organizadorcarrera.util.DirectorVentana;
+import com.organizadorcarrera.util.WindowDirector;
 
 @Component
 public class ApplicationInitializer implements ApplicationListener<FXReadyEvent> {
@@ -15,7 +15,7 @@ public class ApplicationInitializer implements ApplicationListener<FXReadyEvent>
 	private final Logger logger;
 
 	@Autowired
-	private DirectorVentana directorVentana;
+	private WindowDirector windowDirector;
 
 	public ApplicationInitializer() {
 		this.logger = LoggerFactory.getLogger(ApplicationInitializer.class);
@@ -23,7 +23,7 @@ public class ApplicationInitializer implements ApplicationListener<FXReadyEvent>
 
 	@Override
 	public void onApplicationEvent(FXReadyEvent event) {
-		this.directorVentana.hacerVentanaMain(event.getSource());
+		this.windowDirector.showMainWindow(event.getSource());
 		logger.info("JavaFX application initialized");
 	}
 }

@@ -17,7 +17,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
-import com.organizadorcarrera.enumerados.TipoConfiguracion;
+import com.organizadorcarrera.enumerados.ConfigurationType;
 
 @Entity
 @Table(name="CONFIG", schema="LISTADO")
@@ -25,39 +25,39 @@ public class Configuration {
 
 	@Id
 	@Enumerated(EnumType.STRING)
-	private TipoConfiguracion tipoConfiguracion;
+	private ConfigurationType configurationType;
 
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "CONFIGURATION", schema = "LISTADO", joinColumns = {
-			@JoinColumn(name = "tipo", referencedColumnName = "tipoConfiguracion") })
+			@JoinColumn(name = "tipo", referencedColumnName = "configurationType") })
 	@MapKeyColumn(name = "parametro")
 	@Column(name = "valor")
 	private Map<String, String> config;
 
 	public Configuration() { /* JPA exclusive */ }
 	
-	public Configuration(TipoConfiguracion tipoConfiguracion) {
-		this.tipoConfiguracion = tipoConfiguracion;
+	public Configuration(ConfigurationType configurationType) {
+		this.configurationType = configurationType;
 		this.config = new HashMap<>();
 	}
 
-	public <T> void agregar(String clave, T valor) {
-		this.config.put(clave, String.valueOf(valor));
+	public <T> void addConfigurationPair(String key, T value) {
+		this.config.put(key, String.valueOf(value));
 	}
 
-	public String recuperar(String clave) {
-		return this.config.get(clave);
+	public String getConfigurationValue(String key) {
+		return this.config.get(key);
 	}
 
-	public TipoConfiguracion getConfigType() {
-		return this.tipoConfiguracion;
+	public ConfigurationType getConfigurationType() {
+		return this.configurationType;
 	}
 
-	public Set<String> getConfigurations() {
+	public Set<String> getConfigurationSet() {
 		return new HashSet<>(this.config.values());
 	}
 
-	public boolean estaVacia() {
-		return this.config.isEmpty();
+	public boolean isValid() {
+		return !this.config.isEmpty();
 	}
 }

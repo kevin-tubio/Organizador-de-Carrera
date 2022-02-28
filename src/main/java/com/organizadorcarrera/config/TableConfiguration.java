@@ -1,177 +1,177 @@
 package com.organizadorcarrera.config;
 
-import com.organizadorcarrera.enumerados.TipoConfiguracion;
+import com.organizadorcarrera.enumerados.ConfigurationType;
 
 public class TableConfiguration {
 
-	private Configuration config;
+	private Configuration configuration;
 
 	public TableConfiguration() {
-		this.config = new Configuration(TipoConfiguracion.TABLA);
-	}
-	
-	public TableConfiguration(Configuration config) {
-		this.config = config;
+		this.configuration = new Configuration(ConfigurationType.TABLE);
 	}
 
-	public void setAnchoColumnaId(Double valor) {
-		this.config.agregar("anchoColumnaId", valor);
+	public TableConfiguration(Configuration configuration) {
+		this.configuration = configuration;
 	}
 
-	public void setAnchoColumnaNombre(Double valor) {
-		this.config.agregar("anchoColumnaNombre", valor);
+	public void setIdColumnWidth(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaId", width);
 	}
 
-	public void setAnchoColumnaAnio(Double valor) {
-		this.config.agregar("anchoColumnaAnio", valor);
+	public void setNameColumnWidth(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaNombre", width);
 	}
 
-	public void setAnchoColumnaPeriodo(Double valor) {
-		this.config.agregar("anchoColumnaPeriodo", valor);
+	public void setAnchoColumnaAnio(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaAnio", width);
 	}
 
-	public void setAnchoColumnaNota(Double valor) {
-		this.config.agregar("anchoColumnaNota", valor);
+	public void setCoursePeriodColumnWidth(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaPeriodo", width);
 	}
 
-	public void setAnchoColumnaEstado(Double valor) {
-		this.config.agregar("anchoColumnaEstado", valor);
+	public void setAnchoColumnaNota(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaNota", width);
 	}
 
-	public void setAnchoColumnaTipo(Double valor) {
-		this.config.agregar("anchoColumnaTipo", valor);
+	public void setCourseStatusColumnWidth(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaEstado", width);
 	}
 
-	public void setAnchoColumnaHS(Double valor) {
-		this.config.agregar("anchoColumnaHS", valor);
+	public void setCourseTypeColumnWidth(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaTipo", width);
 	}
 
-	public void setAnchoColumnaCreditos(Double valor) {
-		this.config.agregar("anchoColumnaCreditos", valor);
+	public void setAnchoColumnaHS(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaHS", width);
+	}
+
+	public void setAnchoColumnaCreditos(Double width) {
+		this.configuration.addConfigurationPair("anchoColumnaCreditos", width);
 	}
 
 	public void setIdVisible(Boolean visible) {
-		this.config.agregar("idVisible", visible);
+		this.configuration.addConfigurationPair("idVisible", visible);
 	}
 
-	public void setNombreVisible(Boolean visible) {
-		this.config.agregar("nombreVisible", visible);
+	public void setCourseNameVisible(Boolean visible) {
+		this.configuration.addConfigurationPair("nombreVisible", visible);
 	}
 
 	public void setAnioVisible(Boolean visible) {
-		this.config.agregar("anioVisible", visible);
+		this.configuration.addConfigurationPair("anioVisible", visible);
 	}
 
-	public void setPeriodoVisible(Boolean visible) {
-		this.config.agregar("periodoVisible", visible);
+	public void setCoursePeriodVisible(Boolean visible) {
+		this.configuration.addConfigurationPair("periodoVisible", visible);
 	}
 
 	public void setNotaVisible(Boolean visible) {
-		this.config.agregar("notaVisible", visible);
+		this.configuration.addConfigurationPair("notaVisible", visible);
 	}
 
-	public void setEstadoVisible(Boolean visible) {
-		this.config.agregar("estadoVisible", visible);
+	public void setCourseStatusVisible(Boolean visible) {
+		this.configuration.addConfigurationPair("estadoVisible", visible);
 	}
 
-	public void setTipoVisible(Boolean visible) {
-		this.config.agregar("tipoVisible", visible);
+	public void setCourseTypeVisible(Boolean visible) {
+		this.configuration.addConfigurationPair("tipoVisible", visible);
 	}
 
 	public void setHSVisible(Boolean visible) {
-		this.config.agregar("hsVisible", visible);
+		this.configuration.addConfigurationPair("hsVisible", visible);
 	}
 
 	public void setCreditosVisible(Boolean visible) {
-		this.config.agregar("creditosVisible", visible);
+		this.configuration.addConfigurationPair("creditosVisible", visible);
 	}
 
-	public Double getAnchoColumnaId() {
-		return this.recuperarDouble("anchoColumnaId");
+	public Double getIdColumnWidth() {
+		return this.getDouble("anchoColumnaId");
 	}
 
-	public Double getAnchoColumnaNombre() {
-		return this.recuperarDouble("anchoColumnaNombre");
+	public Double getNameColumnWidth() {
+		return this.getDouble("anchoColumnaNombre");
 	}
 
-	public Double getAnchoColumnaAnio() {
-		return this.recuperarDouble("anchoColumnaAnio");
+	public Double getYearColumnWidth() {
+		return this.getDouble("anchoColumnaAnio");
 	}
 
-	public Double getAnchoColumnaPeriodo() {
-		return this.recuperarDouble("anchoColumnaPeriodo");
+	public Double getCoursePeriodColumnWidth() {
+		return this.getDouble("anchoColumnaPeriodo");
 	}
 
-	public Double getAnchoColumnaNota() {
-		return this.recuperarDouble("anchoColumnaNota");
+	public Double getGradeColumnWidth() {
+		return this.getDouble("anchoColumnaNota");
 	}
 
-	public Double getAnchoColumnaEstado() {
-		return this.recuperarDouble("anchoColumnaEstado");
+	public Double getCourseStatusColumnWidth() {
+		return this.getDouble("anchoColumnaEstado");
 	}
 
-	public Double getAnchoColumnaTipo() {
-		return this.recuperarDouble("anchoColumnaTipo");
+	public Double getCourseTypeColumnWidth() {
+		return this.getDouble("anchoColumnaTipo");
 	}
 
 	public Double getAnchoColumnaHS() {
-		return this.recuperarDouble("anchoColumnaHS");
+		return this.getDouble("anchoColumnaHS");
 	}
 
 	public Double getAnchoColumnaCreditos() {
-		return this.recuperarDouble("anchoColumnaCreditos");
+		return this.getDouble("anchoColumnaCreditos");
 	}
 
-	private Double recuperarDouble(String clave) {
-		return Double.valueOf(this.config.recuperar(clave));
+	private Double getDouble(String clave) {
+		return Double.valueOf(this.configuration.getConfigurationValue(clave));
 	}
 
 	public Boolean getIdVisible() {
-		return this.recuperarBool("idVisible");
+		return this.getBoolean("idVisible");
 	}
 
-	public Boolean getNombreVisible() {
-		return this.recuperarBool("nombreVisible");
+	public Boolean getNameVisible() {
+		return this.getBoolean("nombreVisible");
 	}
 
-	public Boolean getAnioVisible() {
-		return this.recuperarBool("anioVisible");
+	public Boolean getYearVisible() {
+		return this.getBoolean("anioVisible");
 	}
 
-	public Boolean getPeriodoVisible() {
-		return this.recuperarBool("periodoVisible");
+	public Boolean getCoursePeriodVisible() {
+		return this.getBoolean("periodoVisible");
 	}
 
-	public Boolean getNotaVisible() {
-		return this.recuperarBool("notaVisible");
+	public Boolean getGradeVisible() {
+		return this.getBoolean("notaVisible");
 	}
 
-	public Boolean getEstadoVisible() {
-		return this.recuperarBool("estadoVisible");
+	public Boolean getCourseStatusVisible() {
+		return this.getBoolean("estadoVisible");
 	}
 
-	public Boolean getTipoVisible() {
-		return this.recuperarBool("tipoVisible");
+	public Boolean getCourseTypeVisible() {
+		return this.getBoolean("tipoVisible");
 	}
 
 	public Boolean getHSVisible() {
-		return this.recuperarBool("hsVisible");
+		return this.getBoolean("hsVisible");
 	}
 
 	public Boolean getCreditosVisible() {
-		return this.recuperarBool("creditosVisible");
+		return this.getBoolean("creditosVisible");
 	}
 
-	private Boolean recuperarBool(String clave) {
-		return Boolean.valueOf(this.config.recuperar(clave));
+	private Boolean getBoolean(String key) {
+		return Boolean.valueOf(this.configuration.getConfigurationValue(key));
 	}
 
-	public boolean esValida() {
-		return config != null && !config.estaVacia();
+	public boolean isValid() {
+		return configuration != null && configuration.isValid();
 	}
 
-	public Configuration getConfig() {
-		return this.config;
+	public Configuration getConfiguration() {
+		return this.configuration;
 	}
 
 }

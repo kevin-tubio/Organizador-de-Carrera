@@ -11,31 +11,31 @@ import org.springframework.stereotype.Component;
 public class ExitController {
 
 	@FXML
-	private Button botonCancelar;
+	private Button cancelButton;
 
 	private MainController mainController;
 
-	public void guardar() {
-		this.mainController.persistirCambiosListado();
-		cerrarConfirmacion();
-		this.mainController.cerrarVentana();
+	public void saveChanges() {
+		this.mainController.saveChanges();
+		closeWindow();
+		this.mainController.exit();
 	}
 
-	public void descartar() {
-		cerrarConfirmacion();
-		this.mainController.cerrarVentana();
+	public void ignoreChanges() {
+		closeWindow();
+		this.mainController.exit();
 	}
 
-	public void cancelar() {
-		cerrarConfirmacion();
+	public void cancel() {
+		closeWindow();
 	}
 
-	private void cerrarConfirmacion() {
-		((Stage) this.botonCancelar.getScene().getWindow()).close();
+	private void closeWindow() {
+		((Stage) this.cancelButton.getScene().getWindow()).close();
 	}
 
 	@Autowired
-	public void setControladorPrincipal(MainController controladorPrincipal) {
-		this.mainController = controladorPrincipal;
+	public void setMainController(MainController mainController) {
+		this.mainController = mainController;
 	}
 }

@@ -2,14 +2,14 @@ package com.organizadorcarrera.enumerados;
 
 import com.organizadorcarrera.util.LangResource;
 
-public enum Estado {
+public enum CourseStatus {
 	NO_CURSADA("EstadoNoCursado"), APROBADA("EstadoAprobado"), REGULARIZADA("EstadoRegularizado"),
-	EN_CURSO("EstadoEnCurso"), EQUIVALENCIA("EstadoEquivalencia");
+	ENROLLED("EstadoEnCurso"), EQUIVALENCIA("EstadoEquivalencia");
 
 
 	private String cadena;
 
-	private Estado(String string) {
+	private CourseStatus(String string) {
 		this.cadena = LangResource.getString(string);
 	}
 

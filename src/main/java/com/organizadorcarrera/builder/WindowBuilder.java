@@ -1,10 +1,12 @@
-package com.organizadorcarrera.util;
+package com.organizadorcarrera.builder;
 
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import com.organizadorcarrera.util.LangResource;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -36,12 +38,12 @@ public class WindowBuilder {
 		}
 	}
 
-	public void setTituloInternacionalizable(String claveDeTitulo) {
-		stage.setTitle(LangResource.getString(claveDeTitulo));
+	public void setLocaleTitle(String key) {
+		stage.setTitle(LangResource.getString(key));
 	}
 
-	public void setModalidad(Modality modalidad) {
-		stage.initModality(modalidad);
+	public void setModality(Modality modality) {
+		stage.initModality(modality);
 	}
 
 	public FXMLLoader createLoader(String url) {
@@ -50,17 +52,17 @@ public class WindowBuilder {
 		return loader;
 	}
 
-	public void hacerVentana() {
+	public void showWindow() {
 		stage.show();
 	}
 
-	public void hacerVentanaModal() {
-		setModalidad(Modality.APPLICATION_MODAL);
+	public void showModalWindow() {
+		setModality(Modality.APPLICATION_MODAL);
 		stage.showAndWait();
 	}
 
-	public void hacerSubVentanaModal() {
-		setModalidad(Modality.WINDOW_MODAL);
+	public void showModalSubWindow() {
+		setModality(Modality.WINDOW_MODAL);
 		stage.showAndWait();
 	}
 

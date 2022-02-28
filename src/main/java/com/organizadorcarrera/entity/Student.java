@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "ALUMNO", schema = "LISTADO")
-public class Alumno {
+public class Student {
 
 	@Id
 	@Column
@@ -19,9 +19,9 @@ public class Alumno {
 	@Column(nullable = false)
 	private String carrera;
 
-	public Alumno() { /* JPA exclusive */ }
+	public Student() { /* JPA exclusive */ }
 
-	public Alumno(String nombreCompleto, Integer legajo, String carrera) {
+	public Student(String nombreCompleto, Integer legajo, String carrera) {
 		setNombreCompleto(nombreCompleto);
 		this.legajo = legajo;
 		this.carrera = carrera;

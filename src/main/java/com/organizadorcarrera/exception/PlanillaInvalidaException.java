@@ -1,6 +1,6 @@
 package com.organizadorcarrera.exception;
 
-public class PlanillaInvalidaException extends ArchivoException {
+public class PlanillaInvalidaException extends FileException {
 
 	private static final long serialVersionUID = 7436271155743279782L;
 

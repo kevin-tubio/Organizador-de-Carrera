@@ -7,8 +7,8 @@ import java.util.ResourceBundle;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.organizadorcarrera.util.DirectorVentana;
-import com.organizadorcarrera.util.WindowBuilder;
+import com.organizadorcarrera.builder.WindowBuilder;
+import com.organizadorcarrera.util.WindowDirector;
 
 @Configuration
 public class SpringConfig {
@@ -28,7 +28,7 @@ public class SpringConfig {
 	}
 
 	@Bean
-	public DirectorVentana getDirectorVentana() {
-		return new DirectorVentana();
+	public WindowDirector getWindowDirector() {
+		return new WindowDirector();
 	}
 }

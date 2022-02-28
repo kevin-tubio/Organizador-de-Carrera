@@ -9,27 +9,28 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.enumerados.Periodo;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.enumerados.CoursePeriod;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
-import com.organizadorcarrera.exception.MateriaInvalidaException;
+import com.organizadorcarrera.program.Grafo;
+import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
 public class GrafoTest {
 
 	@Test
-	public void secuenciaLineal() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
+	public void secuenciaLineal() throws InvalidCourseException {
+		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 
-		segunda.setCorrelativa(primera);
-		tercera.setCorrelativa(segunda);
-		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
+		segunda.setCorrelative(primera);
+		tercera.setCorrelative(segunda);
+		Map<Integer, Course> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
 		var grafo = new Grafo();
 
 		try {
-			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
+			LinkedList<Course> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
 			assertEquals(secuencia.get(0), primera);
 			assertEquals(secuencia.get(1), segunda);
 			assertEquals(secuencia.get(2), tercera);
@@ -39,22 +40,22 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaBifurcada() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var cuarta = new Materia(4, "Cuarta", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var quinta = new Materia(5, "Quinta", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var sexta = new Materia(6, "Sexta", 1, Periodo.PRIMER_CUATRIMESTRE);
-		segunda.setCorrelativa(primera);
-		tercera.setCorrelativa(segunda);
-		quinta.setCorrelativa(primera);
-		quinta.setCorrelativa(segunda);
-		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera, cuarta, quinta, sexta);
+	public void secuenciaBifurcada() throws InvalidCourseException {
+		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var cuarta = new Course(4, "Cuarta", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var quinta = new Course(5, "Quinta", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var sexta = new Course(6, "Sexta", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		segunda.setCorrelative(primera);
+		tercera.setCorrelative(segunda);
+		quinta.setCorrelative(primera);
+		quinta.setCorrelative(segunda);
+		Map<Integer, Course> vertices = crearDiccionarioDeVertices(primera, segunda, tercera, cuarta, quinta, sexta);
 		var grafo = new Grafo();
 
 		try {
-			LinkedList<Materia> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
+			LinkedList<Course> secuencia = new LinkedList<>(grafo.ordenamientoTopologico(vertices));
 			assertEquals(secuencia.get(0), primera);
 			assertEquals(secuencia.get(1), cuarta);
 			assertEquals(secuencia.get(2), sexta);
@@ -67,14 +68,14 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaCiclica() throws MateriaInvalidaException {
-		var primera = new Materia(1, "Primera", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var segunda = new Materia(2, "Segunda", 1, Periodo.PRIMER_CUATRIMESTRE);
-		var tercera = new Materia(3, "Tercera", 1, Periodo.PRIMER_CUATRIMESTRE);
-		primera.setCorrelativa(tercera);
-		segunda.setCorrelativa(primera);
-		tercera.setCorrelativa(segunda);
-		Map<Integer, Materia> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
+	public void secuenciaCiclica() throws InvalidCourseException {
+		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
+		primera.setCorrelative(tercera);
+		segunda.setCorrelative(primera);
+		tercera.setCorrelative(segunda);
+		Map<Integer, Course> vertices = crearDiccionarioDeVertices(primera, segunda, tercera);
 		var grafo = new Grafo();
 
 		try {
@@ -84,10 +85,10 @@ public class GrafoTest {
 		}
 	}
 
-	private Map<Integer, Materia> crearDiccionarioDeVertices(Materia... materias) {
-		Map<Integer, Materia> diccionario = new HashMap<>();
-		for (Materia actual : materias) {
-			diccionario.put(actual.getNumeroActividad(), actual);
+	private Map<Integer, Course> crearDiccionarioDeVertices(Course... materias) {
+		Map<Integer, Course> diccionario = new HashMap<>();
+		for (Course actual : materias) {
+			diccionario.put(actual.getId(), actual);
 		}
 
 		return diccionario;

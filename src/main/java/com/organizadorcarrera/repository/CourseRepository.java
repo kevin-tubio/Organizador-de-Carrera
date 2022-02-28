@@ -3,9 +3,9 @@ package com.organizadorcarrera.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import com.organizadorcarrera.entity.Materia;
+import com.organizadorcarrera.entity.Course;
 
 @Repository
-public interface MateriaRepository extends CrudRepository<Materia, Integer> {
+public interface CourseRepository extends CrudRepository<Course, Integer> {
 
 }

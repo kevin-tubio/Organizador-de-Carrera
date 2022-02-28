@@ -21,14 +21,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.exception.ArchivoException;
-import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.exception.FileException;
+import com.organizadorcarrera.parser.ExcelFileParser;
+import com.organizadorcarrera.parser.FileParser;
+import com.organizadorcarrera.parser.TextFileParser;
+import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.service.ListadoService;
-import com.organizadorcarrera.system.InterpretadorDeArchivos;
-import com.organizadorcarrera.system.InterpretadorDeDatosGuardados;
-import com.organizadorcarrera.system.InterpretadorDePlanillas;
-import com.organizadorcarrera.util.DirectorVentana;
+import com.organizadorcarrera.util.WindowDirector;
 
 @Component
 public class MainController implements Initializable {
@@ -37,31 +37,31 @@ public class MainController implements Initializable {
 	private TableController tableController;
 
 	@FXML
-	private ControladorLista listaDeMateriasController;
+	private ListController listController;
 
 	@FXML
-	private MenuItem itemAgregar;
+	private MenuItem addCourseMenuItem;
 
 	@FXML
-	private MenuItem itemBorrar;
+	private MenuItem deleteCourseMenuItem;
 
 	@FXML
-	private MenuItem itemEditar;
+	private MenuItem editCourseMenuItem;
 
 	@FXML
-	private TabPane tab;
+	private TabPane tabPane;
 
 	@FXML
-	private MenuItem itemGuardar;
+	private MenuItem saveChangesMenuItem;
 
 	@FXML
-	private MenuItem itemSalir;
+	private MenuItem exitAppMenuItem;
 
 	@FXML
-	private AnchorPane ancla;
+	private AnchorPane anchor;
 
 	@Autowired
-	private DirectorVentana directorVentana;
+	private WindowDirector windowDirector;
 
 	@Autowired
 	private ListadoService materiaService;
@@ -76,23 +76,23 @@ public class MainController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.itemGuardar.disableProperty().bind(this.cambiosSubject.not());
-		this.deshabilitarFunciones();
+		this.saveChangesMenuItem.disableProperty().bind(this.cambiosSubject.not());
+		this.disableActions();
 		materiaService.recuperarListado();
 		tableController.recuperarDimensionesTabla();
 	}
 
-	public void abrirArchivo() {
+	public void openFile() {
 		var fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
 		var archivo = fileChooser.showOpenDialog(new Stage());
 		if (archivo != null) {
-			Listado.borrarListado();
+			Program.clearProgram();
 			Platform.runLater(() -> {
 				try {
-					cargarArchivo(archivo);
-				} catch (ArchivoException e) {
+					parseCourses(archivo);
+				} catch (FileException e) {
 					logger.debug(e.getMessage(), e);
 				}
 			});
@@ -100,70 +100,70 @@ public class MainController implements Initializable {
 		}
 	}
 
-	private void cargarArchivo(File archivo) throws ArchivoException {
-		InterpretadorDeArchivos interpretador = null;
-		if (archivo.getName().endsWith(".txt")) {
-			interpretador = new InterpretadorDeDatosGuardados();
+	private void parseCourses(File file) throws FileException {
+		FileParser parser = null;
+		if (file.getName().endsWith(".txt")) {
+			parser = new TextFileParser();
 		} else {
-			interpretador = new InterpretadorDePlanillas();
+			parser = new ExcelFileParser();
 		}
-		interpretador.generarListado(archivo.getAbsolutePath());
+		parser.generarListado(file.getAbsolutePath());
 	}
 
-	public void habilitarFunciones() {
-		this.setFunciones(false);
+	public void enableActions() {
+		this.setActionEnabled(true);
 	}
 
-	public void deshabilitarFunciones() {
-		this.setFunciones(true);
+	public void disableActions() {
+		this.setActionEnabled(false);
 	}
 
-	private void setFunciones(boolean valor) {
-		this.itemEditar.setDisable(valor);
-		this.itemBorrar.setDisable(valor);
+	private void setActionEnabled(boolean value) {
+		this.editCourseMenuItem.setDisable(!value);
+		this.deleteCourseMenuItem.setDisable(!value);
 	}
 
-	public void borrarMateria() {
-		ejecutarSegunSeleccionado(this::borrarMateria);
+	public void deleteCourse() {
+		ejecutarSegunSeleccionado(this::deletCourse);
 	}
 
-	protected void borrarMateria(Materia seleccionada) {
-		Listado.obtenerListado().borrarMateria(seleccionada);
+	protected void deletCourse(Course selected) {
+		Program.getInstance().deleteCourse(selected);
 		declararCambios();
 	}
 
-	public void agregarMateria() {
-		this.directorVentana.hacerVentanaAgregarMateria();
+	public void addCourse() {
+		this.windowDirector.showNewCourseWindow();
 	}
 
-	public void editarMateria() {
-		ejecutarSegunSeleccionado(this::editarMateria);
+	public void editCourse() {
+		ejecutarSegunSeleccionado(this::editCourse);
 	}
 
-	private void ejecutarSegunSeleccionado(Consumer<Materia> funcion) {
+	private void ejecutarSegunSeleccionado(Consumer<Course> function) {
 		switch (getTabLocalizedId()) {
-		case "planDeEstudios":
-			funcion.accept(tableController.obtenerSeleccionado());
+		case "table":
+			function.accept(tableController.getSelection());
 			break;
-		case "listaDeMaterias":
-			funcion.accept(listaDeMateriasController.obtenerSeleccionado());
+		case "list":
+			function.accept(listController.getSelection());
 			break;
 		default:
 		}
-		if (Listado.obtenerListado().getListadoDeMaterias().isEmpty()) {
-			this.deshabilitarFunciones();
+		if (Program.getInstance().getProgramMap().isEmpty()) {
+			this.disableActions();
 		}
 	}
 
 	private String getTabLocalizedId() {
-		return this.tab.getSelectionModel().getSelectedItem().getContent().getId();
+		return this.tabPane.getSelectionModel().getSelectedItem().getContent().getId();
 	}
 
-	protected void editarMateria(Materia materia) {
-		this.directorVentana.hacerVentanaEditarMateria(materia);
+	protected void editCourse(Course course) {
+		this.windowDirector.showEditCourseWindow(course);
 	}
 
-	public void persistirCambiosListado() {
+	public void saveChanges() {
 		materiaService.persistirCambiosListado();
 		this.cambiosSubject.set(false);
 	}
@@ -172,24 +172,24 @@ public class MainController implements Initializable {
 		this.cambiosSubject.set(true);
 	}
 
-	public void cerrarPrograma(Event cierre) {
-		cierre.consume();
-		this.tableController.guardarDimensionesTabla();
-		if (!hayCambiosSinGuardar())
-			cerrarVentana();
+	public void closeWindow(Event closeEvent) {
+		closeEvent.consume();
+		this.tableController.saveTableColumnWidth();
+		if (!shouldSaveChanges())
+			exit();
 		else
-			confirmarCierre();
+			showExitWindow();
 	}
 
-	private boolean hayCambiosSinGuardar() {
+	private boolean shouldSaveChanges() {
 		return this.cambiosSubject.get();
 	}
 
-	private void confirmarCierre() {
-		this.directorVentana.hacerVentanaCierre();
+	private void showExitWindow() {
+		this.windowDirector.showExitWindow();
 	}
 
-	void cerrarVentana() {
+	void exit() {
 		Platform.exit();
 	}
 }

@@ -16,52 +16,52 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import com.organizadorcarrera.config.TableConfiguration;
-import com.organizadorcarrera.entity.Materia;
-import com.organizadorcarrera.enumerados.Estado;
-import com.organizadorcarrera.enumerados.Periodo;
-import com.organizadorcarrera.enumerados.Tipo;
-import com.organizadorcarrera.enumerados.TipoConfiguracion;
-import com.organizadorcarrera.listado.Listado;
+import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.enumerados.CourseStatus;
+import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.program.Program;
+import com.organizadorcarrera.enumerados.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
 
 @Component
 public class TableController implements Initializable {
 
 	@FXML
-	private TableView<Materia> tabla;
+	private TableView<Course> tableView;
 
 	@FXML
-	private TableColumn<Materia, Integer> numeroActividad;
+	private TableColumn<Course, Integer> idColumn;
 
 	@FXML
-	private TableColumn<Materia, String> nombreActividad;
+	private TableColumn<Course, String> nameColumn;
 
 	@FXML
-	private TableColumn<Materia, Integer> anio;
+	private TableColumn<Course, Integer> yearColumn;
 
 	@FXML
-	private TableColumn<Materia, Periodo> periodo;
+	private TableColumn<Course, CoursePeriod> coursePeriodColumn;
 
 	@FXML
-	private TableColumn<Materia, String> nota;
+	private TableColumn<Course, String> gradeColumn;
 
 	@FXML
-	private TableColumn<Materia, Estado> estado;
+	private TableColumn<Course, CourseStatus> courseStatusColumn;
 
 	@FXML
-	private TableColumn<Materia, Tipo> tipo;
+	private TableColumn<Course, CourseType> courseTypeColumn;
 
 	@FXML
-	private TableColumn<Materia, Integer> hs;
+	private TableColumn<Course, Integer> hoursColumn;
 
 	@FXML
-	private TableColumn<Materia, Double> creditos;
+	private TableColumn<Course, Double> creditsColumn;
 
 	@FXML
-	private MenuItem itemContextualEditar;
+	private MenuItem editCourseMenuItem;
 
 	@FXML
-	private MenuItem itemContextualBorrar;
+	private MenuItem deleteCourseMenuItem;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -70,130 +70,130 @@ public class TableController implements Initializable {
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
-		this.inicializarTabla(resourceBundle);
-		this.agregarSubscriptorAListado();
-		this.itemContextualEditar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
-		this.itemContextualBorrar.disableProperty().bind(tabla.getSelectionModel().selectedItemProperty().isNull());
+		this.initializeTable(resourceBundle);
+		this.subscribeToProgram();
+		this.editCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
+		this.deleteCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
 	}
 
-	private void inicializarTabla(ResourceBundle resourceBundle) {
-		numeroActividad.setCellValueFactory(new PropertyValueFactory<>("numeroActividad"));
-		nombreActividad.setCellValueFactory(new PropertyValueFactory<>("nombre"));
-		anio.setCellValueFactory(new PropertyValueFactory<>("anio"));
-		periodo.setCellValueFactory(new PropertyValueFactory<>("periodo"));
-		nota.setCellValueFactory(new PropertyValueFactory<>("calificacion"));
-		estado.setCellValueFactory(new PropertyValueFactory<>("estado"));
-		tipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
-		hs.setCellValueFactory(new PropertyValueFactory<>("horasSemanales"));
-		creditos.setCellValueFactory(new PropertyValueFactory<>("creditos"));
-		establecerComparadoresColumnas();
-		tabla.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
+	private void initializeTable(ResourceBundle resourceBundle) {
+		idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+		nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
+		coursePeriodColumn.setCellValueFactory(new PropertyValueFactory<>("coursePeriod"));
+		gradeColumn.setCellValueFactory(new PropertyValueFactory<>("grade"));
+		courseStatusColumn.setCellValueFactory(new PropertyValueFactory<>("courseStatus"));
+		courseTypeColumn.setCellValueFactory(new PropertyValueFactory<>("courseType"));
+		hoursColumn.setCellValueFactory(new PropertyValueFactory<>("hours"));
+		creditsColumn.setCellValueFactory(new PropertyValueFactory<>("credits"));
+		setColumnComparators();
+		tableView.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
 	}
 
-	private void establecerComparadoresColumnas() {
-		periodo.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
-		estado.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
-		tipo.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
-		nota.setComparator((o1, o2) -> {
+	private void setColumnComparators() {
+		coursePeriodColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		courseStatusColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		courseTypeColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		gradeColumn.setComparator((o1, o2) -> {
 			if (o1.matches("\\d+") && o2.matches("\\d+"))
 				return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
 			return o1.compareTo(o2);
 		});
 	}
 
-	private void agregarSubscriptorAListado() {
-		MapChangeListener<Integer, Materia> subscriptor = cambio -> tabla.getItems().setAll(cambio.getMap().values());
-		Listado.obtenerListado().getListadoDeMaterias().addListener(subscriptor);
+	private void subscribeToProgram() {
+		MapChangeListener<Integer, Course> subscriptor = change -> tableView.getItems().setAll(change.getMap().values());
+		Program.getInstance().getProgramMap().addListener(subscriptor);
 	}
 
-	public void habilitarFunciones() {
-		if (this.obtenerSeleccionado() != null) {
-			this.mainController.habilitarFunciones();
+	public void enableActions() {
+		if (this.getSelection() != null) {
+			this.mainController.enableActions();
 		}
 	}
 
-	protected Materia obtenerSeleccionado() {
-		return this.tabla.getSelectionModel().getSelectedItem();
+	protected Course getSelection() {
+		return this.tableView.getSelectionModel().getSelectedItem();
 	}
 
-	public void borrarContextual() {
-		this.mainController.borrarMateria(this.obtenerSeleccionado());
+	public void deleteCourse() {
+		this.mainController.deletCourse(this.getSelection());
 	}
 
-	public void editarContextual() {
-		this.mainController.editarMateria(this.obtenerSeleccionado());
-		tabla.refresh();
+	public void editCourse() {
+		this.mainController.editCourse(this.getSelection());
+		tableView.refresh();
 	}
 
-	public void agregarMateria() {
-		this.mainController.agregarMateria();
+	public void addCourse() {
+		this.mainController.addCourse();
 	}
 
-	public void guardarDimensionesTabla() {
+	public void saveTableColumnWidth() {
 		TableConfiguration configuracion = new TableConfiguration();
 		guardarDimensiones(configuracion);
 		guardarVisibles(configuracion);
-		configurationService.save(configuracion.getConfig());
+		configurationService.save(configuracion.getConfiguration());
 	}
 
-	private void guardarDimensiones(TableConfiguration configuracion) {
-		configuracion.setAnchoColumnaId(this.numeroActividad.getWidth());
-		configuracion.setAnchoColumnaNombre(this.nombreActividad.getWidth());
-		configuracion.setAnchoColumnaAnio(this.anio.getWidth());
-		configuracion.setAnchoColumnaPeriodo(this.periodo.getWidth());
-		configuracion.setAnchoColumnaNota(this.nota.getWidth());
-		configuracion.setAnchoColumnaEstado(this.estado.getWidth());
-		configuracion.setAnchoColumnaTipo(this.tipo.getWidth());
-		configuracion.setAnchoColumnaHS(this.hs.getWidth());
-		configuracion.setAnchoColumnaCreditos(this.creditos.getWidth());
+	private void guardarDimensiones(TableConfiguration configuration) {
+		configuration.setIdColumnWidth(this.idColumn.getWidth());
+		configuration.setNameColumnWidth(this.nameColumn.getWidth());
+		configuration.setAnchoColumnaAnio(this.yearColumn.getWidth());
+		configuration.setCoursePeriodColumnWidth(this.coursePeriodColumn.getWidth());
+		configuration.setAnchoColumnaNota(this.gradeColumn.getWidth());
+		configuration.setCourseStatusColumnWidth(this.courseStatusColumn.getWidth());
+		configuration.setCourseTypeColumnWidth(this.courseTypeColumn.getWidth());
+		configuration.setAnchoColumnaHS(this.hoursColumn.getWidth());
+		configuration.setAnchoColumnaCreditos(this.creditsColumn.getWidth());
 	}
 
-	private void guardarVisibles(TableConfiguration configuracion) {
-		configuracion.setIdVisible(this.numeroActividad.isVisible());
-		configuracion.setNombreVisible(this.nombreActividad.isVisible());
-		configuracion.setAnioVisible(this.anio.isVisible());
-		configuracion.setPeriodoVisible(this.periodo.isVisible());
-		configuracion.setNotaVisible(this.nota.isVisible());
-		configuracion.setEstadoVisible(this.estado.isVisible());
-		configuracion.setTipoVisible(this.tipo.isVisible());
-		configuracion.setHSVisible(this.hs.isVisible());
-		configuracion.setCreditosVisible(this.creditos.isVisible());
+	private void guardarVisibles(TableConfiguration configuration) {
+		configuration.setIdVisible(this.idColumn.isVisible());
+		configuration.setCourseNameVisible(this.nameColumn.isVisible());
+		configuration.setAnioVisible(this.yearColumn.isVisible());
+		configuration.setCoursePeriodVisible(this.coursePeriodColumn.isVisible());
+		configuration.setNotaVisible(this.gradeColumn.isVisible());
+		configuration.setCourseStatusVisible(this.courseStatusColumn.isVisible());
+		configuration.setCourseTypeVisible(this.courseTypeColumn.isVisible());
+		configuration.setHSVisible(this.hoursColumn.isVisible());
+		configuration.setCreditosVisible(this.creditsColumn.isVisible());
 	}
 
 	public void recuperarDimensionesTabla() {
-		TableConfiguration configuracion = new TableConfiguration(configurationService.findByTipoConfiguracion(TipoConfiguracion.TABLA));
-		if (configuracion.esValida()) {
-			dimensionarColumnas(configuracion);
-			recuperarVisibles(configuracion);
+		TableConfiguration configuration = new TableConfiguration(configurationService.findByTipoConfiguracion(ConfigurationType.TABLE));
+		if (configuration.isValid()) {
+			dimensionarColumnas(configuration);
+			recuperarVisibles(configuration);
 		}
 	}
 
-	private void dimensionarColumnas(TableConfiguration config) {
-		this.numeroActividad.setPrefWidth(config.getAnchoColumnaId());
-		this.nombreActividad.setPrefWidth(config.getAnchoColumnaNombre());
-		this.anio.setPrefWidth(config.getAnchoColumnaAnio());
-		this.periodo.setPrefWidth(config.getAnchoColumnaPeriodo());
-		this.nota.setPrefWidth(config.getAnchoColumnaNota());
-		this.estado.setPrefWidth(config.getAnchoColumnaEstado());
-		this.tipo.setPrefWidth(config.getAnchoColumnaTipo());
-		this.hs.setPrefWidth(config.getAnchoColumnaHS());
-		this.creditos.setPrefWidth(config.getAnchoColumnaCreditos());
+	private void dimensionarColumnas(TableConfiguration configuration) {
+		this.idColumn.setPrefWidth(configuration.getIdColumnWidth());
+		this.nameColumn.setPrefWidth(configuration.getNameColumnWidth());
+		this.yearColumn.setPrefWidth(configuration.getYearColumnWidth());
+		this.coursePeriodColumn.setPrefWidth(configuration.getCoursePeriodColumnWidth());
+		this.gradeColumn.setPrefWidth(configuration.getGradeColumnWidth());
+		this.courseStatusColumn.setPrefWidth(configuration.getCourseStatusColumnWidth());
+		this.courseTypeColumn.setPrefWidth(configuration.getCourseTypeColumnWidth());
+		this.hoursColumn.setPrefWidth(configuration.getAnchoColumnaHS());
+		this.creditsColumn.setPrefWidth(configuration.getAnchoColumnaCreditos());
 	}
 
-	private void recuperarVisibles(TableConfiguration configuracion) {
-		this.numeroActividad.setVisible(configuracion.getIdVisible());
-		this.nombreActividad.setVisible(configuracion.getNombreVisible());
-		this.anio.setVisible(configuracion.getAnioVisible());
-		this.periodo.setVisible(configuracion.getPeriodoVisible());
-		this.nota.setVisible(configuracion.getNotaVisible());
-		this.estado.setVisible(configuracion.getEstadoVisible());
-		this.tipo.setVisible(configuracion.getTipoVisible());
-		this.hs.setVisible(configuracion.getHSVisible());
-		this.creditos.setVisible(configuracion.getCreditosVisible());
+	private void recuperarVisibles(TableConfiguration configuration) {
+		this.idColumn.setVisible(configuration.getIdVisible());
+		this.nameColumn.setVisible(configuration.getNameVisible());
+		this.yearColumn.setVisible(configuration.getYearVisible());
+		this.coursePeriodColumn.setVisible(configuration.getCoursePeriodVisible());
+		this.gradeColumn.setVisible(configuration.getGradeVisible());
+		this.courseStatusColumn.setVisible(configuration.getCourseStatusVisible());
+		this.courseTypeColumn.setVisible(configuration.getCourseTypeVisible());
+		this.hoursColumn.setVisible(configuration.getHSVisible());
+		this.creditsColumn.setVisible(configuration.getCreditosVisible());
 	}
 
 	@Autowired
-	public void setControladorPrincipal(MainController mainController) {
+	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
 	}
 }
