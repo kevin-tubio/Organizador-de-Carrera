@@ -79,7 +79,7 @@ public class MainController implements Initializable {
 		this.saveChangesMenuItem.disableProperty().bind(this.cambiosSubject.not());
 		this.disableActions();
 		materiaService.recuperarListado();
-		tableController.recuperarDimensionesTabla();
+		tableController.loadTableConfiguration();
 	}
 
 	public void openFile() {
@@ -143,10 +143,10 @@ public class MainController implements Initializable {
 	private void ejecutarSegunSeleccionado(Consumer<Course> function) {
 		switch (getTabLocalizedId()) {
 		case "table":
-			function.accept(tableController.getSelection());
+			function.accept(tableController.getSelectedItem());
 			break;
 		case "list":
-			function.accept(listController.getSelection());
+			function.accept(listController.getSelectedItem());
 			break;
 		default:
 		}
@@ -174,7 +174,7 @@ public class MainController implements Initializable {
 
 	public void closeWindow(Event closeEvent) {
 		closeEvent.consume();
-		this.tableController.saveTableColumnWidth();
+		this.tableController.saveTableConfiguration();
 		if (!shouldSaveChanges())
 			exit();
 		else

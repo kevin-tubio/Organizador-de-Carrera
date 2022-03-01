@@ -36,22 +36,21 @@ public class ListController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
 		this.listView.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
-		this.agregarSubscriptorAListado();
+		this.subscribeToProgram();
 		this.listView.setItems(this.filteredList);
 	}
 
-	private void agregarSubscriptorAListado() {
-		MapChangeListener<Integer, Course> subscriptor = cambio -> this.courseList
-				.setAll(cambio.getMap().values());
-		Program.getInstance().getProgramMap().addListener(subscriptor);
+	private void subscribeToProgram() {
+		MapChangeListener<Integer, Course> listener = change -> this.courseList.setAll(change.getMap().values());
+		Program.getInstance().getProgramMap().addListener(listener);
 	}
 
-	protected Course getSelection() {
+	protected Course getSelectedItem() {
 		return this.listView.getSelectionModel().getSelectedItem();
 	}
 
 	public void enableActions() {
-		if (this.getSelection() != null && !Program.getInstance().getProgramMap().isEmpty()) {
+		if (this.getSelectedItem() != null && !Program.getInstance().getProgramMap().isEmpty()) {
 			this.mainController.enableActions();
 		}
 	}
