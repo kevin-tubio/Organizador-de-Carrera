@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -141,6 +142,15 @@ public class CourseController implements Initializable {
 		this.hoursField.getValueFactory().setValue(4);
 		this.creditsField.setValueFactory(new SpinnerValueFactory.DoubleSpinnerValueFactory(0.0, 20.0));
 		this.creditsField.getValueFactory().setValue(0.0);
+		stylizeSpinner(this.gradeField);
+		stylizeSpinner(this.yearField);
+		stylizeSpinner(this.hoursField);
+		stylizeSpinner(this.creditsField);
+	}
+
+	private void stylizeSpinner(Spinner<?> spinner) {
+		spinner.getStyleClass().add(Spinner.STYLE_CLASS_SPLIT_ARROWS_HORIZONTAL);
+		spinner.editorProperty().get().setAlignment(Pos.CENTER);
 	}
 
 	private void initializeButtons() {

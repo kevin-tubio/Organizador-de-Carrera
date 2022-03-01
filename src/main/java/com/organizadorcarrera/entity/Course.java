@@ -171,7 +171,7 @@ public class Course {
 
 	@Override
 	public String toString() {
-		return name + " ( " + id + " )";
+		return String.format("%s ( %d )", name, id);
 	}
 
 	public void setGrade(Integer grade) {
