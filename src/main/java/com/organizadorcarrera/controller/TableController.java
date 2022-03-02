@@ -131,9 +131,18 @@ public class TableController implements Initializable {
 
 	public void saveTableConfiguration() {
 		TableConfiguration configuration = new TableConfiguration();
+		saveColumnsOrder(configuration);
 		saveColumnsWidth(configuration);
 		saveVisibleColumns(configuration);
 		configurationService.save(configuration.getConfiguration());
+	}
+
+	private void saveColumnsOrder(TableConfiguration configuration) {
+		this.tableView.getColumns().forEach(column -> configuration.setColumnOrder(column, getColumnIndex(column)));
+	}
+
+	private int getColumnIndex(TableColumn<Course, ?> column) {
+		return this.tableView.getColumns().indexOf(column);
 	}
 
 	private void saveColumnsWidth(TableConfiguration configuration) {
@@ -147,9 +156,15 @@ public class TableController implements Initializable {
 	public void loadTableConfiguration() {
 		TableConfiguration configuration = new TableConfiguration(configurationService.findByTipoConfiguracion(ConfigurationType.TABLE));
 		if (configuration.isValid()) {
+			loadColumnsOrder(configuration);
 			loadColumnsWidth(configuration);
 			loadVisibleColumns(configuration);
 		}
+	}
+
+	private void loadColumnsOrder(TableConfiguration configuration) {
+		this.tableView.getColumns().sort((column, otherColumn) -> Integer.compare(configuration.getColumnOrder(column),
+				configuration.getColumnOrder(otherColumn)));
 	}
 
 	private void loadColumnsWidth(TableConfiguration configuration) {

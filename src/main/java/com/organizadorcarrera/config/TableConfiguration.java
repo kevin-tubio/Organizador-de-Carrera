@@ -17,6 +17,14 @@ public class TableConfiguration {
 		this.configuration = configuration;
 	}
 
+	public void setColumnOrder(TableColumn<Course, ?> column, Integer order) {
+		this.configuration.addConfigurationPair(getConfigurationId(column, "Order"), order);
+	}
+
+	public Integer getColumnOrder(TableColumn<Course, ?> column) {
+		return getInteger(column);
+	}
+
 	public void setColumnWidth(TableColumn<Course, ?> column) {
 		this.configuration.addConfigurationPair(getConfigurationId(column, "Width"), column.getWidth());
 	}
@@ -35,6 +43,10 @@ public class TableConfiguration {
 
 	private String getConfigurationId(TableColumn<Course, ?> column, String type) {
 		return String.format("%s%s", column.getId(), type);
+	}
+
+	private Integer getInteger(TableColumn<Course, ?> column) {
+		return Integer.valueOf(this.configuration.getConfigurationValue(getConfigurationId(column, "Order")));
 	}
 
 	private Double getDouble(TableColumn<Course, ?> column) {
