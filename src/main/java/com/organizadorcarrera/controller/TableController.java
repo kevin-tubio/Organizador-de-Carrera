@@ -130,34 +130,18 @@ public class TableController implements Initializable {
 	}
 
 	public void saveTableConfiguration() {
-		TableConfiguration configuracion = new TableConfiguration();
-		saveColumnsWidth(configuracion);
-		saveVisibleColumns(configuracion);
-		configurationService.save(configuracion.getConfiguration());
+		TableConfiguration configuration = new TableConfiguration();
+		saveColumnsWidth(configuration);
+		saveVisibleColumns(configuration);
+		configurationService.save(configuration.getConfiguration());
 	}
 
 	private void saveColumnsWidth(TableConfiguration configuration) {
-		configuration.setIdColumnWidth(this.idColumn.getWidth());
-		configuration.setNameColumnWidth(this.nameColumn.getWidth());
-		configuration.setYearColumnWidth(this.yearColumn.getWidth());
-		configuration.setCoursePeriodColumnWidth(this.coursePeriodColumn.getWidth());
-		configuration.setGradeColumnWidth(this.gradeColumn.getWidth());
-		configuration.setCourseStatusColumnWidth(this.courseStatusColumn.getWidth());
-		configuration.setCourseTypeColumnWidth(this.courseTypeColumn.getWidth());
-		configuration.setHoursColumnWidth(this.hoursColumn.getWidth());
-		configuration.setCreditsColumnWidth(this.creditsColumn.getWidth());
+		this.tableView.getColumns().forEach(configuration::setColumnWidth);
 	}
 
 	private void saveVisibleColumns(TableConfiguration configuration) {
-		configuration.setIdColumnVisible(this.idColumn.isVisible());
-		configuration.setNameColumnVisible(this.nameColumn.isVisible());
-		configuration.setYearColumnVisible(this.yearColumn.isVisible());
-		configuration.setCoursePeriodColumnVisible(this.coursePeriodColumn.isVisible());
-		configuration.setGradeColumnVisible(this.gradeColumn.isVisible());
-		configuration.setCourseStatusColumnVisible(this.courseStatusColumn.isVisible());
-		configuration.setCourseTypeColumnVisible(this.courseTypeColumn.isVisible());
-		configuration.setHoursColumnVisible(this.hoursColumn.isVisible());
-		configuration.setCreditsColumnVisible(this.creditsColumn.isVisible());
+		this.tableView.getColumns().forEach(configuration::setColumnVisible);
 	}
 
 	public void loadTableConfiguration() {
@@ -169,27 +153,11 @@ public class TableController implements Initializable {
 	}
 
 	private void loadColumnsWidth(TableConfiguration configuration) {
-		this.idColumn.setPrefWidth(configuration.getIdColumnWidth());
-		this.nameColumn.setPrefWidth(configuration.getNameColumnWidth());
-		this.yearColumn.setPrefWidth(configuration.getYearColumnWidth());
-		this.coursePeriodColumn.setPrefWidth(configuration.getCoursePeriodColumnWidth());
-		this.gradeColumn.setPrefWidth(configuration.getGradeColumnWidth());
-		this.courseStatusColumn.setPrefWidth(configuration.getCourseStatusColumnWidth());
-		this.courseTypeColumn.setPrefWidth(configuration.getCourseTypeColumnWidth());
-		this.hoursColumn.setPrefWidth(configuration.getHoursColumnWidth());
-		this.creditsColumn.setPrefWidth(configuration.getCreditsColumnWidth());
+		this.tableView.getColumns().forEach(configuration::getColumnWidth);
 	}
 
 	private void loadVisibleColumns(TableConfiguration configuration) {
-		this.idColumn.setVisible(configuration.getIdColumnVisible());
-		this.nameColumn.setVisible(configuration.getNameColumnVisible());
-		this.yearColumn.setVisible(configuration.getYearColumnVisible());
-		this.coursePeriodColumn.setVisible(configuration.getCoursePeriodColumnVisible());
-		this.gradeColumn.setVisible(configuration.getGradeColumnVisible());
-		this.courseStatusColumn.setVisible(configuration.getCourseStatusColumnVisible());
-		this.courseTypeColumn.setVisible(configuration.getCourseTypeColumnVisible());
-		this.hoursColumn.setVisible(configuration.getHoursColumnVisible());
-		this.creditsColumn.setVisible(configuration.getCreditsColumnVisible());
+		this.tableView.getColumns().forEach(configuration::getColumnVisible);
 	}
 
 	@Autowired
