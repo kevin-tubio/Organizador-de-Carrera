@@ -68,17 +68,17 @@ public class Course {
 	}
 
 	public Course(Integer id, String name, Integer year, CoursePeriod coursePeriod) {
-		this(id, name, year, coursePeriod, CourseStatus.NO_CURSADA, 0);
+		this(id, name, year, coursePeriod, CourseStatus.NO_CURSADA, -1);
 	}
 
 	public Course(Integer id, String name, Integer year, CoursePeriod coursePeriod, CourseStatus courseStatus, Integer grade) {
+		this.grade = grade;
 		this.id = id;
 		this.name = name;
-		this.courseStatus = courseStatus;
+		setCourseStatus(courseStatus);
 		this.year = year;
 		this.coursePeriod = coursePeriod;
 		this.correlatives = new HashSet<>();
-		this.grade = grade;
 		this.hours = 0;
 		this.credits = 0;
 		this.courseType = CourseType.MATERIA;
@@ -89,6 +89,10 @@ public class Course {
 	}
 
 	public void setCourseStatus(CourseStatus courseStatus) {
+		if (courseStatus.equals(CourseStatus.APROBADA) && this.grade.intValue() == -1)
+			this.grade = 4;
+		else if (!courseStatus.equals(CourseStatus.APROBADA))
+			this.grade = -1;
 		this.courseStatus = courseStatus;
 	}
 

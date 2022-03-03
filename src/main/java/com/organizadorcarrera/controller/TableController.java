@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 
 import com.organizadorcarrera.config.TableConfiguration;
@@ -88,6 +89,21 @@ public class TableController implements Initializable {
 		creditsColumn.setCellValueFactory(new PropertyValueFactory<>("credits"));
 		setColumnComparators();
 		tableView.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
+		inicializeEditableTableCells();
+	}
+
+	private void inicializeEditableTableCells() {
+		tableView.setEditable(true);
+		courseStatusColumn.setCellFactory(ChoiceBoxTableCell.<Course, CourseStatus>forTableColumn(CourseStatus.values()));
+		registerEventListeners();
+	}
+
+	private void registerEventListeners() {
+		courseStatusColumn.setOnEditCommit(event -> {
+			event.getRowValue().setCourseStatus(event.getNewValue());
+			tableView.refresh();
+			this.mainController.emitUnsavedChanges();
+		});
 	}
 
 	private void setColumnComparators() {
