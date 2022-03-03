@@ -66,17 +66,17 @@ public class MainController implements Initializable {
 	@Autowired
 	private ListadoService materiaService;
 
-	private SimpleBooleanProperty cambiosSubject;
+	private SimpleBooleanProperty unsavedChangesSubject;
 	private Logger logger;
 
 	public MainController() {
-		this.cambiosSubject = new SimpleBooleanProperty(false);
+		this.unsavedChangesSubject = new SimpleBooleanProperty(false);
 		this.logger = LoggerFactory.getLogger(MainController.class);
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.saveChangesMenuItem.disableProperty().bind(this.cambiosSubject.not());
+		this.saveChangesMenuItem.disableProperty().bind(this.unsavedChangesSubject.not());
 		this.disableActions();
 		materiaService.recuperarListado();
 		tableController.loadTableConfiguration();
@@ -96,7 +96,7 @@ public class MainController implements Initializable {
 					logger.debug(e.getMessage(), e);
 				}
 			});
-			declararCambios();
+			emitUnsavedChanges();
 		}
 	}
 
@@ -129,7 +129,7 @@ public class MainController implements Initializable {
 
 	protected void deletCourse(Course selected) {
 		Program.getInstance().deleteCourse(selected);
-		declararCambios();
+		emitUnsavedChanges();
 	}
 
 	public void addCourse() {
@@ -165,11 +165,11 @@ public class MainController implements Initializable {
 
 	public void saveChanges() {
 		materiaService.persistirCambiosListado();
-		this.cambiosSubject.set(false);
+		this.unsavedChangesSubject.set(false);
 	}
 
-	public void declararCambios() {
-		this.cambiosSubject.set(true);
+	public void emitUnsavedChanges() {
+		this.unsavedChangesSubject.set(true);
 	}
 
 	public void closeWindow(Event closeEvent) {
@@ -182,7 +182,7 @@ public class MainController implements Initializable {
 	}
 
 	private boolean shouldSaveChanges() {
-		return this.cambiosSubject.get();
+		return this.unsavedChangesSubject.get();
 	}
 
 	private void showExitWindow() {

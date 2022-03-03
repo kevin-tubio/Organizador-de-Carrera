@@ -190,7 +190,7 @@ public class CourseController implements Initializable {
 		return validator.createCheck().withMethod(in -> {
 			if (fieldIsEmpty(this.idField))
 				in.error(LangResource.getString("InputIdVacio"));
-			if (!this.idField.getText().matches("^[0-9]+$"))
+			if (!this.idField.getText().matches("^[\\d]+$"))
 				in.error(LangResource.getString("InputIdInvalido"));
 			if (idIsRepeated())
 				in.error(LangResource.getString("InputIdRepetido"));
@@ -265,8 +265,6 @@ public class CourseController implements Initializable {
 		});
 	}
 
-//----------------------------------------------------------------------------------------------------------------------
-
 	@Autowired
 	public void setMainController(MainController mainController) {
 		this.mainController = mainController;
@@ -320,17 +318,16 @@ public class CourseController implements Initializable {
 	}
 
 	private void saveAndExit() {
-		if (this.injectedCourse == null)
+		if (this.injectedCourse == null) {
 			this.injectedCourse = createCourse();
-		if (!idMatchesCourse(this.injectedCourse)) {
-			var newCourse = createCourse();
-			updateCourse(newCourse);
-			Program.getInstance().replaceCourse(injectedCourse, newCourse);
-		} else {
-			updateCourse(injectedCourse);
 			Program.getInstance().addCourse(injectedCourse);
 		}
-		this.mainController.declararCambios();
+		else if (!idMatchesCourse(this.injectedCourse)) {
+			var newCourse = createCourse();
+			Program.getInstance().replaceCourse(injectedCourse, newCourse);
+		}
+		updateCourse(injectedCourse);
+		this.mainController.emitUnsavedChanges();
 		close();
 	}
 
