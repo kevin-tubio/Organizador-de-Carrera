@@ -8,6 +8,7 @@ import java.util.function.Consumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javafx.application.Platform;
@@ -66,6 +67,9 @@ public class MainController implements Initializable {
 	@Autowired
 	private ListadoService materiaService;
 
+	@Value("${main.initial-file-directory}")
+	private String initialFileDirectory;
+
 	private SimpleBooleanProperty unsavedChangesSubject;
 	private Logger logger;
 
@@ -86,17 +90,21 @@ public class MainController implements Initializable {
 		var fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+
+		if (!this.initialFileDirectory.isBlank())
+			fileChooser.setInitialDirectory(new File(this.initialFileDirectory));
+
 		var archivo = fileChooser.showOpenDialog(new Stage());
 		if (archivo != null) {
 			Program.clearProgram();
 			Platform.runLater(() -> {
 				try {
 					parseCourses(archivo);
+					emitUnsavedChanges();
 				} catch (FileException e) {
 					logger.debug(e.getMessage(), e);
 				}
 			});
-			emitUnsavedChanges();
 		}
 	}
 
