@@ -1,20 +1,31 @@
 package com.organizadorcarrera.controller;
 
+import java.math.BigDecimal;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellEditEvent;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 
 import com.organizadorcarrera.config.TableConfiguration;
 import com.organizadorcarrera.entity.Course;
@@ -24,6 +35,7 @@ import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.enumerados.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
+import com.organizadorcarrera.util.SpinnerTableCell;
 
 @Component
 public class TableController implements Initializable {
@@ -89,21 +101,70 @@ public class TableController implements Initializable {
 		creditsColumn.setCellValueFactory(new PropertyValueFactory<>("credits"));
 		setColumnComparators();
 		tableView.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
-		inicializeEditableTableCells();
+		initializeEditableTableCells();
 	}
 
-	private void inicializeEditableTableCells() {
+	private void initializeEditableTableCells() {
 		tableView.setEditable(true);
+		nameColumn.setCellFactory(TextFieldTableCell.<Course>forTableColumn());
+		yearColumn.setCellFactory(SpinnerTableCell.<Course, Integer>forTableColumn(listInRange(1, 10)));
+		coursePeriodColumn.setCellFactory(ChoiceBoxTableCell.<Course, CoursePeriod>forTableColumn(CoursePeriod.values()));
+		courseTypeColumn.setCellFactory(ChoiceBoxTableCell.<Course, CourseType>forTableColumn(CourseType.values()));
 		courseStatusColumn.setCellFactory(ChoiceBoxTableCell.<Course, CourseStatus>forTableColumn(CourseStatus.values()));
-		registerEventListeners();
+		gradeColumn.setCellFactory(SpinnerTableCell.<Course, String>forTableColumn("4", "5", "6", "7", "8", "9", "10"));
+		creditsColumn.setCellFactory(SpinnerTableCell.<Course, Double>forTableColumn(listInRange(BigDecimal.valueOf(0), BigDecimal.valueOf(20))));
+		hoursColumn.setCellFactory(SpinnerTableCell.<Course, Integer>forTableColumn(listInRange(0, 20)));
+		registerTableCellChangeListeners();
 	}
 
-	private void registerEventListeners() {
-		courseStatusColumn.setOnEditCommit(event -> {
-			event.getRowValue().setCourseStatus(event.getNewValue());
+	private ObservableList<Integer> listInRange(int from, int to) {
+		return FXCollections.observableList(IntStream.rangeClosed(from, to).boxed().collect(Collectors.toList()));
+	}
+
+	private ObservableList<Double> listInRange(BigDecimal from, BigDecimal to) {
+		List<Double> list = Stream.iterate(from, d -> d.compareTo(to) <= 0, d -> d.add(BigDecimal.valueOf(1)))
+				.mapToDouble(BigDecimal::doubleValue).boxed().collect(Collectors.toList());
+		return FXCollections.observableList(list);
+	}
+
+	private void registerTableCellChangeListeners() {
+		yearColumn.setOnEditCommit(handleYearCellEdit());
+		courseStatusColumn.setOnEditCommit(handleCourseStatusCellEdit());
+		coursePeriodColumn.setOnEditCommit(handleCoursePeriodCellEdit());
+		courseTypeColumn.setOnEditCommit(handleCourseTypeCellEdit());
+		gradeColumn.setOnEditCommit(handleGradeCellEdit());
+	}
+
+	private EventHandler<CellEditEvent<Course, Integer>> handleYearCellEdit() {
+		return handleTableCellEdit(event -> event.getRowValue().setYear(event.getNewValue()));
+	}
+
+	private EventHandler<CellEditEvent<Course, CourseStatus>> handleCourseStatusCellEdit() {
+		return handleTableCellEdit(event -> event.getRowValue().setCourseStatus(event.getNewValue()));
+	}
+
+	private EventHandler<CellEditEvent<Course, CoursePeriod>> handleCoursePeriodCellEdit() {
+		return handleTableCellEdit(event -> event.getRowValue().setCoursePeriod(event.getNewValue()));
+	}
+
+	private EventHandler<CellEditEvent<Course, CourseType>> handleCourseTypeCellEdit() {
+		return handleTableCellEdit(event -> event.getRowValue().setCourseType(event.getNewValue()));
+	}
+
+	private EventHandler<CellEditEvent<Course, String>> handleGradeCellEdit() {
+		return handleTableCellEdit(event -> {
+			var course = event.getRowValue();
+			course.setGrade(Integer.valueOf(event.getNewValue()));
+			course.setCourseStatus(CourseStatus.APROBADA);
+		});
+	}
+
+	private <T> EventHandler<CellEditEvent<Course, T>> handleTableCellEdit(Consumer<CellEditEvent<Course, T>> consumer) {
+		return event -> {
+			consumer.accept(event);
 			tableView.refresh();
 			this.mainController.emitUnsavedChanges();
-		});
+		};
 	}
 
 	private void setColumnComparators() {
