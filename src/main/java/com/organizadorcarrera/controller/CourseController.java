@@ -32,6 +32,8 @@ import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
 import com.organizadorcarrera.entity.Course;
 
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
+
 import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;
 import net.synedra.validatorfx.Validator;
@@ -113,6 +115,7 @@ public class CourseController implements Initializable {
 		this.initializeFields();
 		this.createFieldsValidator();
 		this.subscribeToSearchBox();
+		this.subscribeToEvents();
 	}
 
 	private void initializeFields() {
@@ -263,6 +266,13 @@ public class CourseController implements Initializable {
 					this.searchField.clear();
 			}
 		});
+	}
+
+	private void subscribeToEvents() {
+		JavaFxObservable.actionEventsOf(this.cancelButton).subscribe(onClick -> this.close());
+		JavaFxObservable.actionEventsOf(this.okButton).subscribe(onClick -> this.accept());
+		JavaFxObservable.actionEventsOf(this.removeCorrelativeMenuItem).subscribe(onClick -> this.removeCorrelativeCourse());
+		JavaFxObservable.actionEventsOf(this.addCorrelativeMenuItem).subscribe(onClick -> this.addCorrelativeCourse());
 	}
 
 	@Autowired

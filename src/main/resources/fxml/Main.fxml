@@ -22,20 +22,20 @@
 					<menus>
 						<Menu mnemonicParsing="false" text="%MenuArchivo">
 							<items>
-								<MenuItem mnemonicParsing="false" text="%MenuArchivoNuevo" />
+								<MenuItem fx:id="newProgramMenuItem" mnemonicParsing="false" text="%MenuArchivoNuevo" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem mnemonicParsing="false" onAction="#openFile" text="%MenuArchivoAbrir" />
+								<MenuItem fx:id="openFileMenuItem" mnemonicParsing="false" text="%MenuArchivoAbrir" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="saveChangesMenuItem" mnemonicParsing="false" onAction="#saveChanges" text="%MenuArchivoGuardar" />
+								<MenuItem fx:id="saveChangesMenuItem" mnemonicParsing="false" text="%MenuArchivoGuardar" />
 								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" onAction="#closeWindow" text="%MenuArchivoSalir" />
+								<MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" text="%MenuArchivoSalir" />
 							</items>
 						</Menu>
 						<Menu mnemonicParsing="false" text="%MenuEditar">
 							<items>
-								<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" onAction="#addCourse" text="%MenuEditarAgregar" />
-								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" onAction="#editCourse" text="%MenuEditarEditar" />
-								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" onAction="#deleteCourse" text="%MenuEditarBorrar" />
+								<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" text="%MenuEditarAgregar" />
+								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" text="%MenuEditarEditar" />
+								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" text="%MenuEditarBorrar" />
 							</items>
 						</Menu>
 					</menus>

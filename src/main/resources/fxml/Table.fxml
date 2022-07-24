@@ -32,9 +32,9 @@
 					<contextMenu>
 						<ContextMenu>
 							<items>
-								<MenuItem mnemonicParsing="false" onAction="#addCourse" text="%MenuEditarAgregar" />
-								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" onAction="#editCourse" text="%MenuEditarEditar" />
-								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" onAction="#deleteCourse" text="%MenuEditarBorrar" />
+								<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" text="%MenuEditarAgregar" />
+								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" text="%MenuEditarEditar" />
+								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" text="%MenuEditarBorrar" />
 							</items>
 						</ContextMenu>
 					</contextMenu>

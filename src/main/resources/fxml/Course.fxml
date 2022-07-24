@@ -40,12 +40,12 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                      </rowConstraints>
                      <children>
-            						<Button fx:id="cancelButton" mnemonicParsing="false" onAction="#close" prefWidth="80.0" text="%BotonCancelar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            						<Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonCancelar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
                         </Button>
-            						<Button fx:id="okButton" mnemonicParsing="false" onAction="#accept" prefWidth="80.0" text="%BotonAceptar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            						<Button fx:id="okButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonAceptar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                            <GridPane.margin>
                               <Insets left="10.0" />
                            </GridPane.margin>
@@ -194,7 +194,7 @@
 									<contextMenu>
 										<ContextMenu>
 											<items>
-												<MenuItem fx:id="removeCorrelativeMenuItem" mnemonicParsing="false" onAction="#removeCorrelativeCourse" text="%MenuContextQuitar" />
+												<MenuItem fx:id="removeCorrelativeMenuItem" mnemonicParsing="false" text="%MenuContextQuitar" />
 											</items>
 										</ContextMenu>
 									</contextMenu>
@@ -206,7 +206,7 @@
 									<contextMenu>
 										<ContextMenu>
 											<items>
-												<MenuItem fx:id="addCorrelativeMenuItem" mnemonicParsing="false" onAction="#addCorrelativeCourse" text="%MenuContextAgregar" />
+												<MenuItem fx:id="addCorrelativeMenuItem" mnemonicParsing="false" text="%MenuContextAgregar" />
 											</items>
 										</ContextMenu>
 									</contextMenu>

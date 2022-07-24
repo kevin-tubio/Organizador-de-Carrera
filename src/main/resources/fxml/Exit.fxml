@@ -35,9 +35,9 @@
 						<RowConstraints maxHeight="47.0" minHeight="10.0" prefHeight="31.0" vgrow="SOMETIMES" />
 					</rowConstraints>
 					<children>
-						<Button alignment="CENTER" mnemonicParsing="false" onAction="#saveChanges" prefHeight="25.0" prefWidth="70.0" text="%BotonSi" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-						<Button alignment="CENTER" mnemonicParsing="false" onAction="#ignoreChanges" prefHeight="25.0" prefWidth="70.0" text="%BotonNo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-						<Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" onAction="#cancel" prefHeight="25.0" prefWidth="70.0" text="%BotonCancelar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button fx:id="saveChangesButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="%BotonSi" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button fx:id="ignoreChangesButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="%BotonNo" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+						<Button fx:id="cancelButton" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="70.0" text="%BotonCancelar" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
 					</children>
 				</GridPane>
 			</children>

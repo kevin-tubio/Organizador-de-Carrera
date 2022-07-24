@@ -31,6 +31,8 @@ import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.service.ListadoService;
 import com.organizadorcarrera.util.WindowDirector;
 
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
+
 @Component
 public class MainController implements Initializable {
 
@@ -51,6 +53,12 @@ public class MainController implements Initializable {
 
 	@FXML
 	private TabPane tabPane;
+
+	@FXML
+	private MenuItem newProgramMenuItem;
+
+	@FXML
+	private MenuItem openFileMenuItem;
 
 	@FXML
 	private MenuItem saveChangesMenuItem;
@@ -84,9 +92,20 @@ public class MainController implements Initializable {
 		this.disableActions();
 		materiaService.recuperarListado();
 		tableController.loadTableConfiguration();
+		subscribeToEvents();
 	}
 
-	public void openFile() {
+	private void subscribeToEvents() {
+		JavaFxObservable.actionEventsOf(this.newProgramMenuItem).subscribe();
+		JavaFxObservable.actionEventsOf(this.saveChangesMenuItem).subscribe(onClick -> this.saveChanges());
+		JavaFxObservable.actionEventsOf(this.openFileMenuItem).subscribe(onCLick -> this.openFile());
+		JavaFxObservable.actionEventsOf(this.exitAppMenuItem).subscribe(this::closeWindow);
+		JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse());
+		JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse());
+		JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse());
+	}
+
+	private void openFile() {
 		var fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -95,17 +114,18 @@ public class MainController implements Initializable {
 			fileChooser.setInitialDirectory(new File(this.initialFileDirectory));
 
 		var archivo = fileChooser.showOpenDialog(new Stage());
-		if (archivo != null) {
-			Program.clearProgram();
-			Platform.runLater(() -> {
-				try {
-					parseCourses(archivo);
-					emitUnsavedChanges();
-				} catch (FileException e) {
-					logger.debug(e.getMessage(), e);
-				}
-			});
-		}
+		if (archivo == null)
+			return;
+
+		Program.clearProgram();
+		Platform.runLater(() -> {
+			try {
+				parseCourses(archivo);
+				emitUnsavedChanges();
+			} catch (FileException e) {
+				logger.debug(e.getMessage(), e);
+			}
+		});
 	}
 
 	private void parseCourses(File file) throws FileException {

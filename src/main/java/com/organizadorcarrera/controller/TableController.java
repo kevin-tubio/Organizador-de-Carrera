@@ -37,6 +37,8 @@ import com.organizadorcarrera.enumerados.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
 import com.organizadorcarrera.util.SpinnerTableCell;
 
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
+
 @Component
 public class TableController implements Initializable {
 
@@ -71,6 +73,9 @@ public class TableController implements Initializable {
 	private TableColumn<Course, Double> creditsColumn;
 
 	@FXML
+	private MenuItem addCourseMenuItem;
+
+	@FXML
 	private MenuItem editCourseMenuItem;
 
 	@FXML
@@ -87,6 +92,7 @@ public class TableController implements Initializable {
 		this.subscribeToProgram();
 		this.editCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
 		this.deleteCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
+		subscribeToEvents();
 	}
 
 	private void initializeTable(ResourceBundle resourceBundle) {
@@ -183,6 +189,12 @@ public class TableController implements Initializable {
 		Program.getInstance().getProgramMap().addListener(listener);
 	}
 
+	private void subscribeToEvents() {
+		JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse());
+		JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse());
+		JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse());
+	}
+
 	public void enableActions() {
 		if (this.getSelectedItem() != null) {
 			this.mainController.enableActions();
@@ -193,16 +205,16 @@ public class TableController implements Initializable {
 		return this.tableView.getSelectionModel().getSelectedItem();
 	}
 
-	public void deleteCourse() {
+	private void deleteCourse() {
 		this.mainController.deletCourse(this.getSelectedItem());
 	}
 
-	public void editCourse() {
+	private void editCourse() {
 		this.mainController.editCourse(this.getSelectedItem());
 		tableView.refresh();
 	}
 
-	public void addCourse() {
+	private void addCourse() {
 		this.mainController.addCourse();
 	}
 
