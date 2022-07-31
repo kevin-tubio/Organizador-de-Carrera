@@ -2,6 +2,7 @@ package com.organizadorcarrera.controller;
 
 import java.io.File;
 import java.net.URL;
+import java.nio.file.NoSuchFileException;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -31,6 +33,7 @@ import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.service.ListadoService;
 import com.organizadorcarrera.util.WindowDirector;
 
+import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 
 @Component
@@ -96,16 +99,16 @@ public class MainController implements Initializable {
 	}
 
 	private void subscribeToEvents() {
-		JavaFxObservable.actionEventsOf(this.newProgramMenuItem).subscribe();
+		JavaFxObservable.actionEventsOf(this.newProgramMenuItem).subscribe(onClick -> this.clearProgram());
 		JavaFxObservable.actionEventsOf(this.saveChangesMenuItem).subscribe(onClick -> this.saveChanges());
-		JavaFxObservable.actionEventsOf(this.openFileMenuItem).subscribe(onCLick -> this.openFile());
+		JavaFxObservable.actionEventsOf(this.openFileMenuItem).flatMap(this::openFile).subscribe(this::parseFile, error -> {});
 		JavaFxObservable.actionEventsOf(this.exitAppMenuItem).subscribe(this::closeWindow);
 		JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse());
 		JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse());
 		JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse());
 	}
 
-	private void openFile() {
+	private Observable<File> openFile(ActionEvent event) {
 		var fileChooser = new FileChooser();
 		fileChooser.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Excel Files", "*.xls", "*.xlsx"),
 				new FileChooser.ExtensionFilter("Text Files", "*.txt"));
@@ -113,19 +116,30 @@ public class MainController implements Initializable {
 		if (!this.initialFileDirectory.isBlank())
 			fileChooser.setInitialDirectory(new File(this.initialFileDirectory));
 
-		var archivo = fileChooser.showOpenDialog(new Stage());
-		if (archivo == null)
+		var file = fileChooser.showOpenDialog(new Stage());
+		if (file == null)
+			return Observable.error(new NoSuchFileException(""));
+
+		return Observable.just(file);
+	}
+
+	private void parseFile(File file) {
+		if (file == null)
 			return;
 
-		Program.clearProgram();
+		this.clearProgram();
 		Platform.runLater(() -> {
 			try {
-				parseCourses(archivo);
-				emitUnsavedChanges();
+				parseCourses(file);
 			} catch (FileException e) {
 				logger.debug(e.getMessage(), e);
 			}
 		});
+	}
+
+	private void clearProgram() {
+		Program.clearProgram();
+		emitUnsavedChanges();
 	}
 
 	private void parseCourses(File file) throws FileException {
