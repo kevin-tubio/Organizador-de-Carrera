@@ -10,7 +10,7 @@ import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 
-public abstract class CourseBuilder {
+public abstract class CourseParser {
 
 	public Course crearMateria(Row filaActual) throws CellFormatException {
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());

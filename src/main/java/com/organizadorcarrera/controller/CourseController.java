@@ -260,11 +260,12 @@ public class CourseController implements Initializable {
 
 	private void subscribeToCourseList() {
 		this.courseList.focusedProperty().addListener((observable, oldValue, newValue) -> {
-			if (Boolean.FALSE.equals(newValue)) {
-				this.courseList.setVisible(false);
-				if (!this.searchField.isFocused())
-					this.searchField.clear();
-			}
+			if (Boolean.TRUE.equals(newValue))
+				return;
+
+			this.courseList.setVisible(false);
+			if (!this.searchField.isFocused())
+				this.searchField.clear();
 		});
 	}
 

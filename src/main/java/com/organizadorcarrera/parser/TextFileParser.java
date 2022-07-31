@@ -118,11 +118,13 @@ public class TextFileParser implements FileParser {
 	private void obtenerCorrelativas(BufferedReader buffer) throws IOException {
 		numeroDeLinea++;
 		var linea = buffer.readLine();
-		if (linea != null && linea.strip().matches("\\d+")) {
-			var cantidad = Integer.parseInt(linea);
-			for (var i = 0; i < cantidad; i++) {
-				agregarCorrelativa(buffer);
-			}
+
+		if (linea == null || !linea.strip().matches("\\d+"))
+			return;
+
+		var cantidad = Integer.parseInt(linea);
+		for (var i = 0; i < cantidad; i++) {
+			agregarCorrelativa(buffer);
 		}
 	}
 
@@ -130,21 +132,23 @@ public class TextFileParser implements FileParser {
 		numeroDeLinea++;
 		var linea = buffer.readLine();
 		var listado = Program.getInstance();
-		if (linea != null && linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
 
-			String[] datos = linea.split(": *");
-			try {
-				String[] correlativas = datos[1].split("/");
-				var numeros = new int[correlativas.length];
-				for (var i = 0; i < numeros.length; i++) {
-					numeros[i] = Integer.parseInt(correlativas[i].strip());
-				}
-				listado.addCorrelatives(Integer.parseInt(datos[0]), numeros);
-			} catch (InvalidCourseException e) {
-				logger.error(e.getMessage());
-			}
-		} else
+		if (linea == null || !linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
 			logger.warn(LangResource.getString("LineaInvalida"), this.numeroDeLinea, LangResource.getString("IdCorrelativasEsperado"));
+			return;
+		}
+
+		String[] datos = linea.split(": *");
+		try {
+			String[] correlativas = datos[1].split("/");
+			var numeros = new int[correlativas.length];
+			for (var i = 0; i < numeros.length; i++) {
+				numeros[i] = Integer.parseInt(correlativas[i].strip());
+			}
+			listado.addCorrelatives(Integer.parseInt(datos[0]), numeros);
+		} catch (InvalidCourseException e) {
+			logger.error(e.getMessage());
+		}
 	}
 
 	private String formatearMensajeExcepcion(String mensaje) {

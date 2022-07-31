@@ -4,7 +4,7 @@ import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 
-public class SimpleCourseBuilder extends CourseBuilder {
+public class SimpleCourseParser extends CourseParser {
 
 	@Override
 	protected String obtenerNombreMateria(String contenido) {

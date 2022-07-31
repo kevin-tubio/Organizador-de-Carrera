@@ -13,9 +13,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.organizadorcarrera.builder.ForeignLanguageCourseBuilder;
-import com.organizadorcarrera.builder.SimpleCourseBuilder;
-import com.organizadorcarrera.builder.SeminaryCourseBuilder;
+import com.organizadorcarrera.builder.ForeignLanguageCourseParser;
+import com.organizadorcarrera.builder.SimpleCourseParser;
+import com.organizadorcarrera.builder.SeminaryCourseParser;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.exception.PlanillaInvalidaException;
@@ -62,17 +62,17 @@ public class ExcelFileParser implements FileParser {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
-					listado.addCourse(new SimpleCourseBuilder().crearMateria(filaActual));
+					listado.addCourse(new SimpleCourseParser().crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
-					listado.addCourse(new SeminaryCourseBuilder().crearMateria(filaActual));
+					listado.addCourse(new SeminaryCourseParser().crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
-					listado.addCourse(new ForeignLanguageCourseBuilder().crearMateria(filaActual));
+					listado.addCourse(new ForeignLanguageCourseParser().crearMateria(filaActual));
 				}
 			} catch (CellFormatException e) {
 				logger.error(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1), e.getMessage());
 			}
 		}
-		if (listado.getCoursesCount() == 0) {
+		if (listado.isEmpty()) {
 			throw new PlanillaInvalidaException(LangResource.getString("NoEsPosibleInterpretarPlanilla"));
 		}
 	}

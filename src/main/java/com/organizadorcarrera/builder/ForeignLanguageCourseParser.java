@@ -3,7 +3,7 @@ package com.organizadorcarrera.builder;
 import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 
-public class ForeignLanguageCourseBuilder extends CourseBuilder {
+public class ForeignLanguageCourseParser extends CourseParser {
 
 	@Override
 	protected String obtenerNombreMateria(String contenido) {

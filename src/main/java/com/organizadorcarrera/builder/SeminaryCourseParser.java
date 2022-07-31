@@ -7,7 +7,7 @@ import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 
-public class SeminaryCourseBuilder extends CourseBuilder {
+public class SeminaryCourseParser extends CourseParser {
 
 	@Override
 	public Course crearMateria(Row filaActual) throws CellFormatException {

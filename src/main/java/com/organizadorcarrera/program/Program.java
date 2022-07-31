@@ -118,7 +118,6 @@ public class Program {
 
 	public void replaceCourse(Course oldCourse, Course newCourse) {
 		try {
-			validateCourses(oldCourse.getId());
 			for (Course correlative : getUnlockableCourses(oldCourse.getId())) {
 				correlative.getCorrelatives().remove(oldCourse);
 				correlative.getCorrelatives().add(newCourse);

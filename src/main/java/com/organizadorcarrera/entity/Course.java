@@ -121,11 +121,10 @@ public class Course {
 	}
 
 	public void setCorrelative(Course correlative) throws InvalidCourseException {
-		if (!this.equals(correlative)) {
-			this.correlatives.add(correlative);
-		} else {
+		if (this.equals(correlative))
 			throw new InvalidCourseException(String.format(LangResource.getString("CorrelativaInvalida"), correlative.id));
-		}
+
+		this.correlatives.add(correlative);
 	}
 
 	public int getCorrelativesCount() {
