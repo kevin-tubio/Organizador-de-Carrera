@@ -50,10 +50,10 @@ public abstract class CourseParser {
 	}
 
 	private CoursePeriod obtenerPeriodoDeMateria(String contenido) throws CellFormatException {
-		if (!contenido.matches("^([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+[ ]*$"))
+		if (!contenido.matches("^([1-2A-Z][a-z]+ +)?[A-Z][a-z]+ *$"))
 			throw new CellFormatException(LangResource.getString("FormatoInvalido"));
 
-		contenido = contenido.replaceAll("[ ]+", " ").strip();
+		contenido = contenido.replaceAll(" +", " ").strip();
 		if (contenido.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
 			return CoursePeriod.PRIMER_CUATRIMESTRE;
 
@@ -67,9 +67,9 @@ public abstract class CourseParser {
 		var contenido = fila.getCell(4).getStringCellValue().strip();
 		if (contenido.matches("")) {
 			return obtenerOrigenNota(fila);
-		} else if (contenido.matches("^\\d{1,2} *\\([A][a-z]+\\)$")) {
+		} else if (contenido.matches("^\\d{1,2} *\\(A[a-z]+\\)$")) {
 			return CourseStatus.APROBADA;
-		} else if (contenido.matches("^[A][a-z]+ *\\([A][a-z]+\\)$")) {
+		} else if (contenido.matches("^A[a-z]+ *\\(A[a-z]+\\)$")) {
 			return CourseStatus.REGULARIZADA;
 		} else {
 			throw new CellFormatException(LangResource.getString("EstadoMateriaInvalido"));

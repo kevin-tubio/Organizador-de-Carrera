@@ -76,7 +76,7 @@ public class TextFileParser implements FileParser {
 	private Course crearMateria(BufferedReader buffer) throws IOException, FileException {
 		numeroDeLinea++;
 		var linea = validarLinea(buffer.readLine(), LangResource.getString("DatosMateriaEsperados"));
-		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/\\d/([1-2A-Z][a-z]+[ ]+){0,1}[A-Z][a-z]+/\\d{1,2}/[A-Za-z ]{0,}$")) {
+		if (!linea.matches("^\\d+/[A-Za-zÀ-ÿ,. ]+/\\d/([1-2A-Z][a-z]+ +)?[A-Z][a-z]+/\\d{1,2}/[A-Za-z ]*$")) {
 			throw new LineFormatException(formatearMensajeExcepcion(LangResource.getString("FormatoInvalido")));
 		}
 		String[] datos = linea.split("/");
@@ -91,7 +91,7 @@ public class TextFileParser implements FileParser {
 	}
 
 	private CoursePeriod obtenerPeriodo(String dato) {
-		dato = dato.replaceAll("[ ]+", " ");
+		dato = dato.replaceAll(" +", " ");
 		if (dato.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
 			return CoursePeriod.PRIMER_CUATRIMESTRE;
 
