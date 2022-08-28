@@ -1,5 +1,6 @@
 package com.organizadorcarrera.controller;
 
+import io.reactivex.disposables.CompositeDisposable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -27,15 +28,23 @@ public class ExitController implements Initializable {
 
 	private MainController mainController;
 
+	private final CompositeDisposable subscriptions;
+
+	public ExitController() {
+		 this.subscriptions = new CompositeDisposable();
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle resources) {
 		this.subscribeToEvents();
 	}
 
 	private void subscribeToEvents() {
-		JavaFxObservable.actionEventsOf(this.saveChangesButton).subscribe(onClick -> this.saveChanges());
-		JavaFxObservable.actionEventsOf(this.ignoreChangesButton).subscribe(onClick -> this.ignoreChanges());
-		JavaFxObservable.actionEventsOf(this.cancelButton).subscribe(onClick -> this.cancel());
+		subscriptions.addAll(
+				JavaFxObservable.actionEventsOf(this.saveChangesButton).subscribe(onClick -> this.saveChanges()),
+				JavaFxObservable.actionEventsOf(this.ignoreChangesButton).subscribe(onClick -> this.ignoreChanges()),
+				JavaFxObservable.actionEventsOf(this.cancelButton).subscribe(onClick -> this.cancel())
+		);
 	}
 
 	private void saveChanges() {
@@ -55,6 +64,7 @@ public class ExitController implements Initializable {
 
 	private void closeWindow() {
 		((Stage) this.cancelButton.getScene().getWindow()).close();
+		this.subscriptions.clear();
 	}
 
 	@Autowired

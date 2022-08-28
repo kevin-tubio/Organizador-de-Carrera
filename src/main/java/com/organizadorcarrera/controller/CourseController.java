@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import io.reactivex.disposables.CompositeDisposable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -96,6 +97,8 @@ public class CourseController implements Initializable {
 	@FXML
 	private BorderPane container;
 
+	private final CompositeDisposable subscriptions;
+
 	private ObservableList<Course> courses;
 	private ObservableList<Course> correlativeCourses;
 	private FilteredList<Course> filteredList;
@@ -108,6 +111,7 @@ public class CourseController implements Initializable {
 		this.courses = FXCollections.observableArrayList(Program.getInstance().getProgramMap().values());
 		this.correlativeCourses = FXCollections.observableArrayList();
 		this.filteredList = new FilteredList<>(this.courses);
+		this.subscriptions = new CompositeDisposable();
 	}
 
 	@Override
@@ -270,10 +274,12 @@ public class CourseController implements Initializable {
 	}
 
 	private void subscribeToEvents() {
-		JavaFxObservable.actionEventsOf(this.cancelButton).subscribe(onClick -> this.close());
-		JavaFxObservable.actionEventsOf(this.okButton).subscribe(onClick -> this.accept());
-		JavaFxObservable.actionEventsOf(this.removeCorrelativeMenuItem).subscribe(onClick -> this.removeCorrelativeCourse());
-		JavaFxObservable.actionEventsOf(this.addCorrelativeMenuItem).subscribe(onClick -> this.addCorrelativeCourse());
+		subscriptions.addAll(
+				JavaFxObservable.actionEventsOf(this.cancelButton).subscribe(onClick -> this.close()),
+				JavaFxObservable.actionEventsOf(this.okButton).subscribe(onClick -> this.accept()),
+				JavaFxObservable.actionEventsOf(this.removeCorrelativeMenuItem).subscribe(onClick -> this.removeCorrelativeCourse()),
+				JavaFxObservable.actionEventsOf(this.addCorrelativeMenuItem).subscribe(onClick -> this.addCorrelativeCourse())
+		);
 	}
 
 	@Autowired
@@ -344,6 +350,7 @@ public class CourseController implements Initializable {
 
 	public void close() {
 		((Stage) this.cancelButton.getScene().getWindow()).close();
+		this.subscriptions.dispose();
 	}
 
 	public void accept() {

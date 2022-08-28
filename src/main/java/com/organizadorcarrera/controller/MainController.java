@@ -6,6 +6,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
+import io.reactivex.disposables.CompositeDisposable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,12 +82,14 @@ public class MainController implements Initializable {
 	@Value("${main.initial-file-directory}")
 	private String initialFileDirectory;
 
-	private SimpleBooleanProperty unsavedChangesSubject;
-	private Logger logger;
+	private final SimpleBooleanProperty unsavedChangesSubject;
+	private final Logger logger;
+	private final CompositeDisposable subscriptions;
 
 	public MainController() {
 		this.unsavedChangesSubject = new SimpleBooleanProperty(false);
 		this.logger = LoggerFactory.getLogger(MainController.class);
+		this.subscriptions = new CompositeDisposable();
 	}
 
 	@Override
@@ -99,13 +102,15 @@ public class MainController implements Initializable {
 	}
 
 	private void subscribeToEvents() {
-		JavaFxObservable.actionEventsOf(this.newProgramMenuItem).subscribe(onClick -> this.clearProgram());
-		JavaFxObservable.actionEventsOf(this.saveChangesMenuItem).subscribe(onClick -> this.saveChanges());
-		JavaFxObservable.actionEventsOf(this.openFileMenuItem).flatMap(this::openFile).subscribe(this::parseFile, error -> {});
-		JavaFxObservable.actionEventsOf(this.exitAppMenuItem).subscribe(this::closeWindow);
-		JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse());
-		JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse());
-		JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse());
+		subscriptions.addAll(
+				JavaFxObservable.actionEventsOf(this.newProgramMenuItem).subscribe(onClick -> this.clearProgram()),
+				JavaFxObservable.actionEventsOf(this.saveChangesMenuItem).subscribe(onClick -> this.saveChanges()),
+				JavaFxObservable.actionEventsOf(this.openFileMenuItem).flatMap(this::openFile).subscribe(this::parseFile, error -> {}),
+				JavaFxObservable.actionEventsOf(this.exitAppMenuItem).subscribe(this::closeWindow),
+				JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse()),
+				JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse()),
+				JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse())
+		);
 	}
 
 	private Observable<File> openFile(ActionEvent event) {

@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import io.reactivex.disposables.CompositeDisposable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -81,10 +82,16 @@ public class TableController implements Initializable {
 	@FXML
 	private MenuItem deleteCourseMenuItem;
 
-	@Autowired
-	private ConfigurationService configurationService;
+	private final ConfigurationService configurationService;
+	private final CompositeDisposable subscriptions;
 
 	private MainController mainController;
+
+	@Autowired
+	public TableController(ConfigurationService configurationService) {
+		this.configurationService = configurationService;
+		this.subscriptions = new CompositeDisposable();
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
@@ -190,9 +197,11 @@ public class TableController implements Initializable {
 	}
 
 	private void subscribeToEvents() {
-		JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse());
-		JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse());
-		JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse());
+		subscriptions.addAll(
+				JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse()),
+				JavaFxObservable.actionEventsOf(this.editCourseMenuItem).subscribe(onClick -> this.editCourse()),
+				JavaFxObservable.actionEventsOf(this.deleteCourseMenuItem).subscribe(onClick -> this.deleteCourse())
+		);
 	}
 
 	public void enableActions() {
