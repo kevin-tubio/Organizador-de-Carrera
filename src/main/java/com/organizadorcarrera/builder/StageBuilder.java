@@ -20,8 +20,12 @@ import javafx.stage.WindowEvent;
 @Component
 public class StageBuilder {
 
+	private final ApplicationContext applicationContext;
+
 	@Autowired
-	private ApplicationContext applicationContext;
+	public StageBuilder(ApplicationContext applicationContext) {
+		this.applicationContext = applicationContext;
+	}
 
 	private Stage stage;
 	private FXMLLoader fxmlLoader;

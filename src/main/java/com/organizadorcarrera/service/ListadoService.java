@@ -11,12 +11,12 @@ import com.organizadorcarrera.repository.CourseRepository;
 @Service
 public class ListadoService {
 
+	private final CourseRepository materiaRepository;
+	private final Logger logger;
+
 	@Autowired
-	private CourseRepository materiaRepository;
-
-	private Logger logger;
-
-	public ListadoService() {
+	public ListadoService(CourseRepository materiaRepository) {
+		this.materiaRepository = materiaRepository;
 		this.logger = LoggerFactory.getLogger(ListadoService.class);
 	}
 

@@ -10,8 +10,12 @@ import com.organizadorcarrera.repository.ConfigurationRepository;
 @Service
 public class ConfigurationService {
 
+	private final ConfigurationRepository configurationRepository;
+
 	@Autowired
-	private ConfigurationRepository configurationRepository;
+	public ConfigurationService(ConfigurationRepository configurationRepository) {
+		 this.configurationRepository = configurationRepository;
+	}
 	
 	public Configuration findByTipoConfiguracion(ConfigurationType configurationType) {
 		return configurationRepository.findByConfigurationType(configurationType);
