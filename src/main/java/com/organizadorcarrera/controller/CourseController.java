@@ -141,8 +141,7 @@ public class CourseController implements Initializable {
 
 	private void initializeSpinners() {
 		this.gradeField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(4, 10));
-		this.gradeField.disableProperty()
-				.bind(courseStatusField.getSelectionModel().selectedItemProperty().isNotEqualTo(CourseStatus.APROBADA));
+		this.gradeField.disableProperty().bind(courseStatusField.getSelectionModel().selectedItemProperty().isNotEqualTo(CourseStatus.APROBADA));
 		this.yearField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10));
 		this.yearField.getValueFactory().setValue(1);
 		this.hoursField.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 20));

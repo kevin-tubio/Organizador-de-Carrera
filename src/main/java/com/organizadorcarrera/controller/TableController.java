@@ -2,6 +2,7 @@ package com.organizadorcarrera.controller;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
@@ -181,9 +182,9 @@ public class TableController implements Initializable {
 	}
 
 	private void setColumnComparators() {
-		coursePeriodColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
-		courseStatusColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
-		courseTypeColumn.setComparator((o1, o2) -> o1.toString().compareTo(o2.toString()));
+		coursePeriodColumn.setComparator(Comparator.comparing(CoursePeriod::toString));
+		courseStatusColumn.setComparator(Comparator.comparing(CourseStatus::toString));
+		courseTypeColumn.setComparator(Comparator.comparing(CourseType::toString));
 		gradeColumn.setComparator((o1, o2) -> {
 			if (o1.matches("\\d+") && o2.matches("\\d+"))
 				return Integer.valueOf(o1).compareTo(Integer.valueOf(o2));
@@ -261,8 +262,7 @@ public class TableController implements Initializable {
 	}
 
 	private void loadColumnsOrder(TableConfiguration configuration) {
-		this.tableView.getColumns().sort((column, otherColumn) -> Integer.compare(configuration.getColumnOrder(column),
-				configuration.getColumnOrder(otherColumn)));
+		this.tableView.getColumns().sort(Comparator.comparingInt(configuration::getColumnOrder));
 	}
 
 	private void loadColumnsWidth(TableConfiguration configuration) {
