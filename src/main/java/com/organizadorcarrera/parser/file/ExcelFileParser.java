@@ -1,9 +1,13 @@
-package com.organizadorcarrera.service;
+package com.organizadorcarrera.parser.file;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import com.organizadorcarrera.service.ProgramService;
+import com.organizadorcarrera.parser.row.ForeignLanguageCourseRowParser;
+import com.organizadorcarrera.parser.row.SeminaryCourseRowParser;
+import com.organizadorcarrera.parser.row.SimpleCourseRowParser;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,29 +16,31 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.organizadorcarrera.builder.ForeignLanguageCourseParser;
-import com.organizadorcarrera.builder.SimpleCourseParser;
-import com.organizadorcarrera.builder.SeminaryCourseParser;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.exception.PlanillaInvalidaException;
 import com.organizadorcarrera.util.LangResource;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class ExcelFileParserService implements FileParserService {
+@Component
+public class ExcelFileParser implements FileParser {
 
 	private final Logger logger;
-	private final SimpleCourseParser simpleCourseParser;
-	private final SeminaryCourseParser seminaryCourseParser;
-	private final ForeignLanguageCourseParser foreignLanguageCourseParser;
+	private final SimpleCourseRowParser simpleCourseParser;
+	private final SeminaryCourseRowParser seminaryCourseParser;
+	private final ForeignLanguageCourseRowParser foreignLanguageCourseParser;
 	private final ProgramService programService;
 
 	@Autowired
-	public ExcelFileParserService(SimpleCourseParser simpleCourseParser, SeminaryCourseParser seminaryCourseParser, ForeignLanguageCourseParser foreignLanguageCourseParser, ProgramService programService) {
-		this.logger = LoggerFactory.getLogger(ExcelFileParserService.class);
+	public ExcelFileParser(
+			SimpleCourseRowParser simpleCourseParser,
+			SeminaryCourseRowParser seminaryCourseParser,
+			ForeignLanguageCourseRowParser foreignLanguageCourseParser,
+			ProgramService programService) {
+
+		this.logger = LoggerFactory.getLogger(ExcelFileParser.class);
 		this.simpleCourseParser = simpleCourseParser;
 		this.seminaryCourseParser = seminaryCourseParser;
 		this.foreignLanguageCourseParser = foreignLanguageCourseParser;

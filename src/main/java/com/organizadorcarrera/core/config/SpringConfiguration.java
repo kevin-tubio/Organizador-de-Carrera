@@ -1,9 +1,8 @@
-package com.organizadorcarrera.config;
+package com.organizadorcarrera.core.config;
 
 import com.organizadorcarrera.model.Course;
 
 import com.organizadorcarrera.repository.ProgramRepository;
-import com.organizadorcarrera.service.ProgramService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import javafx.collections.FXCollections;
@@ -18,7 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
 @Configuration
-public class SpringConfig {
+public class SpringConfiguration {
 
     @Bean
     @Scope("prototype")

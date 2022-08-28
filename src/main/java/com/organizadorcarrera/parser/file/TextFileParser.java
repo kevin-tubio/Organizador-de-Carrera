@@ -1,4 +1,4 @@
-package com.organizadorcarrera.service;
+package com.organizadorcarrera.parser.file;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 
+import com.organizadorcarrera.service.ProgramService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,17 +19,17 @@ import com.organizadorcarrera.exception.LineFormatException;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
-public class TextFileParserService implements FileParserService {
+@Component
+public class TextFileParser implements FileParser {
 
 	private int numeroDeLinea;
 	private final Logger logger;
 	private final ProgramService programService;
 
-	public TextFileParserService(ProgramService programService) {
-		this.logger = LoggerFactory.getLogger(TextFileParserService.class);
+	public TextFileParser(ProgramService programService) {
+		this.logger = LoggerFactory.getLogger(TextFileParser.class);
 		this.programService = programService;
 	}
 

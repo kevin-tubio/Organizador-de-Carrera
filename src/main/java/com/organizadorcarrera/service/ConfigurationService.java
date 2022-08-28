@@ -16,11 +16,11 @@ public class ConfigurationService {
 	public ConfigurationService(ConfigurationRepository configurationRepository) {
 		 this.configurationRepository = configurationRepository;
 	}
-	
+
 	public Configuration findByTipoConfiguracion(ConfigurationType configurationType) {
 		return configurationRepository.findByConfigurationType(configurationType);
 	}
-	
+
 	public void save(Configuration configuration) {
 		configurationRepository.save(configuration);
 	}

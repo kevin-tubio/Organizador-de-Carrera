@@ -1,8 +1,8 @@
-package com.organizadorcarrera.service;
+package com.organizadorcarrera.parser.file;
 
 import com.organizadorcarrera.exception.FileException;
 
-public interface FileParserService {
+public interface FileParser {
 
 	void generarListado(String ruta) throws FileException;
 

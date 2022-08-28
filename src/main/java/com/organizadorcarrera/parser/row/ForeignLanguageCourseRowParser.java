@@ -1,11 +1,11 @@
-package com.organizadorcarrera.builder;
+package com.organizadorcarrera.parser.row;
 
 import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ForeignLanguageCourseParser extends CourseParser {
+public class ForeignLanguageCourseRowParser extends RowParser {
 
 	@Override
 	protected String obtenerNombreMateria(String contenido) {

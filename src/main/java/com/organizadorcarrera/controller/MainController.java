@@ -27,8 +27,8 @@ import javafx.stage.Stage;
 
 import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.exception.FileException;
-import com.organizadorcarrera.service.ExcelFileParserService;
-import com.organizadorcarrera.service.TextFileParserService;
+import com.organizadorcarrera.parser.file.ExcelFileParser;
+import com.organizadorcarrera.parser.file.TextFileParser;
 import com.organizadorcarrera.util.WindowDirector;
 
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
@@ -74,15 +74,15 @@ public class MainController implements Initializable {
 	private final CompositeDisposable subscriptions;
 	private final ProgramService programService;
 	private final WindowDirector windowDirector;
-	private final ExcelFileParserService excelFileParserService;
-	private final TextFileParserService textFileParserService;
+	private final ExcelFileParser excelFileParserService;
+	private final TextFileParser textFileParserService;
 
 	@Autowired
 	public MainController(
 			ProgramService programService,
 			WindowDirector windowDirector,
-			ExcelFileParserService excelFileParserService,
-			TextFileParserService textFileParserService,
+			ExcelFileParser excelFileParserService,
+			TextFileParser textFileParserService,
 			CompositeDisposable compositeDisposable) {
 
 		this.programService = programService;

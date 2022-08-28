@@ -10,6 +10,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import com.organizadorcarrera.converter.TableViewConfigurationConverter;
+import com.organizadorcarrera.model.Configuration;
 import io.reactivex.disposables.CompositeDisposable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -28,12 +30,11 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
-import com.organizadorcarrera.config.TableConfiguration;
+import com.organizadorcarrera.service.TableConfigurationService;
 import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.enums.CourseType;
-import com.organizadorcarrera.enums.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
 import com.organizadorcarrera.util.SpinnerTableCell;
 
@@ -82,21 +83,27 @@ public class TableController implements Initializable {
 	private MenuItem deleteCourseMenuItem;
 
 	private final ConfigurationService configurationService;
+	private final TableConfigurationService tableConfigurationService;
 	private final CompositeDisposable subscriptions;
 	private final MainController mainController;
 	private final ObservableList<Course> courseList;
+	private final TableViewConfigurationConverter tableViewConfigurationConverter;
 
 	@Autowired
 	public TableController(
 			MainController mainController,
 			ConfigurationService configurationService,
+			TableConfigurationService tableConfigurationService,
 			CompositeDisposable compositeDisposable,
-			ObservableList<Course> courseList) {
+			ObservableList<Course> courseList,
+			TableViewConfigurationConverter tableViewConfigurationConverter) {
 
 		this.mainController = mainController;
 		this.configurationService = configurationService;
+		this.tableConfigurationService = tableConfigurationService;
 		this.subscriptions = compositeDisposable;
 		this.courseList = courseList;
+		this.tableViewConfigurationConverter = tableViewConfigurationConverter;
 	}
 
 	@Override
@@ -229,48 +236,14 @@ public class TableController implements Initializable {
 	}
 
 	public void saveTableConfiguration() {
-		TableConfiguration configuration = new TableConfiguration();
-		saveColumnsOrder(configuration);
-		saveColumnsWidth(configuration);
-		saveVisibleColumns(configuration);
-		configurationService.save(configuration.getConfiguration());
-	}
-
-	private void saveColumnsOrder(TableConfiguration configuration) {
-		this.tableView.getColumns().forEach(column -> configuration.setColumnOrder(column, getColumnIndex(column)));
-	}
-
-	private int getColumnIndex(TableColumn<Course, ?> column) {
-		return this.tableView.getColumns().indexOf(column);
-	}
-
-	private void saveColumnsWidth(TableConfiguration configuration) {
-		this.tableView.getColumns().forEach(configuration::setColumnWidth);
-	}
-
-	private void saveVisibleColumns(TableConfiguration configuration) {
-		this.tableView.getColumns().forEach(configuration::setColumnVisible);
+		Configuration configuration = tableConfigurationService.getTableConfiguration();
+		tableViewConfigurationConverter.fromTable(tableView, configuration);
+		tableConfigurationService.saveTableConfiguration(configuration);
 	}
 
 	public void loadTableConfiguration() {
-		TableConfiguration configuration = new TableConfiguration(configurationService.findByTipoConfiguracion(ConfigurationType.TABLE));
-		if (configuration.isValid()) {
-			loadColumnsOrder(configuration);
-			loadColumnsWidth(configuration);
-			loadVisibleColumns(configuration);
-		}
-	}
-
-	private void loadColumnsOrder(TableConfiguration configuration) {
-		this.tableView.getColumns().sort(Comparator.comparingInt(configuration::getColumnOrder));
-	}
-
-	private void loadColumnsWidth(TableConfiguration configuration) {
-		this.tableView.getColumns().forEach(configuration::getColumnWidth);
-	}
-
-	private void loadVisibleColumns(TableConfiguration configuration) {
-		this.tableView.getColumns().forEach(configuration::getColumnVisible);
+		Configuration configuration = tableConfigurationService.getTableConfiguration();
+		tableViewConfigurationConverter.fromConfiguration(tableView, configuration);
 	}
 
 }

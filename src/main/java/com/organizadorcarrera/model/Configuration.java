@@ -53,11 +53,8 @@ public class Configuration {
 		return this.configurationType;
 	}
 
-	public Set<String> getConfigurationSet() {
-		return new HashSet<>(this.config.values());
+	public boolean isEmpty() {
+		return this.config.isEmpty();
 	}
 
-	public boolean isValid() {
-		return !this.config.isEmpty();
-	}
 }

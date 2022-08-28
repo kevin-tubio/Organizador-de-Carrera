@@ -1,4 +1,4 @@
-package com.organizadorcarrera.builder;
+package com.organizadorcarrera.parser.row;
 
 import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
@@ -6,11 +6,11 @@ import com.organizadorcarrera.util.LangResource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SimpleCourseParser extends CourseParser {
+public class SimpleCourseRowParser extends RowParser {
 
 	@Override
 	protected String obtenerNombreMateria(String contenido) {
-		return contenido.split(" ?\\([\\d]+\\)")[0];
+		return contenido.split(" ?\\(\\d+\\)")[0];
 	}
 
 	@Override

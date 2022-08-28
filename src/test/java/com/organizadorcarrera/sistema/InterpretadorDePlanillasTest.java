@@ -7,8 +7,8 @@ import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.InvalidCourseException;
-import com.organizadorcarrera.service.ExcelFileParserService;
-import com.organizadorcarrera.service.ProgramService;
+import com.organizadorcarrera.repository.ProgramRepository;
+import com.organizadorcarrera.parser.file.ExcelFileParser;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,23 +22,23 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 class InterpretadorDePlanillasTest {
 
-	private final ExcelFileParserService excelFileParserService;
-	private final ProgramService programService;
+	private final ExcelFileParser excelFileParserService;
+	private final ProgramRepository programRepository;
 
 	@Autowired
-	public InterpretadorDePlanillasTest(ExcelFileParserService excelFileParserService, ProgramService programService) {
+	public InterpretadorDePlanillasTest(ExcelFileParser excelFileParserService, ProgramRepository programService) {
 		this.excelFileParserService = excelFileParserService;
-		this.programService = programService;
+		this.programRepository = programService;
 	}
 
 	@BeforeEach
 	public void set() {
-		programService.clearProgram();
+		programRepository.deleteAll();
 	}
 
 	@AfterEach
 	public void reset() {
-		programService.clearProgram();
+		programRepository.deleteAll();
 	}
 
 	@Test
@@ -79,19 +79,16 @@ class InterpretadorDePlanillasTest {
 		excelFileParserService.generarListado("archivoDeEntrada/valido/prueba_1.xls");
 
 		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
-		listadoDeMaterias.put(3,
-				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
-				CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(3, new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1265, new Course(1265, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1269, new Course(1269, "Física II", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1240,
-				new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1240, new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(7, programService.getCoursesCount());
-		assertEquals(listadoDeMaterias, programService.getProgramMap());
+		assertEquals(7, programRepository.countAll());
+		assertEquals(listadoDeMaterias, programRepository.getProgramMap());
 	}
 
 	@Test
@@ -99,48 +96,44 @@ class InterpretadorDePlanillasTest {
 		excelFileParserService.generarListado("archivoDeEntrada/valido/prueba_1.xlsx");
 
 		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
-		listadoDeMaterias.put(3,
-				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
-		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1,
-				CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(3, new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(592, new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1265, new Course(1265, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1269, new Course(1269, "Física II", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
-		listadoDeMaterias.put(1240,
-				new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
+		listadoDeMaterias.put(1240, new Course(1240, "Algoritmos y Programación III", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(7, programService.getCoursesCount());
-		assertEquals(listadoDeMaterias, programService.getProgramMap());
-		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(3).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, programService.getCourse(592).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, programService.getCourse(1265).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, programService.getCourse(1269).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(1240).getCourseStatus());
-		assertEquals(CourseStatus.REGULARIZADA, programService.getCourse(1242).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(1270).getCourseStatus());
-		assertEquals("", programService.getCourse(3).getGrade());
-		assertEquals("5", programService.getCourse(592).getGrade());
-		assertEquals("6", programService.getCourse(1265).getGrade());
-		assertEquals("8", programService.getCourse(1269).getGrade());
-		assertEquals("", programService.getCourse(1240).getGrade());
-		assertEquals("-", programService.getCourse(1242).getGrade());
-		assertEquals("", programService.getCourse(1270).getGrade());
+		assertEquals(7, programRepository.countAll());
+		assertEquals(listadoDeMaterias, programRepository.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(3).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(592).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(1265).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(1269).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(1240).getCourseStatus());
+		assertEquals(CourseStatus.REGULARIZADA, programRepository.findById(1242).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(1270).getCourseStatus());
+		assertEquals("", programRepository.findById(3).getGrade());
+		assertEquals("5", programRepository.findById(592).getGrade());
+		assertEquals("6", programRepository.findById(1265).getGrade());
+		assertEquals("8", programRepository.findById(1269).getGrade());
+		assertEquals("", programRepository.findById(1240).getGrade());
+		assertEquals("-", programRepository.findById(1242).getGrade());
+		assertEquals("", programRepository.findById(1270).getGrade());
 	}
 
 	@Test
-	void planillaSemiValida2() throws FileException, InvalidCourseException {
+	void planillaSemiValida2() throws FileException {
 		excelFileParserService.generarListado("archivoDeEntrada/valido/prueba_2.xls");
 
 		HashMap<Integer, Course> listadoDeMaterias = new HashMap<>();
-		listadoDeMaterias.put(3,
-				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
+		listadoDeMaterias.put(3, new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(15, new Course(15, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(2, programService.getCoursesCount());
-		assertEquals(listadoDeMaterias, programService.getProgramMap());
-		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(3).getCourseStatus());
-		assertEquals("", programService.getCourse(3).getGrade());
+		assertEquals(2, programRepository.countAll());
+		assertEquals(listadoDeMaterias, programRepository.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(3).getCourseStatus());
+		assertEquals("", programRepository.findById(3).getGrade());
 	}
 
 }

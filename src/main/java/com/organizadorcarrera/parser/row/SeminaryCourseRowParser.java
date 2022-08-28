@@ -1,4 +1,4 @@
-package com.organizadorcarrera.builder;
+package com.organizadorcarrera.parser.row;
 
 import org.apache.poi.ss.usermodel.Row;
 
@@ -9,7 +9,7 @@ import com.organizadorcarrera.util.LangResource;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SeminaryCourseParser extends CourseParser {
+public class SeminaryCourseRowParser extends RowParser {
 
 	@Override
 	public Course crearMateria(Row filaActual) throws CellFormatException {

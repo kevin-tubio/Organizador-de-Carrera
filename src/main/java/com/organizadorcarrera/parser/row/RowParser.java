@@ -1,4 +1,4 @@
-package com.organizadorcarrera.builder;
+package com.organizadorcarrera.parser.row;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,7 +10,7 @@ import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 
-public abstract class CourseParser {
+public abstract class RowParser {
 
 	public Course crearMateria(Row filaActual) throws CellFormatException {
 		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
