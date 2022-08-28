@@ -3,8 +3,8 @@ package com.organizadorcarrera.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.organizadorcarrera.config.Configuration;
-import com.organizadorcarrera.enumerados.ConfigurationType;
+import com.organizadorcarrera.model.Configuration;
+import com.organizadorcarrera.enums.ConfigurationType;
 import com.organizadorcarrera.repository.ConfigurationRepository;
 
 @Service

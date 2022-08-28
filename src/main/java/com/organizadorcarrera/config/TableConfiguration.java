@@ -1,13 +1,14 @@
 package com.organizadorcarrera.config;
 
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.ConfigurationType;
+import com.organizadorcarrera.model.Configuration;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.ConfigurationType;
 
 import javafx.scene.control.TableColumn;
 
 public class TableConfiguration {
 
-	private Configuration configuration;
+	private final Configuration configuration;
 
 	public TableConfiguration() {
 		this.configuration = new Configuration(ConfigurationType.TABLE);

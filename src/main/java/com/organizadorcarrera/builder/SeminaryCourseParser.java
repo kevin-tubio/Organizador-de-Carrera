@@ -2,8 +2,8 @@ package com.organizadorcarrera.builder;
 
 import org.apache.poi.ss.usermodel.Row;
 
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
 import org.springframework.stereotype.Component;

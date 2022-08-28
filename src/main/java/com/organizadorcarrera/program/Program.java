@@ -6,13 +6,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.organizadorcarrera.util.Grafo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.util.LangResource;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
 import com.organizadorcarrera.exception.InvalidCourseException;

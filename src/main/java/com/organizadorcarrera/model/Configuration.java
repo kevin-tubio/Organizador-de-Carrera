@@ -1,4 +1,4 @@
-package com.organizadorcarrera.config;
+package com.organizadorcarrera.model;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
-import com.organizadorcarrera.enumerados.ConfigurationType;
+import com.organizadorcarrera.enums.ConfigurationType;
 
 @Entity
 @Table(name="CONFIG", schema="LISTADO")

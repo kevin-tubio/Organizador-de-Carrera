@@ -1,4 +1,4 @@
-package com.organizadorcarrera.app;
+package com.organizadorcarrera.core;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,19 +6,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.stereotype.Component;
 
-import com.organizadorcarrera.app.FXApplication.FXReadyEvent;
+import com.organizadorcarrera.core.FXApplication.FXReadyEvent;
 import com.organizadorcarrera.util.WindowDirector;
 
 @Component
-public class ApplicationInitializer implements ApplicationListener<FXReadyEvent> {
+public class ApplicationLauncher implements ApplicationListener<FXReadyEvent> {
 
 	private final Logger logger;
+	private final WindowDirector windowDirector;
 
 	@Autowired
-	private WindowDirector windowDirector;
-
-	public ApplicationInitializer() {
-		this.logger = LoggerFactory.getLogger(ApplicationInitializer.class);
+	public ApplicationLauncher(WindowDirector windowDirector) {
+		this.logger = LoggerFactory.getLogger(ApplicationLauncher.class);
+		this.windowDirector = windowDirector;
 	}
 
 	@Override

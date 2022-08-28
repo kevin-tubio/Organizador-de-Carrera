@@ -1,6 +1,6 @@
 package com.organizadorcarrera.config;
 
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 
 import com.organizadorcarrera.program.Program;
 import io.reactivex.disposables.CompositeDisposable;

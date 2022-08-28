@@ -2,9 +2,9 @@ package com.organizadorcarrera.sistema;
 
 import java.util.HashMap;
 
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.CourseStatus;
-import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.service.ExcelFileParserService;

@@ -28,12 +28,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.enumerados.CourseStatus;
-import com.organizadorcarrera.enumerados.CoursePeriod;
-import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 

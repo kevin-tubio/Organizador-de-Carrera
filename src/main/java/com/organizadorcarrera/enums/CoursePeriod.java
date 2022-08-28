@@ -1,4 +1,4 @@
-package com.organizadorcarrera.enumerados;
+package com.organizadorcarrera.enums;
 
 import com.organizadorcarrera.util.LangResource;
 
@@ -8,9 +8,9 @@ public enum CoursePeriod {
 	SEGUNDO_CUATRIMESTRE("PeriodoSegundoCuatrimestre"),
 	ANUAL("PeriodoAnual");
 
-	private String tipo;
+	private final String tipo;
 
-	private CoursePeriod(String string) {
+	CoursePeriod(String string) {
 		this.tipo = LangResource.getString(string);
 	}
 

@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
 
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
-import com.organizadorcarrera.program.Grafo;
+import com.organizadorcarrera.util.Grafo;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 

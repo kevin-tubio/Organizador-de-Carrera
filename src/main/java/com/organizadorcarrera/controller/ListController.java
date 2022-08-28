@@ -12,7 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.program.Program;
 
 @Component

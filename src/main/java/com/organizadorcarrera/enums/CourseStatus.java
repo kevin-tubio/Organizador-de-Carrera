@@ -1,4 +1,4 @@
-package com.organizadorcarrera.enumerados;
+package com.organizadorcarrera.enums;
 
 import com.organizadorcarrera.util.LangResource;
 
@@ -10,15 +10,15 @@ public enum CourseStatus {
 	ENROLLED("EstadoEnCurso"),
 	EQUIVALENCIA("EstadoEquivalencia");
 
-	private String cadena;
+	private final String string;
 
-	private CourseStatus(String string) {
-		this.cadena = LangResource.getString(string);
+	CourseStatus(String string) {
+		this.string = LangResource.getString(string);
 	}
 
 	@Override
 	public String toString() {
-		return cadena;
+		return string;
 	}
 
 }

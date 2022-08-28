@@ -4,12 +4,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import javafx.application.Application;
 
-import com.organizadorcarrera.app.FXApplication;
+import com.organizadorcarrera.core.FXApplication;
 
 @SpringBootApplication
-public class Main {
+public class OrganizadorApplication {
 
 	public static void main(String[] args) {
 		Application.launch(FXApplication.class, args);
 	}
+
 }

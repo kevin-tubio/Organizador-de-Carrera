@@ -1,4 +1,4 @@
-package com.organizadorcarrera.enumerados;
+package com.organizadorcarrera.enums;
 
 public enum ConfigurationType {
 

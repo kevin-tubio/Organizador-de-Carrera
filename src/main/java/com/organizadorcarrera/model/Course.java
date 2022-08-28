@@ -1,4 +1,4 @@
-package com.organizadorcarrera.entity;
+package com.organizadorcarrera.model;
 
 import java.util.HashSet;
 import java.util.Objects;
@@ -16,9 +16,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.organizadorcarrera.enumerados.CourseStatus;
-import com.organizadorcarrera.enumerados.CoursePeriod;
-import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 

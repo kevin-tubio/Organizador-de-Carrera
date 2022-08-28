@@ -1,15 +1,12 @@
-package com.organizadorcarrera.app;
+package com.organizadorcarrera.core;
 
-import java.io.IOException;
-
+import com.organizadorcarrera.OrganizadorApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-
-import com.organizadorcarrera.Main;
 
 public class FXApplication extends Application {
 
@@ -18,11 +15,11 @@ public class FXApplication extends Application {
 	@Override
 	public void init() {
 		String[] args = getParameters().getRaw().toArray(new String[0]);
-		this.applicationContext = new SpringApplicationBuilder(Main.class).run(args);
+		this.applicationContext = new SpringApplicationBuilder(OrganizadorApplication.class).run(args);
 	}
 
 	@Override
-	public void start(Stage stage) throws IOException {
+	public void start(Stage stage) {
 		this.applicationContext.publishEvent(new FXReadyEvent(stage));
 	}
 

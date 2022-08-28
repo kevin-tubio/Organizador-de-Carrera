@@ -6,15 +6,19 @@ import org.springframework.stereotype.Component;
 import com.organizadorcarrera.builder.StageBuilder;
 import com.organizadorcarrera.controller.CourseController;
 import com.organizadorcarrera.controller.MainController;
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 
 import javafx.stage.Stage;
 
 @Component
 public class WindowDirector {
 
+	private final StageBuilder stageBuilder;
+
 	@Autowired
-	private StageBuilder stageBuilder;
+	public WindowDirector(StageBuilder stageBuilder) {
+		this.stageBuilder = stageBuilder;
+	}
 
 	public void showMainWindow(Stage stage) {
 		stageBuilder

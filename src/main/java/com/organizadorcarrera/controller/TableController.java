@@ -29,11 +29,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 import com.organizadorcarrera.config.TableConfiguration;
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.CourseStatus;
-import com.organizadorcarrera.enumerados.CoursePeriod;
-import com.organizadorcarrera.enumerados.CourseType;
-import com.organizadorcarrera.enumerados.ConfigurationType;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseType;
+import com.organizadorcarrera.enums.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
 import com.organizadorcarrera.util.SpinnerTableCell;
 

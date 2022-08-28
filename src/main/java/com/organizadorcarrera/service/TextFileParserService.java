@@ -10,9 +10,9 @@ import java.nio.charset.StandardCharsets;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.organizadorcarrera.entity.Course;
-import com.organizadorcarrera.enumerados.CourseStatus;
-import com.organizadorcarrera.enumerados.CoursePeriod;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.LineFormatException;
 import com.organizadorcarrera.program.Program;

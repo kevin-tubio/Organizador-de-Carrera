@@ -1,4 +1,4 @@
-package com.organizadorcarrera.program;
+package com.organizadorcarrera.util;
 
 import java.util.ArrayDeque;
 import java.util.HashMap;
@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
-import com.organizadorcarrera.util.LangResource;
 import org.springframework.stereotype.Component;
 
 @Component

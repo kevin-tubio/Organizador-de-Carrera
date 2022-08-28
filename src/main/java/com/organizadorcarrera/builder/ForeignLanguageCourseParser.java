@@ -1,6 +1,6 @@
 package com.organizadorcarrera.builder;
 
-import com.organizadorcarrera.enumerados.CourseType;
+import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import org.springframework.stereotype.Component;
 

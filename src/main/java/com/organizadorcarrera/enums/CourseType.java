@@ -1,4 +1,4 @@
-package com.organizadorcarrera.enumerados;
+package com.organizadorcarrera.enums;
 
 import com.organizadorcarrera.util.LangResource;
 
@@ -11,14 +11,14 @@ public enum CourseType {
 	ASIGNATURA_ELECTIVA("TipoAsignaturaElectiva"),
 	IDIOMA_EXTRANJERO("TipoIdiomaExtranjero");
 
-	private String mensaje;
+	private final String message;
 
-	private CourseType(String string) {
-		this.mensaje = LangResource.getString(string);
+	CourseType(String string) {
+		this.message = LangResource.getString(string);
 	}
 
 	@Override
 	public String toString() {
-		return this.mensaje;
+		return this.message;
 	}
 }

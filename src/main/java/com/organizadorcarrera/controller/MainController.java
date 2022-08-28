@@ -24,7 +24,7 @@ import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import com.organizadorcarrera.entity.Course;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.service.ExcelFileParserService;
 import com.organizadorcarrera.service.TextFileParserService;
