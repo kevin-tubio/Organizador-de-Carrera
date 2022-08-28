@@ -20,7 +20,7 @@ import javax.persistence.JoinColumn;
 import com.organizadorcarrera.enums.ConfigurationType;
 
 @Entity
-@Table(name="CONFIG", schema="LISTADO")
+@Table(name="CONFIG")
 public class Configuration {
 
 	@Id
@@ -28,7 +28,7 @@ public class Configuration {
 	private ConfigurationType configurationType;
 
 	@ElementCollection(fetch = FetchType.EAGER)
-	@CollectionTable(name = "CONFIGURATION", schema = "LISTADO", joinColumns = {
+	@CollectionTable(name = "CONFIGURATION", joinColumns = {
 			@JoinColumn(name = "tipo", referencedColumnName = "configurationType") })
 	@MapKeyColumn(name = "parametro")
 	@Column(name = "valor")
