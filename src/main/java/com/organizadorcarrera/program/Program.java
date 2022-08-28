@@ -16,29 +16,27 @@ import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.util.LangResource;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
 import com.organizadorcarrera.exception.InvalidCourseException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Program {
 
-	private static Program instance;
-	private ObservableMap<Integer, Course> programMap;
+	private final ObservableMap<Integer, Course> programMap;
 	private List<Course> courseOrderedList;
-	private Logger logger;
+	private final Logger logger;
+	private final Grafo grafo;
 
-	private Program() {
+	@Autowired
+	public Program(Grafo grafo) {
 		programMap = FXCollections.observableHashMap(); // NOSONAR
 		this.courseOrderedList = null;
 		this.logger = LoggerFactory.getLogger(Program.class);
+		this.grafo = grafo;
 	}
 
-	public static Program getInstance() {
-		if (instance == null) {
-			instance = new Program();
-		}
-		return instance;
-	}
-
-	public static void clearProgram() {
-		instance.programMap.clear();
+	public void clearProgram() {
+		programMap.clear();
 	}
 
 	public void addCourse(Course course) {
@@ -78,12 +76,10 @@ public class Program {
 	}
 
 	public void orderCourses() throws ListadoInvalidoException {
-		Grafo grafo = new Grafo();
 		courseOrderedList = new LinkedList<>(grafo.ordenamientoTopologico(programMap));
 	}
 
 	public Set<Course> getUnlockableCourses(int course) throws InvalidCourseException {
-		Grafo grafo = new Grafo();
 		validateCourses(course);
 		return grafo.obtenerDesbloqueables(course, programMap);
 	}

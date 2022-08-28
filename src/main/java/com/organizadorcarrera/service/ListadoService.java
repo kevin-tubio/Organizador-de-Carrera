@@ -14,23 +14,24 @@ public class ListadoService {
 
 	private final CourseRepository materiaRepository;
 	private final Logger logger;
+	private final Program program;
 
 	@Autowired
-	public ListadoService(CourseRepository materiaRepository) {
+	public ListadoService(CourseRepository materiaRepository, Program program) {
 		this.materiaRepository = materiaRepository;
 		this.logger = LoggerFactory.getLogger(ListadoService.class);
+		this.program = program;
 	}
 
 	public void persistirCambiosListado() {
 		materiaRepository.deleteAll();
-		materiaRepository.saveAll(Program.getInstance().getProgramMap().values());
+		materiaRepository.saveAll(program.getProgramMap().values());
 	}
 
 	public void recuperarListado() {
-		var listado = Program.getInstance();
-		materiaRepository.findAll().forEach(listado::addCourse);
+		materiaRepository.findAll().forEach(program::addCourse);
 
-		if (listado.isEmpty())
+		if (program.isEmpty())
 			logger.info("El listado esta vacio.");
 	}
 

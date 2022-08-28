@@ -5,11 +5,13 @@ import java.util.HashSet;
 import java.util.ResourceBundle;
 
 import io.reactivex.disposables.CompositeDisposable;
+
+import javafx.collections.ListChangeListener;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
@@ -98,20 +100,29 @@ public class CourseController implements Initializable {
 	private BorderPane container;
 
 	private final CompositeDisposable subscriptions;
+	private final ObservableList<Course> correlativeCourses;
+	private final FilteredList<Course> filteredList;
+	private final Validator validator;
+	private final Program program;
+	private final MainController mainController;
 
-	private ObservableList<Course> courses;
-	private ObservableList<Course> correlativeCourses;
-	private FilteredList<Course> filteredList;
-	private Validator validator;
 	private Course injectedCourse;
-	private MainController mainController;
 
-	public CourseController() {
-		this.validator = new Validator();
-		this.courses = FXCollections.observableArrayList(Program.getInstance().getProgramMap().values());
-		this.correlativeCourses = FXCollections.observableArrayList();
-		this.filteredList = new FilteredList<>(this.courses);
-		this.subscriptions = new CompositeDisposable();
+	@Autowired
+	public CourseController(
+			MainController mainController,
+			CompositeDisposable compositeDisposable,
+			Program program,
+			Validator validator,
+			FilteredList<Course> filteredCourseList,
+			ObservableList<Course> correlativeCourses) {
+
+		this.mainController = mainController;
+		this.program = program;
+		this.validator = validator;
+		this.correlativeCourses = correlativeCourses;
+		this.filteredList = filteredCourseList;
+		this.subscriptions = compositeDisposable;
 	}
 
 	@Override
@@ -165,6 +176,7 @@ public class CourseController implements Initializable {
 	}
 
 	private void initializeCorrelativeCousesList() {
+		this.correlativeCourses.addListener((ListChangeListener<? super Course>) course -> applyFilter(this.searchField.getText()));
 		this.correlativeCourseList.setItems(this.correlativeCourses);
 		this.correlativeCourseList.setPlaceholder(new Label(LangResource.getString("ListaCorrelativasVacia")));
 		this.removeCorrelativeMenuItem.disableProperty()
@@ -196,7 +208,7 @@ public class CourseController implements Initializable {
 		return validator.createCheck().withMethod(in -> {
 			if (fieldIsEmpty(this.idField))
 				in.error(LangResource.getString("InputIdVacio"));
-			if (!this.idField.getText().matches("^[\\d]+$"))
+			if (!this.idField.getText().matches("^\\d+$"))
 				in.error(LangResource.getString("InputIdInvalido"));
 			if (idIsRepeated())
 				in.error(LangResource.getString("InputIdRepetido"));
@@ -207,7 +219,7 @@ public class CourseController implements Initializable {
 
 	private boolean idIsRepeated() {
 		return !idMatchesCourse(this.injectedCourse)
-				&& Program.getInstance().containsCourse(this.idField.getText());
+				&& program.containsCourse(this.idField.getText());
 	}
 
 	private boolean idMatchesCourse(Course course) {
@@ -245,7 +257,7 @@ public class CourseController implements Initializable {
 	}
 
 	private void applyFilter(String filter) {
-		this.filteredList.setPredicate(course -> isNotFiltered(course, filter.toLowerCase()));
+		this.filteredList.setPredicate(course -> !this.correlativeCourses.contains(course) && isNotFiltered(course, filter.toLowerCase()));
 	}
 
 	private boolean isNotFiltered(Course course, String filter) {
@@ -281,11 +293,6 @@ public class CourseController implements Initializable {
 		);
 	}
 
-	@Autowired
-	public void setMainController(MainController mainController) {
-		this.mainController = mainController;
-	}
-
 	public void injectCourse(Course course) {
 		this.injectedCourse = course;
 		this.idField.setText(String.valueOf(course.getId()));
@@ -299,19 +306,16 @@ public class CourseController implements Initializable {
 		this.courseTypeField.setValue(course.getCourseType());
 		this.correlativeCourses.addAll(course.getCorrelatives());
 		this.creditsField.getValueFactory().setValue(course.getCredits());
-		this.courses.removeAll(this.correlativeCourses);
 	}
 
 	public void addCorrelativeCourse() {
 		Course course = this.courseList.getSelectionModel().getSelectedItem();
 		this.correlativeCourses.add(course);
-		this.courses.remove(course);
 	}
 
 	public void removeCorrelativeCourse() {
 		Course course = this.correlativeCourseList.getSelectionModel().getSelectedItem();
 		this.correlativeCourses.remove(course);
-		this.courses.add(course);
 	}
 
 	private Course createCourse() {
@@ -336,11 +340,11 @@ public class CourseController implements Initializable {
 	private void saveAndExit() {
 		if (this.injectedCourse == null) {
 			this.injectedCourse = createCourse();
-			Program.getInstance().addCourse(injectedCourse);
+			program.addCourse(injectedCourse);
 		}
 		else if (!idMatchesCourse(this.injectedCourse)) {
 			var newCourse = createCourse();
-			Program.getInstance().replaceCourse(injectedCourse, newCourse);
+			program.replaceCourse(injectedCourse, newCourse);
 		}
 		updateCourse(injectedCourse);
 		this.mainController.emitUnsavedChanges();

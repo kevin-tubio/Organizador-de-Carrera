@@ -1,13 +1,8 @@
 package com.organizadorcarrera.listado;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
-
-import org.junit.Test;
 
 import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.enumerados.CoursePeriod;
@@ -16,10 +11,17 @@ import com.organizadorcarrera.program.Grafo;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
-public class GrafoTest {
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+@SpringBootTest
+class GrafoTest {
 
 	@Test
-	public void secuenciaLineal() throws InvalidCourseException {
+	void secuenciaLineal() throws InvalidCourseException {
 		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
@@ -40,7 +42,7 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaBifurcada() throws InvalidCourseException {
+	void secuenciaBifurcada() throws InvalidCourseException {
 		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
@@ -68,7 +70,7 @@ public class GrafoTest {
 	}
 
 	@Test
-	public void secuenciaCiclica() throws InvalidCourseException {
+	void secuenciaCiclica() throws InvalidCourseException {
 		var primera = new Course(1, "Primera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var segunda = new Course(2, "Segunda", 1, CoursePeriod.PRIMER_CUATRIMESTRE);
 		var tercera = new Course(3, "Tercera", 1, CoursePeriod.PRIMER_CUATRIMESTRE);

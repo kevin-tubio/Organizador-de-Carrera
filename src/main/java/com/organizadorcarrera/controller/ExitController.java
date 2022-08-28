@@ -26,12 +26,13 @@ public class ExitController implements Initializable {
 	@FXML
 	private Button cancelButton;
 
-	private MainController mainController;
-
+	private final MainController mainController;
 	private final CompositeDisposable subscriptions;
 
-	public ExitController() {
-		 this.subscriptions = new CompositeDisposable();
+	@Autowired
+	public ExitController(MainController mainController, CompositeDisposable compositeDisposable) {
+		this.mainController = mainController;
+		this.subscriptions = compositeDisposable;
 	}
 
 	@Override
@@ -65,11 +66,6 @@ public class ExitController implements Initializable {
 	private void closeWindow() {
 		((Stage) this.cancelButton.getScene().getWindow()).close();
 		this.subscriptions.clear();
-	}
-
-	@Autowired
-	public void setMainController(MainController mainController) {
-		this.mainController = mainController;
 	}
 
 }

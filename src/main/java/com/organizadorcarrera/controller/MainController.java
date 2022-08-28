@@ -1,41 +1,37 @@
 package com.organizadorcarrera.controller;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
-import java.nio.file.NoSuchFileException;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
 import io.reactivex.disposables.CompositeDisposable;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.exception.FileException;
-import com.organizadorcarrera.parser.ExcelFileParser;
-import com.organizadorcarrera.parser.FileParser;
-import com.organizadorcarrera.parser.TextFileParser;
+import com.organizadorcarrera.service.ExcelFileParserService;
+import com.organizadorcarrera.service.TextFileParserService;
 import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.service.ListadoService;
 import com.organizadorcarrera.util.WindowDirector;
 
-import io.reactivex.Observable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 
 @Component
@@ -71,33 +67,42 @@ public class MainController implements Initializable {
 	@FXML
 	private MenuItem exitAppMenuItem;
 
-	@FXML
-	private AnchorPane anchor;
-
-	@Autowired
-	private WindowDirector windowDirector;
-
-	@Autowired
-	private ListadoService materiaService;
-
 	@Value("${main.initial-file-directory}")
 	private String initialFileDirectory;
 
 	private final SimpleBooleanProperty unsavedChangesSubject;
 	private final Logger logger;
 	private final CompositeDisposable subscriptions;
+	private final Program program;
+	private final WindowDirector windowDirector;
+	private final ListadoService listadoService;
+	private final ExcelFileParserService excelFileParserService;
+	private final TextFileParserService textFileParserService;
 
-	public MainController() {
+	@Autowired
+	public MainController(
+			Program program,
+			WindowDirector windowDirector,
+			ListadoService listadoService,
+			ExcelFileParserService excelFileParserService,
+			TextFileParserService textFileParserService,
+			CompositeDisposable compositeDisposable) {
+
+		this.program = program;
+		this.windowDirector = windowDirector;
+		this.listadoService = listadoService;
+		this.excelFileParserService = excelFileParserService;
+		this.textFileParserService = textFileParserService;
 		this.unsavedChangesSubject = new SimpleBooleanProperty(false);
 		this.logger = LoggerFactory.getLogger(MainController.class);
-		this.subscriptions = new CompositeDisposable();
+		this.subscriptions = compositeDisposable;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.saveChangesMenuItem.disableProperty().bind(this.unsavedChangesSubject.not());
 		this.disableActions();
-		materiaService.recuperarListado();
+		listadoService.recuperarListado();
 		tableController.loadTableConfiguration();
 		subscribeToEvents();
 	}
@@ -137,18 +142,16 @@ public class MainController implements Initializable {
 	}
 
 	private void clearProgram() {
-		Program.clearProgram();
+		program.clearProgram();
 		emitUnsavedChanges();
 	}
 
 	private void parseCourses(File file) throws FileException {
-		FileParser parser = null;
 		if (file.getName().endsWith(".txt")) {
-			parser = new TextFileParser();
+			textFileParserService.generarListado(file.getAbsolutePath());
 		} else {
-			parser = new ExcelFileParser();
+			excelFileParserService.generarListado(file.getAbsolutePath());
 		}
-		parser.generarListado(file.getAbsolutePath());
 	}
 
 	public void enableActions() {
@@ -169,7 +172,7 @@ public class MainController implements Initializable {
 	}
 
 	protected void deletCourse(Course selected) {
-		Program.getInstance().deleteCourse(selected);
+		program.deleteCourse(selected);
 		emitUnsavedChanges();
 	}
 
@@ -191,7 +194,7 @@ public class MainController implements Initializable {
 			break;
 		default:
 		}
-		if (Program.getInstance().getProgramMap().isEmpty()) {
+		if (program.isEmpty()) {
 			this.disableActions();
 		}
 	}
@@ -205,7 +208,7 @@ public class MainController implements Initializable {
 	}
 
 	public void saveChanges() {
-		materiaService.persistirCambiosListado();
+		listadoService.persistirCambiosListado();
 		this.unsavedChangesSubject.set(false);
 	}
 
@@ -233,4 +236,5 @@ public class MainController implements Initializable {
 	void exit() {
 		Platform.exit();
 	}
+
 }

@@ -6,9 +6,6 @@ import java.util.ResourceBundle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,25 +21,21 @@ public class ListController implements Initializable {
 	@FXML
 	private ListView<Course> listView;
 
-	private MainController mainController;
-	private FilteredList<Course> filteredList;
-	private ObservableList<Course> courseList;
+	private final MainController mainController;
+	private final FilteredList<Course> filteredList;
+	private final Program program;
 
-	public ListController() {
-		this.courseList = FXCollections.observableArrayList();
-		this.filteredList = new FilteredList<>(this.courseList);
+	@Autowired
+	public ListController(MainController mainController, Program program, FilteredList<Course> filteredCourseList) {
+		this.filteredList = filteredCourseList;
+		this.program = program;
+		this.mainController = mainController;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
 		this.listView.setPlaceholder(new Label(resourceBundle.getString("ListadoVacio")));
-		this.subscribeToProgram();
 		this.listView.setItems(this.filteredList);
-	}
-
-	private void subscribeToProgram() {
-		MapChangeListener<Integer, Course> listener = change -> this.courseList.setAll(change.getMap().values());
-		Program.getInstance().getProgramMap().addListener(listener);
 	}
 
 	protected Course getSelectedItem() {
@@ -50,13 +43,9 @@ public class ListController implements Initializable {
 	}
 
 	public void enableActions() {
-		if (this.getSelectedItem() != null && !Program.getInstance().getProgramMap().isEmpty()) {
+		if (this.getSelectedItem() != null && !program.isEmpty()) {
 			this.mainController.enableActions();
 		}
 	}
 
-	@Autowired
-	public void setMainController(MainController controladorPrincipal) {
-		this.mainController = controladorPrincipal;
-	}
 }

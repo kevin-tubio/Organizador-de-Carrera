@@ -3,7 +3,9 @@ package com.organizadorcarrera.builder;
 import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SimpleCourseParser extends CourseParser {
 
 	@Override

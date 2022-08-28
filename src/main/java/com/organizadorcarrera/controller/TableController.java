@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -34,7 +33,6 @@ import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.enumerados.CourseStatus;
 import com.organizadorcarrera.enumerados.CoursePeriod;
 import com.organizadorcarrera.enumerados.CourseType;
-import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.enumerados.ConfigurationType;
 import com.organizadorcarrera.service.ConfigurationService;
 import com.organizadorcarrera.util.SpinnerTableCell;
@@ -85,19 +83,26 @@ public class TableController implements Initializable {
 
 	private final ConfigurationService configurationService;
 	private final CompositeDisposable subscriptions;
-
-	private MainController mainController;
+	private final MainController mainController;
+	private final ObservableList<Course> courseList;
 
 	@Autowired
-	public TableController(ConfigurationService configurationService) {
+	public TableController(
+			MainController mainController,
+			ConfigurationService configurationService,
+			CompositeDisposable compositeDisposable,
+			ObservableList<Course> courseList) {
+
+		this.mainController = mainController;
 		this.configurationService = configurationService;
-		this.subscriptions = new CompositeDisposable();
+		this.subscriptions = compositeDisposable;
+		this.courseList = courseList;
 	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
 		this.initializeTable(resourceBundle);
-		this.subscribeToProgram();
+		this.tableView.setItems(courseList);
 		this.editCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
 		this.deleteCourseMenuItem.disableProperty().bind(tableView.getSelectionModel().selectedItemProperty().isNull());
 		subscribeToEvents();
@@ -192,11 +197,6 @@ public class TableController implements Initializable {
 		});
 	}
 
-	private void subscribeToProgram() {
-		MapChangeListener<Integer, Course> listener = change -> tableView.getItems().setAll(change.getMap().values());
-		Program.getInstance().getProgramMap().addListener(listener);
-	}
-
 	private void subscribeToEvents() {
 		subscriptions.addAll(
 				JavaFxObservable.actionEventsOf(this.addCourseMenuItem).subscribe(onClick -> this.addCourse()),
@@ -271,11 +271,6 @@ public class TableController implements Initializable {
 
 	private void loadVisibleColumns(TableConfiguration configuration) {
 		this.tableView.getColumns().forEach(configuration::getColumnVisible);
-	}
-
-	@Autowired
-	public void setMainController(MainController mainController) {
-		this.mainController = mainController;
 	}
 
 }

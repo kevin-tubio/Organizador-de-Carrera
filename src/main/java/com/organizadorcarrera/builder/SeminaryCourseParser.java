@@ -6,7 +6,9 @@ import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.enumerados.CourseType;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.util.LangResource;
+import org.springframework.stereotype.Component;
 
+@Component
 public class SeminaryCourseParser extends CourseParser {
 
 	@Override

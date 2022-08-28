@@ -1,4 +1,4 @@
-package com.organizadorcarrera.parser;
+package com.organizadorcarrera.service;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -19,34 +19,36 @@ import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
-public class TextFileParser implements FileParser {
+import org.springframework.stereotype.Service;
+
+@Service
+public class TextFileParserService implements FileParserService {
 
 	private int numeroDeLinea;
 	private final Logger logger;
+	private final Program program;
 
-	public TextFileParser() {
-		this.logger = LoggerFactory.getLogger(TextFileParser.class);
+	public TextFileParserService(Program program) {
+		this.logger = LoggerFactory.getLogger(TextFileParserService.class);
+		this.program = program;
 	}
 
 	@Override
-	public Program generarListado(String ruta) throws FileException {
-		Program.getInstance();
+	public void generarListado(String ruta) throws FileException {
 		numeroDeLinea = 0;
-		try (var buffer = new BufferedReader(
-				new InputStreamReader(new FileInputStream(ruta), StandardCharsets.UTF_8))) {
+		try (var buffer = new BufferedReader(new InputStreamReader(new FileInputStream(ruta), StandardCharsets.UTF_8))) {
 			agregarMaterias(buffer);
 			obtenerCorrelativas(buffer);
 		} catch (FileNotFoundException e) {
 			throw new FileException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException e) {
-			Program.clearProgram();
+			program.clearProgram();
 			throw new FileException(e.getMessage(), e.getCause());
 		}
-		return Program.getInstance();
 	}
 
 	private String validarLinea(String lineaActual, String mensaje) throws LineFormatException {
-		if (lineaActual == null || lineaActual.strip().isEmpty()) {
+		if (lineaActual == null || lineaActual.isBlank()) {
 			throw new LineFormatException(mensaje);
 		}
 		return lineaActual.strip();
@@ -54,10 +56,9 @@ public class TextFileParser implements FileParser {
 
 	private void agregarMaterias(BufferedReader buffer) throws IOException, FileException {
 		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, LangResource.getString("NumeroEsperadoLinea"));
-		var listado = Program.getInstance();
 		for (var i = 0; i < cantidadDeMaterias; i++) {
 			try {
-				listado.addCourse(crearMateria(buffer));
+				program.addCourse(crearMateria(buffer));
 			} catch (LineFormatException e) {
 				logger.error(LangResource.getString("LineaInvalida"), this.numeroDeLinea, e.getMessage());
 			}
@@ -131,7 +132,6 @@ public class TextFileParser implements FileParser {
 	private void agregarCorrelativa(BufferedReader buffer) throws IOException {
 		numeroDeLinea++;
 		var linea = buffer.readLine();
-		var listado = Program.getInstance();
 
 		if (linea == null || !linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
 			logger.warn(LangResource.getString("LineaInvalida"), this.numeroDeLinea, LangResource.getString("IdCorrelativasEsperado"));
@@ -145,7 +145,7 @@ public class TextFileParser implements FileParser {
 			for (var i = 0; i < numeros.length; i++) {
 				numeros[i] = Integer.parseInt(correlativas[i].strip());
 			}
-			listado.addCorrelatives(Integer.parseInt(datos[0]), numeros);
+			program.addCorrelatives(Integer.parseInt(datos[0]), numeros);
 		} catch (InvalidCourseException e) {
 			logger.error(e.getMessage());
 		}

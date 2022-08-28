@@ -11,10 +11,12 @@ import java.util.Set;
 import com.organizadorcarrera.entity.Course;
 import com.organizadorcarrera.exception.ListadoInvalidoException;
 import com.organizadorcarrera.util.LangResource;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Grafo {
 
-	private HashMap<Integer, Set<Course>> listaDeAdyacencia;
+	private final HashMap<Integer, Set<Course>> listaDeAdyacencia;
 
 	public Grafo() {
 		this.listaDeAdyacencia = new HashMap<>();

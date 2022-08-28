@@ -1,4 +1,4 @@
-package com.organizadorcarrera.parser;
+package com.organizadorcarrera.service;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,27 +21,38 @@ import com.organizadorcarrera.exception.PlanillaInvalidaException;
 import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
 
-public class ExcelFileParser implements FileParser {
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ExcelFileParserService implements FileParserService {
 
 	private final Logger logger;
+	private final SimpleCourseParser simpleCourseParser;
+	private final SeminaryCourseParser seminaryCourseParser;
+	private final ForeignLanguageCourseParser foreignLanguageCourseParser;
+	private final Program program;
 
-	public ExcelFileParser() {
-		this.logger = LoggerFactory.getLogger(ExcelFileParser.class);
+	@Autowired
+	public ExcelFileParserService(SimpleCourseParser simpleCourseParser, SeminaryCourseParser seminaryCourseParser, ForeignLanguageCourseParser foreignLanguageCourseParser, Program program) {
+		this.logger = LoggerFactory.getLogger(ExcelFileParserService.class);
+		this.simpleCourseParser = simpleCourseParser;
+		this.seminaryCourseParser = seminaryCourseParser;
+		this.foreignLanguageCourseParser = foreignLanguageCourseParser;
+		this.program = program;
 	}
 
 	@Override
-	public Program generarListado(String ruta) throws FileException {
-		var listado = Program.getInstance();
+	public void generarListado(String ruta) throws FileException {
 		try {
 			var hoja = obtenerHoja(ruta);
-			agregarMaterias(listado, hoja);
+			agregarMaterias(program, hoja);
 		} catch (FileNotFoundException e) {
 			throw new FileException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException | PlanillaInvalidaException e) {
-			Program.clearProgram();
+			program.clearProgram();
 			throw new FileException(e.getMessage(), e.getCause());
 		}
-		return Program.getInstance();
 	}
 
 	private Sheet obtenerHoja(String ruta) throws IOException {
@@ -59,11 +70,11 @@ public class ExcelFileParser implements FileParser {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
-					listado.addCourse(new SimpleCourseParser().crearMateria(filaActual));
+					listado.addCourse(simpleCourseParser.crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
-					listado.addCourse(new SeminaryCourseParser().crearMateria(filaActual));
+					listado.addCourse(seminaryCourseParser.crearMateria(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
-					listado.addCourse(new ForeignLanguageCourseParser().crearMateria(filaActual));
+					listado.addCourse(foreignLanguageCourseParser.crearMateria(filaActual));
 				}
 			} catch (CellFormatException e) {
 				logger.error(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1), e.getMessage());
