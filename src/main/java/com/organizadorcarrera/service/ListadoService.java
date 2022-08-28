@@ -2,6 +2,7 @@ package com.organizadorcarrera.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,14 +26,12 @@ public class ListadoService {
 		materiaRepository.saveAll(Program.getInstance().getProgramMap().values());
 	}
 
-	public Program recuperarListado() {
+	public void recuperarListado() {
 		var listado = Program.getInstance();
 		materiaRepository.findAll().forEach(listado::addCourse);
 
 		if (listado.isEmpty())
 			logger.info("El listado esta vacio.");
-
-		return listado;
 	}
 
 }

@@ -3,7 +3,6 @@ package com.organizadorcarrera.parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Iterator;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.OfficeXmlFileException;
@@ -24,7 +23,7 @@ import com.organizadorcarrera.util.LangResource;
 
 public class ExcelFileParser implements FileParser {
 
-	private Logger logger;
+	private final Logger logger;
 
 	public ExcelFileParser() {
 		this.logger = LoggerFactory.getLogger(ExcelFileParser.class);
@@ -56,9 +55,7 @@ public class ExcelFileParser implements FileParser {
 	}
 
 	private void agregarMaterias(Program listado, Sheet hoja) throws PlanillaInvalidaException {
-		Iterator<Row> iteradorFilas = hoja.iterator();
-		while (iteradorFilas.hasNext()) {
-			Row filaActual = iteradorFilas.next();
+		for (Row filaActual : hoja) {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {

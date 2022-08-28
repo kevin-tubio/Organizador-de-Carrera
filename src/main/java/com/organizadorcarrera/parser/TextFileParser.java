@@ -22,7 +22,7 @@ import com.organizadorcarrera.util.LangResource;
 public class TextFileParser implements FileParser {
 
 	private int numeroDeLinea;
-	private Logger logger;
+	private final Logger logger;
 
 	public TextFileParser() {
 		this.logger = LoggerFactory.getLogger(TextFileParser.class);
