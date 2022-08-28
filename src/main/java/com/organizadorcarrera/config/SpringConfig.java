@@ -2,7 +2,8 @@ package com.organizadorcarrera.config;
 
 import com.organizadorcarrera.model.Course;
 
-import com.organizadorcarrera.program.Program;
+import com.organizadorcarrera.repository.ProgramRepository;
+import com.organizadorcarrera.service.ProgramService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import javafx.collections.FXCollections;
@@ -32,17 +33,17 @@ public class SpringConfig {
     }
 
     @Bean(name = "courseList")
-    public ObservableList<Course> getObsevableCourses(Program program) {
+    public ObservableList<Course> getObsevableCourses(ProgramRepository programRepository) {
         ObservableList<Course> courseList = FXCollections.observableArrayList();
         MapChangeListener<Integer, Course> listener = change -> courseList.setAll(change.getMap().values());
-        program.getProgramMap().addListener(listener);
+        programRepository.getProgramMap().addListener(listener);
         return courseList;
     }
 
     @Bean(name = "filteredCourseList")
     @Scope("prototype")
-    public FilteredList<Course> getFilteredList(Program program) {
-        return new FilteredList<>(getObsevableCourses(program));
+    public FilteredList<Course> getFilteredList(ProgramRepository programRepository) {
+        return new FilteredList<>(getObsevableCourses(programRepository));
     }
 
     @Bean(name = "correlativeCourses")

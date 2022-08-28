@@ -4,6 +4,7 @@ import java.net.URL;
 import java.util.HashSet;
 import java.util.ResourceBundle;
 
+import com.organizadorcarrera.service.ProgramService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import javafx.collections.ListChangeListener;
@@ -31,7 +32,6 @@ import javafx.stage.Stage;
 import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.enums.CourseType;
-import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
 import com.organizadorcarrera.model.Course;
 
@@ -103,7 +103,7 @@ public class CourseController implements Initializable {
 	private final ObservableList<Course> correlativeCourses;
 	private final FilteredList<Course> filteredList;
 	private final Validator validator;
-	private final Program program;
+	private final ProgramService programService;
 	private final MainController mainController;
 
 	private Course injectedCourse;
@@ -112,13 +112,13 @@ public class CourseController implements Initializable {
 	public CourseController(
 			MainController mainController,
 			CompositeDisposable compositeDisposable,
-			Program program,
+			ProgramService programService,
 			Validator validator,
 			FilteredList<Course> filteredCourseList,
 			ObservableList<Course> correlativeCourses) {
 
 		this.mainController = mainController;
-		this.program = program;
+		this.programService = programService;
 		this.validator = validator;
 		this.correlativeCourses = correlativeCourses;
 		this.filteredList = filteredCourseList;
@@ -219,7 +219,7 @@ public class CourseController implements Initializable {
 
 	private boolean idIsRepeated() {
 		return !idMatchesCourse(this.injectedCourse)
-				&& program.containsCourse(this.idField.getText());
+				&& programService.containsCourse(this.idField.getText());
 	}
 
 	private boolean idMatchesCourse(Course course) {
@@ -340,11 +340,11 @@ public class CourseController implements Initializable {
 	private void saveAndExit() {
 		if (this.injectedCourse == null) {
 			this.injectedCourse = createCourse();
-			program.addCourse(injectedCourse);
+			programService.addCourse(injectedCourse);
 		}
 		else if (!idMatchesCourse(this.injectedCourse)) {
 			var newCourse = createCourse();
-			program.replaceCourse(injectedCourse, newCourse);
+			programService.replaceCourse(injectedCourse, newCourse);
 		}
 		updateCourse(injectedCourse);
 		this.mainController.emitUnsavedChanges();

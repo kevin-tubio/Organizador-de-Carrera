@@ -18,7 +18,6 @@ import com.organizadorcarrera.builder.SeminaryCourseParser;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.CellFormatException;
 import com.organizadorcarrera.exception.PlanillaInvalidaException;
-import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.util.LangResource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,26 +30,26 @@ public class ExcelFileParserService implements FileParserService {
 	private final SimpleCourseParser simpleCourseParser;
 	private final SeminaryCourseParser seminaryCourseParser;
 	private final ForeignLanguageCourseParser foreignLanguageCourseParser;
-	private final Program program;
+	private final ProgramService programService;
 
 	@Autowired
-	public ExcelFileParserService(SimpleCourseParser simpleCourseParser, SeminaryCourseParser seminaryCourseParser, ForeignLanguageCourseParser foreignLanguageCourseParser, Program program) {
+	public ExcelFileParserService(SimpleCourseParser simpleCourseParser, SeminaryCourseParser seminaryCourseParser, ForeignLanguageCourseParser foreignLanguageCourseParser, ProgramService programService) {
 		this.logger = LoggerFactory.getLogger(ExcelFileParserService.class);
 		this.simpleCourseParser = simpleCourseParser;
 		this.seminaryCourseParser = seminaryCourseParser;
 		this.foreignLanguageCourseParser = foreignLanguageCourseParser;
-		this.program = program;
+		this.programService = programService;
 	}
 
 	@Override
 	public void generarListado(String ruta) throws FileException {
 		try {
 			var hoja = obtenerHoja(ruta);
-			agregarMaterias(program, hoja);
+			agregarMaterias(programService, hoja);
 		} catch (FileNotFoundException e) {
 			throw new FileException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException | PlanillaInvalidaException e) {
-			program.clearProgram();
+			programService.clearProgram();
 			throw new FileException(e.getMessage(), e.getCause());
 		}
 	}
@@ -65,7 +64,7 @@ public class ExcelFileParserService implements FileParserService {
 		}
 	}
 
-	private void agregarMaterias(Program listado, Sheet hoja) throws PlanillaInvalidaException {
+	private void agregarMaterias(ProgramService listado, Sheet hoja) throws PlanillaInvalidaException {
 		for (Row filaActual : hoja) {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {

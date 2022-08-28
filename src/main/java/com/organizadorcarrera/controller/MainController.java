@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.Consumer;
 
+import com.organizadorcarrera.service.ProgramService;
 import io.reactivex.disposables.CompositeDisposable;
 
 import org.slf4j.Logger;
@@ -28,8 +29,6 @@ import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.service.ExcelFileParserService;
 import com.organizadorcarrera.service.TextFileParserService;
-import com.organizadorcarrera.program.Program;
-import com.organizadorcarrera.service.ListadoService;
 import com.organizadorcarrera.util.WindowDirector;
 
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
@@ -73,24 +72,21 @@ public class MainController implements Initializable {
 	private final SimpleBooleanProperty unsavedChangesSubject;
 	private final Logger logger;
 	private final CompositeDisposable subscriptions;
-	private final Program program;
+	private final ProgramService programService;
 	private final WindowDirector windowDirector;
-	private final ListadoService listadoService;
 	private final ExcelFileParserService excelFileParserService;
 	private final TextFileParserService textFileParserService;
 
 	@Autowired
 	public MainController(
-			Program program,
+			ProgramService programService,
 			WindowDirector windowDirector,
-			ListadoService listadoService,
 			ExcelFileParserService excelFileParserService,
 			TextFileParserService textFileParserService,
 			CompositeDisposable compositeDisposable) {
 
-		this.program = program;
+		this.programService = programService;
 		this.windowDirector = windowDirector;
-		this.listadoService = listadoService;
 		this.excelFileParserService = excelFileParserService;
 		this.textFileParserService = textFileParserService;
 		this.unsavedChangesSubject = new SimpleBooleanProperty(false);
@@ -102,7 +98,7 @@ public class MainController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.saveChangesMenuItem.disableProperty().bind(this.unsavedChangesSubject.not());
 		this.disableActions();
-		listadoService.recuperarListado();
+		programService.loadProgramCourses();
 		tableController.loadTableConfiguration();
 		subscribeToEvents();
 	}
@@ -142,7 +138,7 @@ public class MainController implements Initializable {
 	}
 
 	private void clearProgram() {
-		program.clearProgram();
+		programService.clearProgram();
 		emitUnsavedChanges();
 	}
 
@@ -172,7 +168,7 @@ public class MainController implements Initializable {
 	}
 
 	protected void deletCourse(Course selected) {
-		program.deleteCourse(selected);
+		programService.deleteCourse(selected);
 		emitUnsavedChanges();
 	}
 
@@ -194,7 +190,7 @@ public class MainController implements Initializable {
 			break;
 		default:
 		}
-		if (program.isEmpty()) {
+		if (programService.isEmpty()) {
 			this.disableActions();
 		}
 	}
@@ -208,7 +204,7 @@ public class MainController implements Initializable {
 	}
 
 	public void saveChanges() {
-		listadoService.persistirCambiosListado();
+		programService.saveProgramCourses();
 		this.unsavedChangesSubject.set(false);
 	}
 

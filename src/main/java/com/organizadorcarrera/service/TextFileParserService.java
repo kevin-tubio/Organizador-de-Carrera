@@ -15,7 +15,6 @@ import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.LineFormatException;
-import com.organizadorcarrera.program.Program;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
@@ -26,11 +25,11 @@ public class TextFileParserService implements FileParserService {
 
 	private int numeroDeLinea;
 	private final Logger logger;
-	private final Program program;
+	private final ProgramService programService;
 
-	public TextFileParserService(Program program) {
+	public TextFileParserService(ProgramService programService) {
 		this.logger = LoggerFactory.getLogger(TextFileParserService.class);
-		this.program = program;
+		this.programService = programService;
 	}
 
 	@Override
@@ -42,7 +41,7 @@ public class TextFileParserService implements FileParserService {
 		} catch (FileNotFoundException e) {
 			throw new FileException(LangResource.getString("ArchivoNoEncontrado") + ruta);
 		} catch (IOException e) {
-			program.clearProgram();
+			programService.clearProgram();
 			throw new FileException(e.getMessage(), e.getCause());
 		}
 	}
@@ -58,7 +57,7 @@ public class TextFileParserService implements FileParserService {
 		var cantidadDeMaterias = obtenerCantidadDeMaterias(buffer, LangResource.getString("NumeroEsperadoLinea"));
 		for (var i = 0; i < cantidadDeMaterias; i++) {
 			try {
-				program.addCourse(crearMateria(buffer));
+				programService.addCourse(crearMateria(buffer));
 			} catch (LineFormatException e) {
 				logger.error(LangResource.getString("LineaInvalida"), this.numeroDeLinea, e.getMessage());
 			}
@@ -145,7 +144,7 @@ public class TextFileParserService implements FileParserService {
 			for (var i = 0; i < numeros.length; i++) {
 				numeros[i] = Integer.parseInt(correlativas[i].strip());
 			}
-			program.addCorrelatives(Integer.parseInt(datos[0]), numeros);
+			programService.addCorrelatives(Integer.parseInt(datos[0]), numeros);
 		} catch (InvalidCourseException e) {
 			logger.error(e.getMessage());
 		}

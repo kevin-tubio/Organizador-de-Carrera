@@ -7,13 +7,13 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.organizadorcarrera.repository.ProgramRepository;
 import com.organizadorcarrera.service.TextFileParserService;
 import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.InvalidCourseException;
-import com.organizadorcarrera.program.Program;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,22 +26,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 class InterpretadorDeDatosGuardadosTest {
 
 	private final TextFileParserService textFileParserService;
-	private final Program program;
+	private final ProgramRepository programRepository;
 
 	@Autowired
-	public InterpretadorDeDatosGuardadosTest(TextFileParserService textFileParserService, Program program) {
+	public InterpretadorDeDatosGuardadosTest(TextFileParserService textFileParserService, ProgramRepository programRepository) {
 		this.textFileParserService = textFileParserService;
-		this.program = program;
+		this.programRepository = programRepository;
 	}
 
 	@BeforeEach
 	public void set() {
-		program.clearProgram();
+		programRepository.deleteAll();
 	}
 
 	@AfterEach
 	public void reset() {
-		program.clearProgram();
+		programRepository.deleteAll();
 	}
 
 	@Test
@@ -61,16 +61,16 @@ class InterpretadorDeDatosGuardadosTest {
 		listadoDeMaterias.put(862, new Course(862, "Álgebra I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 
-		assertEquals(4, program.getCoursesCount());
-		assertEquals(listadoDeMaterias, program.getProgramMap());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(1269).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(592).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(862).getCourseStatus());
-		assertEquals(CourseStatus.REGULARIZADA, program.getCourse(1242).getCourseStatus());
-		assertEquals("10", program.getCourse(1269).getGrade());
-		assertEquals("", program.getCourse(592).getGrade());
-		assertEquals("4", program.getCourse(862).getGrade());
-		assertEquals("-", program.getCourse(1242).getGrade());
+		assertEquals(4, programRepository.countAll());
+		assertEquals(listadoDeMaterias, programRepository.getProgramMap());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(1269).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(592).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(862).getCourseStatus());
+		assertEquals(CourseStatus.REGULARIZADA, programRepository.findById(1242).getCourseStatus());
+		assertEquals("10", programRepository.findById(1269).getGrade());
+		assertEquals("", programRepository.findById(592).getGrade());
+		assertEquals("4", programRepository.findById(862).getGrade());
+		assertEquals("-", programRepository.findById(1242).getGrade());
 	}
 
 	@Test
@@ -85,16 +85,16 @@ class InterpretadorDeDatosGuardadosTest {
 		listadoDeMaterias.put(862, new Course(862, "Álgebra I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 
-		assertEquals(4, program.getCoursesCount());
-		assertEquals(listadoDeMaterias, program.getProgramMap());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(1269).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(592).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(862).getCourseStatus());
-		assertEquals(CourseStatus.REGULARIZADA, program.getCourse(1242).getCourseStatus());
-		assertEquals("10", program.getCourse(1269).getGrade());
-		assertEquals("", program.getCourse(592).getGrade());
-		assertEquals("4", program.getCourse(862).getGrade());
-		assertEquals("-", program.getCourse(1242).getGrade());
+		assertEquals(4, programRepository.countAll());
+		assertEquals(listadoDeMaterias, programRepository.getProgramMap());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(1269).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programRepository.findById(592).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programRepository.findById(862).getCourseStatus());
+		assertEquals(CourseStatus.REGULARIZADA, programRepository.findById(1242).getCourseStatus());
+		assertEquals("10", programRepository.findById(1269).getGrade());
+		assertEquals("", programRepository.findById(592).getGrade());
+		assertEquals("4", programRepository.findById(862).getGrade());
+		assertEquals("-", programRepository.findById(1242).getGrade());
 
 		Set<Course> aYP = new HashSet<>();
 		aYP.add(new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
@@ -103,8 +103,8 @@ class InterpretadorDeDatosGuardadosTest {
 		Set<Course> algebra = new HashSet<>();
 		algebra.add(new Course(592, "Introducción a la Problemática del Mundo Contemporáneo", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(aYP, program.getCourse(1269).getCorrelatives());
-		assertEquals(algebra, program.getCourse(862).getCorrelatives());
+		assertEquals(aYP, programRepository.findById(1269).getCorrelatives());
+		assertEquals(algebra, programRepository.findById(862).getCorrelatives());
 	}
 
 }

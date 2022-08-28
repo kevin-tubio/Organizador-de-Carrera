@@ -8,7 +8,7 @@ import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.exception.FileException;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.service.ExcelFileParserService;
-import com.organizadorcarrera.program.Program;
+import com.organizadorcarrera.service.ProgramService;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,22 +23,22 @@ import static org.junit.jupiter.api.Assertions.*;
 class InterpretadorDePlanillasTest {
 
 	private final ExcelFileParserService excelFileParserService;
-	private final Program program;
+	private final ProgramService programService;
 
 	@Autowired
-	public InterpretadorDePlanillasTest(ExcelFileParserService excelFileParserService, Program program) {
+	public InterpretadorDePlanillasTest(ExcelFileParserService excelFileParserService, ProgramService programService) {
 		this.excelFileParserService = excelFileParserService;
-		this.program = program;
+		this.programService = programService;
 	}
 
 	@BeforeEach
 	public void set() {
-		program.clearProgram();
+		programService.clearProgram();
 	}
 
 	@AfterEach
 	public void reset() {
-		program.clearProgram();
+		programService.clearProgram();
 	}
 
 	@Test
@@ -90,8 +90,8 @@ class InterpretadorDePlanillasTest {
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(7, program.getCoursesCount());
-		assertEquals(listadoDeMaterias, program.getProgramMap());
+		assertEquals(7, programService.getCoursesCount());
+		assertEquals(listadoDeMaterias, programService.getProgramMap());
 	}
 
 	@Test
@@ -110,22 +110,22 @@ class InterpretadorDePlanillasTest {
 		listadoDeMaterias.put(1242, new Course(1242, "Matemáticas Especiales", 2, CoursePeriod.SEGUNDO_CUATRIMESTRE));
 		listadoDeMaterias.put(1270, new Course(1270, "Física III", 3, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(7, program.getCoursesCount());
-		assertEquals(listadoDeMaterias, program.getProgramMap());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(3).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(592).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(1265).getCourseStatus());
-		assertEquals(CourseStatus.APROBADA, program.getCourse(1269).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(1240).getCourseStatus());
-		assertEquals(CourseStatus.REGULARIZADA, program.getCourse(1242).getCourseStatus());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(1270).getCourseStatus());
-		assertEquals("", program.getCourse(3).getGrade());
-		assertEquals("5", program.getCourse(592).getGrade());
-		assertEquals("6", program.getCourse(1265).getGrade());
-		assertEquals("8", program.getCourse(1269).getGrade());
-		assertEquals("", program.getCourse(1240).getGrade());
-		assertEquals("-", program.getCourse(1242).getGrade());
-		assertEquals("", program.getCourse(1270).getGrade());
+		assertEquals(7, programService.getCoursesCount());
+		assertEquals(listadoDeMaterias, programService.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(3).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programService.getCourse(592).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programService.getCourse(1265).getCourseStatus());
+		assertEquals(CourseStatus.APROBADA, programService.getCourse(1269).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(1240).getCourseStatus());
+		assertEquals(CourseStatus.REGULARIZADA, programService.getCourse(1242).getCourseStatus());
+		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(1270).getCourseStatus());
+		assertEquals("", programService.getCourse(3).getGrade());
+		assertEquals("5", programService.getCourse(592).getGrade());
+		assertEquals("6", programService.getCourse(1265).getGrade());
+		assertEquals("8", programService.getCourse(1269).getGrade());
+		assertEquals("", programService.getCourse(1240).getGrade());
+		assertEquals("-", programService.getCourse(1242).getGrade());
+		assertEquals("", programService.getCourse(1270).getGrade());
 	}
 
 	@Test
@@ -137,10 +137,10 @@ class InterpretadorDePlanillasTest {
 				new Course(3, "Cuestiones de Sociología, Economía y Política", 2, CoursePeriod.PRIMER_CUATRIMESTRE));
 		listadoDeMaterias.put(15, new Course(15, "Análisis Matemático I", 1, CoursePeriod.PRIMER_CUATRIMESTRE));
 
-		assertEquals(2, program.getCoursesCount());
-		assertEquals(listadoDeMaterias, program.getProgramMap());
-		assertEquals(CourseStatus.NO_CURSADA, program.getCourse(3).getCourseStatus());
-		assertEquals("", program.getCourse(3).getGrade());
+		assertEquals(2, programService.getCoursesCount());
+		assertEquals(listadoDeMaterias, programService.getProgramMap());
+		assertEquals(CourseStatus.NO_CURSADA, programService.getCourse(3).getCourseStatus());
+		assertEquals("", programService.getCourse(3).getGrade());
 	}
 
 }

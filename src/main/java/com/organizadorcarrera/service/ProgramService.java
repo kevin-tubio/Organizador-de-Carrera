@@ -1,47 +1,43 @@
-package com.organizadorcarrera.program;
+package com.organizadorcarrera.service;
 
 import java.io.StringWriter;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import com.organizadorcarrera.util.Grafo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
-
+import com.organizadorcarrera.repository.CourseRepository;
+import com.organizadorcarrera.repository.ProgramRepository;
+import com.organizadorcarrera.util.Grafo;
 import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.util.LangResource;
-import com.organizadorcarrera.exception.ListadoInvalidoException;
 import com.organizadorcarrera.exception.InvalidCourseException;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
-public class Program {
+@Service
+public class ProgramService {
 
-	private final ObservableMap<Integer, Course> programMap;
-	private List<Course> courseOrderedList;
 	private final Logger logger;
 	private final Grafo grafo;
+	private final CourseRepository courseRepository;
+	private final ProgramRepository programRepository;
 
 	@Autowired
-	public Program(Grafo grafo) {
-		programMap = FXCollections.observableHashMap(); // NOSONAR
-		this.courseOrderedList = null;
-		this.logger = LoggerFactory.getLogger(Program.class);
+	public ProgramService(CourseRepository materiaRepository, ProgramRepository programRepository, Grafo grafo) {
+		this.logger = LoggerFactory.getLogger(ProgramService.class);
+		this.courseRepository = materiaRepository;
+		this.programRepository = programRepository;
 		this.grafo = grafo;
 	}
 
 	public void clearProgram() {
-		programMap.clear();
+		programRepository.deleteAll();
 	}
 
 	public void addCourse(Course course) {
-		programMap.put(course.getId(), course);
+		programRepository.save(course);
 	}
 
 	public void addCorrelatives(int course, int... correlatives) throws InvalidCourseException {
@@ -50,7 +46,7 @@ public class Program {
 
 		for (Integer correlative : correlatives) {
 			try {
-				programMap.get(course).setCorrelative(programMap.get(correlative));
+				programRepository.findById(course).setCorrelative(programRepository.findById(correlative));
 			} catch (InvalidCourseException e) {
 				logger.warn(String.format(LangResource.getString("MateriaInvalida"), course, e.getMessage()));
 			}
@@ -59,10 +55,12 @@ public class Program {
 
 	private void validateCourses(int... courses) throws InvalidCourseException {
 		for (Integer course : courses) {
-			if (!programMap.containsKey(course)) {
-				throw new InvalidCourseException(
-						String.format(LangResource.getString("MateriaInvalida"), course,
-								LangResource.getString("MateriaNoEncontrada")));
+			if (!programRepository.existsById(course)) {
+				throw new InvalidCourseException(String.format(
+						LangResource.getString("MateriaInvalida"),
+						course,
+						LangResource.getString("MateriaNoEncontrada")
+				));
 			}
 		}
 	}
@@ -70,36 +68,24 @@ public class Program {
 	@Override
 	public String toString() {
 		var writer = new StringWriter();
-		for (Map.Entry<Integer, Course> course : programMap.entrySet()) {
+		for (Course course : programRepository.getCourseList()) {
 			writer.write(course.toString());
 		}
 		return writer.toString();
 	}
 
-	public void orderCourses() throws ListadoInvalidoException {
-		courseOrderedList = new LinkedList<>(grafo.ordenamientoTopologico(programMap));
-	}
-
 	public Set<Course> getUnlockableCourses(int course) throws InvalidCourseException {
 		validateCourses(course);
-		return grafo.obtenerDesbloqueables(course, programMap);
-	}
-
-	public List<Course> getCourseOrderedList() {
-		return courseOrderedList;
+		return grafo.obtenerDesbloqueables(course, programRepository.getProgramMap());
 	}
 
 	public int getCoursesCount() {
-		return programMap.size();
-	}
-
-	public ObservableMap<Integer, Course> getProgramMap() {
-		return programMap;
+		return programRepository.countAll();
 	}
 
 	public Course getCourse(int id) throws InvalidCourseException {
 		validateCourses(id);
-		return programMap.get(id);
+		return programRepository.findById(id);
 	}
 
 	public void deleteCourse(Course course) {
@@ -107,7 +93,7 @@ public class Program {
 			validateCourses(course.getId());
 			for (Course correlativa : getUnlockableCourses(course.getId()))
 				correlativa.getCorrelatives().remove(course);
-			programMap.remove(course.getId());
+			programRepository.deleteById(course.getId());
 		} catch (InvalidCourseException e) {
 			logger.warn(e.getMessage());
 		}
@@ -119,7 +105,7 @@ public class Program {
 				correlative.getCorrelatives().remove(oldCourse);
 				correlative.getCorrelatives().add(newCourse);
 			}
-			programMap.remove(oldCourse.getId());
+			programRepository.deleteById(oldCourse.getId());
 			addCourse(newCourse);
 		} catch (InvalidCourseException e) {
 			logger.trace(e.getMessage(), e);
@@ -128,13 +114,26 @@ public class Program {
 
 	public boolean containsCourse(String id) {
 		try {
-			return programMap.containsKey(Integer.valueOf(id));
+			return programRepository.existsById(Integer.valueOf(id));
 		} catch (NumberFormatException e) {
 			return false;
 		}
 	}
 
 	public boolean isEmpty() {
-		return programMap.isEmpty();
+		return programRepository.isEmpty();
 	}
+
+	public void saveProgramCourses() {
+		courseRepository.deleteAll();
+		courseRepository.saveAll(programRepository.getProgramMap().values());
+	}
+
+	public void loadProgramCourses() {
+		courseRepository.findAll().forEach(this::addCourse);
+
+		if (this.isEmpty())
+			logger.info("El listado esta vacio.");
+	}
+
 }

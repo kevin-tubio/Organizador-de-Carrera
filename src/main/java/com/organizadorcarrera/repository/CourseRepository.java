@@ -7,5 +7,4 @@ import com.organizadorcarrera.model.Course;
 
 @Repository
 public interface CourseRepository extends CrudRepository<Course, Integer> {
-
 }
