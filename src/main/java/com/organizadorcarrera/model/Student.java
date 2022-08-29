@@ -6,56 +6,53 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "ALUMNO")
+@Table(name = "STUDENT")
 public class Student {
 
 	@Id
 	@Column
-	private Integer legajo;
+	private Integer id;
 
-	@Column(name = "nombre", nullable = false)
-	private String nombreCompleto;
+	@Column(name = "first_name", nullable = false)
+	private String firstName;
+
+	@Column(name = "last_name", nullable = false)
+	private String lastName;
 
 	@Column(nullable = false)
-	private String carrera;
+	private String career;
 
 	public Student() { /* JPA exclusive */ }
 
-	public Student(String nombreCompleto, Integer legajo, String carrera) {
-		setNombreCompleto(nombreCompleto);
-		this.legajo = legajo;
-		this.carrera = carrera;
+	public Student(String firstName, String lastName, Integer studentId, String carrera) {
+		this.firstName = capitalize(firstName);
+		this.lastName = capitalize(lastName);
+		this.id = studentId;
+		this.career = carrera;
 	}
 
-	private void setNombreCompleto(String nombre) {
-		this.nombreCompleto = capitalizarPalabras(nombre);
+	private String capitalize(String string) {
+		return string.toUpperCase().replace(
+				string.substring(1),
+				string.substring(1).toLowerCase()
+		);
 	}
 
-	private String capitalizarPalabras(String nombre) {
-		var stringBuilder = new StringBuilder();
-		for (String palabra : nombre.split(" ")) {
-			stringBuilder.append(palabra.toUpperCase().replace(palabra.substring(1), palabra.substring(1).toLowerCase()));
-			stringBuilder.append(" ");
-		}
-
-		return stringBuilder.toString().stripTrailing();
+	public String getName() {
+		return String.format("%s %s", this.firstName, this.lastName);
 	}
 
-	public String getNombreCompleto() {
-		return nombreCompleto;
+	public Integer getId() {
+		return id;
 	}
 
-	public Integer getLegajo() {
-		return legajo;
-	}
-
-	public String getCarrera() {
-		return carrera;
+	public String getCareer() {
+		return career;
 	}
 
 	@Override
 	public String toString() {
-		return String.format("%s (%d).", nombreCompleto, legajo);
+		return String.format("%s (%d).", getName(), id);
 	}
 
 }

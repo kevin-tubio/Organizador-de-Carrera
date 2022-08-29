@@ -23,7 +23,7 @@ import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
 @Entity
-@Table(name = "MATERIA")
+@Table(name = "COURSE")
 public class Course {
 
 	@Id
@@ -39,7 +39,7 @@ public class Course {
 	@Column(nullable = false)
 	private Integer grade;
 
-	@Column(name = "HORAS_SEMANALES", nullable = false)
+	@Column(name = "HOURS", nullable = false)
 	private Integer hours;
 
 	@Column(nullable = false)
@@ -58,7 +58,7 @@ public class Course {
 	private CourseType courseType;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "MATERIA_MATERIA", joinColumns = @JoinColumn(name = "ID"))
+	@JoinTable(name = "COURSE_COURSE", joinColumns = @JoinColumn(name = "ID"))
 	private Set<Course> correlatives;
 
 	public Course() { /* JPA exclusive */ }
