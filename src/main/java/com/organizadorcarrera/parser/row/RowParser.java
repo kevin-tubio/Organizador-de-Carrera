@@ -12,91 +12,92 @@ import com.organizadorcarrera.util.LangResource;
 
 public abstract class RowParser {
 
-	public Course crearMateria(Row filaActual) throws CellFormatException {
-		var nombre = obtenerNombreMateria(filaActual.getCell(0).getStringCellValue());
-		var materia = generarMateria(nombre, filaActual);
-		materia.setCourseType(obtenerTipoDeMateria(filaActual.getCell(1).getStringCellValue()));
-		return materia;
+	public Course parseCourse(Row row) throws CellFormatException {
+		var name = parseCourseName(row);
+		var course = createCourse(name, row);
+		course.setCourseType(parseCourseType(row));
+		return course;
 	}
 
-	protected Course generarMateria(String nombre, Row filaActual) throws CellFormatException {
-		var id = obtenerNumeroMateria(filaActual.getCell(0).getStringCellValue());
-		var anio = obtenerAnioDeMateria(filaActual.getCell(2));
-		var periodo = obtenerPeriodoDeMateria(filaActual.getCell(3).getStringCellValue());
-		var materia = new Course(id, nombre, anio, periodo);
-		materia.setCourseStatus(obtenerEstadoDeMateria(filaActual));
-		if (materia.getCourseStatus().equals(CourseStatus.APROBADA))
-			materia.setGrade(obtenerNotaDeMateria(filaActual.getCell(4).getStringCellValue()));
-		materia.setCreditos(obtenerCreditosDeMateria(filaActual.getCell(6).getStringCellValue()));
-		return materia;
+	private Course createCourse(String name, Row row) throws CellFormatException {
+		var id = parseCourseId(row.getCell(0).getStringCellValue());
+		var year = parseCourseYear(row.getCell(2));
+		var coursePeriod = parseCoursePeriod(row.getCell(3).getStringCellValue());
+		var course = new Course(id, name, year, coursePeriod);
+		course.setCourseStatus(parseCourseStatus(row));
+		if (course.getCourseStatus().equals(CourseStatus.APROBADA))
+			course.setGrade(parseCourseGrade(row.getCell(4).getStringCellValue()));
+		course.setCreditos(parseCourseCredits(row.getCell(6).getStringCellValue()));
+		return course;
 	}
 
-	private int obtenerNumeroMateria(String contenido) {
-		return Integer.parseInt(contenido.split("\\D+")[1]);
+	private int parseCourseId(String rowContent) {
+		return Integer.parseInt(rowContent.split("\\D+")[1]);
 	}
 
-	protected String obtenerNombreMateria(String contenido) {
-		return contenido.split(" ?\\(\\d+\\)")[0];
+	protected String parseCourseName(Row row) {
+		String rowContent = row.getCell(0).getStringCellValue();
+		return rowContent.split(" ?\\(\\d+\\)")[0];
 	}
 
-	private int obtenerAnioDeMateria(Cell celda) throws CellFormatException {
+	private int parseCourseYear(Cell cell) throws CellFormatException {
 		try {
-			return Integer.parseInt(celda.getStringCellValue().strip());
+			return Integer.parseInt(cell.getStringCellValue().strip());
 		} catch (NumberFormatException e) {
 			throw new CellFormatException(LangResource.getString("NumeroEsperadoColumna"), e.getCause());
 		} catch (IllegalStateException e) {
-			return (int) celda.getNumericCellValue();
+			return (int) cell.getNumericCellValue();
 		}
 	}
 
-	private CoursePeriod obtenerPeriodoDeMateria(String contenido) throws CellFormatException {
-		if (!contenido.matches("^([1-2A-Z][a-z]+ +)?[A-Z][a-z]+ *$"))
+	private CoursePeriod parseCoursePeriod(String rowContent) throws CellFormatException {
+		if (!rowContent.matches("^([1-2A-Z][a-z]+ +)?[A-Z][a-z]+ *$"))
 			throw new CellFormatException(LangResource.getString("FormatoInvalido"));
 
-		contenido = contenido.replaceAll(" +", " ").strip();
-		if (contenido.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
+		rowContent = rowContent.replaceAll(" +", " ").strip();
+		if (rowContent.equals(LangResource.getString("PeriodoPrimerCuatrimestre")))
 			return CoursePeriod.PRIMER_CUATRIMESTRE;
 
-		if (contenido.equals(LangResource.getString("PeriodoSegundoCuatrimestre")))
+		if (rowContent.equals(LangResource.getString("PeriodoSegundoCuatrimestre")))
 			return CoursePeriod.SEGUNDO_CUATRIMESTRE;
 
 		return CoursePeriod.ANUAL;
 	}
 
-	private CourseStatus obtenerEstadoDeMateria(Row fila) throws CellFormatException {
-		var contenido = fila.getCell(4).getStringCellValue().strip();
-		if (contenido.matches("")) {
-			return obtenerOrigenNota(fila);
-		} else if (contenido.matches("^\\d{1,2} *\\(A[a-z]+\\)$")) {
+	private CourseStatus parseCourseStatus(Row row) throws CellFormatException {
+		var rowContent = row.getCell(4).getStringCellValue().strip();
+		if (rowContent.matches("")) {
+			return obtenerOrigenNota(row);
+		} else if (rowContent.matches("^\\d{1,2} *\\(A[a-z]+\\)$")) {
 			return CourseStatus.APROBADA;
-		} else if (contenido.matches("^A[a-z]+ *\\(A[a-z]+\\)$")) {
+		} else if (rowContent.matches("^A[a-z]+ *\\(A[a-z]+\\)$")) {
 			return CourseStatus.REGULARIZADA;
 		} else {
 			throw new CellFormatException(LangResource.getString("EstadoMateriaInvalido"));
 		}
 	}
 
-	private CourseStatus obtenerOrigenNota(Row fila) {
-		var contenido = fila.getCell(5).getStringCellValue().strip();
-		if (contenido.equals(LangResource.getString("EstadoEnCurso")))
+	private CourseStatus obtenerOrigenNota(Row row) {
+		var rowContent = row.getCell(5).getStringCellValue().strip();
+		if (rowContent.equals(LangResource.getString("EstadoEnCurso")))
 			return CourseStatus.ENROLLED;
 
-		if (contenido.equals(LangResource.getString("EstadoEquivalencia")))
+		if (rowContent.equals(LangResource.getString("EstadoEquivalencia")))
 			return CourseStatus.EQUIVALENCIA;
 
 		return CourseStatus.NO_CURSADA;
 	}
 
-	private int obtenerNotaDeMateria(String contenido) {
-		return Integer.parseInt(contenido.split(" *\\([Aa-z]+\\) *$")[0]);
+	private int parseCourseGrade(String rowContent) {
+		return Integer.parseInt(rowContent.split(" *\\([Aa-z]+\\) *$")[0]);
 	}
 
-	protected abstract CourseType obtenerTipoDeMateria(String contenido) throws CellFormatException;
+	protected abstract CourseType parseCourseType(Row row) throws CellFormatException;
 
-	private double obtenerCreditosDeMateria(String contenido) {
-		contenido = contenido.strip();
-		if (contenido.matches("^\\d+(?:\\.\\d+)?$"))
-			return Double.parseDouble(contenido);
+	private double parseCourseCredits(String rowContent) {
+		rowContent = rowContent.strip();
+		if (rowContent.matches("^\\d+(?:\\.\\d+)?$"))
+			return Double.parseDouble(rowContent);
 
 		return 0;
 	}

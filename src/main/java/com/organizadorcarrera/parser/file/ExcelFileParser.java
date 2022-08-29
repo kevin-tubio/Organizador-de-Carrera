@@ -75,11 +75,11 @@ public class ExcelFileParser implements FileParser {
 			var contenido = filaActual.getCell(0).getStringCellValue().strip();
 			try {
 				if (contenido.matches("^[A-Za-zÀ-ÿ´]+[A-Za-zÀ-ÿ,. ]+ \\(\\d+\\)$")) {
-					listado.addCourse(simpleCourseParser.crearMateria(filaActual));
+					listado.addCourse(simpleCourseParser.parseCourse(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+: \"[A-Za-zÀ-ÿ´ ]+\" \\(\\d+\\)$")) {
-					listado.addCourse(seminaryCourseParser.crearMateria(filaActual));
+					listado.addCourse(seminaryCourseParser.parseCourse(filaActual));
 				} else if (contenido.matches("^[A-Za-z ]+ \\([A-Za-zÀ-ÿ ]+\\) \\(\\d+\\)$")) {
-					listado.addCourse(foreignLanguageCourseParser.crearMateria(filaActual));
+					listado.addCourse(foreignLanguageCourseParser.parseCourse(filaActual));
 				}
 			} catch (CellFormatException e) {
 				logger.error(LangResource.getString("FilaInvalida"), (filaActual.getRowNum() + 1), e.getMessage());
