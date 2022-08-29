@@ -89,7 +89,7 @@ public class Course {
 	}
 
 	public void setCourseStatus(CourseStatus courseStatus) {
-		if (courseStatus.equals(CourseStatus.APROBADA) && this.grade.intValue() == -1)
+		if (courseStatus.equals(CourseStatus.APROBADA) && this.grade == -1)
 			this.grade = 4;
 		else if (!courseStatus.equals(CourseStatus.APROBADA))
 			this.grade = -1;

@@ -32,12 +32,13 @@ public class Student {
 	}
 
 	private String capitalizarPalabras(String nombre) {
-		var sb = new StringBuilder();
+		var stringBuilder = new StringBuilder();
 		for (String palabra : nombre.split(" ")) {
-			palabra = palabra.toUpperCase().replace(palabra.substring(1), palabra.substring(1).toLowerCase());
-			sb.append(palabra + " ");
+			stringBuilder.append(palabra.toUpperCase().replace(palabra.substring(1), palabra.substring(1).toLowerCase()));
+			stringBuilder.append(" ");
 		}
-		return sb.toString().stripTrailing();
+
+		return stringBuilder.toString().stripTrailing();
 	}
 
 	public String getNombreCompleto() {
@@ -45,7 +46,7 @@ public class Student {
 	}
 
 	public Integer getLegajo() {
-		return legajo.intValue();
+		return legajo;
 	}
 
 	public String getCarrera() {
@@ -54,7 +55,7 @@ public class Student {
 
 	@Override
 	public String toString() {
-		return nombreCompleto + " (" + legajo + ").";
+		return String.format("%s (%d).", nombreCompleto, legajo);
 	}
 
 }

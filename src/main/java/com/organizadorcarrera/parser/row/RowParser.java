@@ -32,11 +32,11 @@ public abstract class RowParser {
 	}
 
 	private int obtenerNumeroMateria(String contenido) {
-		return Integer.parseInt(contenido.split("[^\\d]+")[1]);
+		return Integer.parseInt(contenido.split("\\D+")[1]);
 	}
 
 	protected String obtenerNombreMateria(String contenido) {
-		return contenido.split(" ?\\([\\d]+\\)")[0];
+		return contenido.split(" ?\\(\\d+\\)")[0];
 	}
 
 	private int obtenerAnioDeMateria(Cell celda) throws CellFormatException {

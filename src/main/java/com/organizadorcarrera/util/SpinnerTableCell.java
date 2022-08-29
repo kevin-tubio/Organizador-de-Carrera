@@ -15,7 +15,7 @@ import javafx.util.StringConverter;
 
 public class SpinnerTableCell<S, T> extends TableCell<S, T> { // NOSONAR
 
-	private ObjectProperty<StringConverter<T>> converter = new SimpleObjectProperty<>(this, "converter");
+	private final ObjectProperty<StringConverter<T>> converter = new SimpleObjectProperty<>(this, "converter");
 
 	@SafeVarargs
 	public static <S, T> Callback<TableColumn<S, T>, TableCell<S, T>> forTableColumn(final T... items) {
@@ -39,24 +39,6 @@ public class SpinnerTableCell<S, T> extends TableCell<S, T> { // NOSONAR
 
 	private Spinner<T> spinner;
 
-	public SpinnerTableCell() {
-		this(FXCollections.<T>observableArrayList());
-	}
-
-	@SafeVarargs
-	public SpinnerTableCell(T... items) {
-		this(FXCollections.observableArrayList(items));
-	}
-
-	@SafeVarargs
-	public SpinnerTableCell(StringConverter<T> converter, T... items) {
-		this(converter, FXCollections.observableArrayList(items));
-	}
-
-	public SpinnerTableCell(ObservableList<T> items) {
-		this(null, items);
-	}
-
 	public SpinnerTableCell(StringConverter<T> converter, ObservableList<T> items) {
 		this.items = items;
 		setConverter(converter != null ? converter : defaultStringConverter());
@@ -65,15 +47,15 @@ public class SpinnerTableCell<S, T> extends TableCell<S, T> { // NOSONAR
 
 	@SuppressWarnings("unchecked")
 	private StringConverter<T> defaultStringConverter() {
-		return (StringConverter<T>) new StringConverter<>() {
+		return new StringConverter<>() {
 			@Override
 			public String toString(Object t) {
 				return t == null ? null : t.toString();
 			}
 
 			@Override
-			public Object fromString(String string) {
-				return string;
+			public T fromString(String string) {
+				return (T) string;
 			}
 		};
 	}
@@ -88,10 +70,6 @@ public class SpinnerTableCell<S, T> extends TableCell<S, T> { // NOSONAR
 
 	public final StringConverter<T> getConverter() {
 		return converterProperty().get();
-	}
-
-	public ObservableList<T> getItems() {
-		return items;
 	}
 
 	@Override

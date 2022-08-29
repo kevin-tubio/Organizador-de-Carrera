@@ -10,9 +10,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import com.organizadorcarrera.converter.TableViewConfigurationConverter;
-import com.organizadorcarrera.model.Configuration;
-import io.reactivex.disposables.CompositeDisposable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -30,14 +27,16 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
+import com.organizadorcarrera.converter.TableViewConfigurationConverter;
 import com.organizadorcarrera.service.TableConfigurationService;
+import com.organizadorcarrera.model.Configuration;
 import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.enums.CourseStatus;
 import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.enums.CourseType;
-import com.organizadorcarrera.service.ConfigurationService;
 import com.organizadorcarrera.util.SpinnerTableCell;
 
+import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.rxjavafx.observables.JavaFxObservable;
 
 @Component
@@ -82,7 +81,6 @@ public class TableController implements Initializable {
 	@FXML
 	private MenuItem deleteCourseMenuItem;
 
-	private final ConfigurationService configurationService;
 	private final TableConfigurationService tableConfigurationService;
 	private final CompositeDisposable subscriptions;
 	private final MainController mainController;
@@ -92,14 +90,12 @@ public class TableController implements Initializable {
 	@Autowired
 	public TableController(
 			MainController mainController,
-			ConfigurationService configurationService,
 			TableConfigurationService tableConfigurationService,
 			CompositeDisposable compositeDisposable,
 			ObservableList<Course> courseList,
 			TableViewConfigurationConverter tableViewConfigurationConverter) {
 
 		this.mainController = mainController;
-		this.configurationService = configurationService;
 		this.tableConfigurationService = tableConfigurationService;
 		this.subscriptions = compositeDisposable;
 		this.courseList = courseList;

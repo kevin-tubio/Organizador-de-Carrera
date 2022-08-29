@@ -1,9 +1,7 @@
 package com.organizadorcarrera.model;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;

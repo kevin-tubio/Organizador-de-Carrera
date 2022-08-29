@@ -3,6 +3,7 @@ package com.organizadorcarrera.builder;
 import java.io.IOException;
 import java.util.function.Consumer;
 
+import com.organizadorcarrera.exception.StageBuilderException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -55,17 +56,13 @@ public class StageBuilder {
 		try {
 			return new Scene(loader.load());
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new StageBuilderException("", e);
 		}
 	}
 	
 	public StageBuilder withTitle(String titleKey) {
 		this.stage.setTitle(LangResource.getString(titleKey));
 		return this;
-	}
-
-	public StageBuilder asWindowModal() {
-		return this.setModality(Modality.WINDOW_MODAL);
 	}
 
 	public StageBuilder asApplicationModal() {

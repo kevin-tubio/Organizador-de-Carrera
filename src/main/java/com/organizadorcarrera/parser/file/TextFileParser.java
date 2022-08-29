@@ -19,15 +19,20 @@ import com.organizadorcarrera.exception.LineFormatException;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TextFileParser implements FileParser {
 
 	private int numeroDeLinea;
+
 	private final Logger logger;
 	private final ProgramService programService;
 
+	private static final String LINEA_INVALIDA = "LineaInvalida";
+
+	@Autowired
 	public TextFileParser(ProgramService programService) {
 		this.logger = LoggerFactory.getLogger(TextFileParser.class);
 		this.programService = programService;
@@ -60,7 +65,7 @@ public class TextFileParser implements FileParser {
 			try {
 				programService.addCourse(crearMateria(buffer));
 			} catch (LineFormatException e) {
-				logger.error(LangResource.getString("LineaInvalida"), this.numeroDeLinea, e.getMessage());
+				logger.error(LangResource.getString(LINEA_INVALIDA), this.numeroDeLinea, e.getMessage());
 			}
 		}
 	}
@@ -134,7 +139,7 @@ public class TextFileParser implements FileParser {
 		var linea = buffer.readLine();
 
 		if (linea == null || !linea.strip().matches("^\\d+: *[\\d+/]+ *$")) {
-			logger.warn(LangResource.getString("LineaInvalida"), this.numeroDeLinea, LangResource.getString("IdCorrelativasEsperado"));
+			logger.warn(LangResource.getString(LINEA_INVALIDA), this.numeroDeLinea, LangResource.getString("IdCorrelativasEsperado"));
 			return;
 		}
 
@@ -152,7 +157,7 @@ public class TextFileParser implements FileParser {
 	}
 
 	private String formatearMensajeExcepcion(String mensaje) {
-		String mensajeExcepcion = LangResource.getString("LineaInvalida").replaceFirst("\\{\\}", String.valueOf(this.numeroDeLinea));
+		String mensajeExcepcion = LangResource.getString(LINEA_INVALIDA).replaceFirst("\\{\\}", String.valueOf(this.numeroDeLinea));
 		return mensajeExcepcion.replace("{}", mensaje);
 	}
 

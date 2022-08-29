@@ -1,6 +1,5 @@
 package com.organizadorcarrera.service;
 
-import java.io.StringWriter;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -67,25 +66,16 @@ public class ProgramService {
 
 	@Override
 	public String toString() {
-		var writer = new StringWriter();
+		var stringBuilder = new StringBuilder();
 		for (Course course : programRepository.getCourseList()) {
-			writer.write(course.toString());
+			stringBuilder.append(course.toString());
 		}
-		return writer.toString();
+		return stringBuilder.toString();
 	}
 
 	public Set<Course> getUnlockableCourses(int course) throws InvalidCourseException {
 		validateCourses(course);
 		return grafo.obtenerDesbloqueables(course, programRepository.getProgramMap());
-	}
-
-	public int getCoursesCount() {
-		return programRepository.countAll();
-	}
-
-	public Course getCourse(int id) throws InvalidCourseException {
-		validateCourses(id);
-		return programRepository.findById(id);
 	}
 
 	public void deleteCourse(Course course) {
