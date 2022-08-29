@@ -137,7 +137,7 @@ public class CourseController implements Initializable {
 		this.initializeChoiceBoxes();
 		this.initializeSpinners();
 		this.initializeButtons();
-		this.initializeCorrelativeCousesList();
+		this.initializeCorrelativeCoursesList();
 		this.initializeCourseList();
 	}
 
@@ -175,12 +175,11 @@ public class CourseController implements Initializable {
 		this.cancelButton.setCancelButton(true);
 	}
 
-	private void initializeCorrelativeCousesList() {
+	private void initializeCorrelativeCoursesList() {
 		this.correlativeCourses.addListener((ListChangeListener<? super Course>) course -> applyFilter(this.searchField.getText()));
 		this.correlativeCourseList.setItems(this.correlativeCourses);
 		this.correlativeCourseList.setPlaceholder(new Label(LangResource.getString("ListaCorrelativasVacia")));
-		this.removeCorrelativeMenuItem.disableProperty()
-				.bind(correlativeCourseList.getSelectionModel().selectedItemProperty().isNull());
+		this.removeCorrelativeMenuItem.disableProperty().bind(correlativeCourseList.getSelectionModel().selectedItemProperty().isNull());
 	}
 
 	private void initializeCourseList() {
@@ -270,7 +269,7 @@ public class CourseController implements Initializable {
 	}
 
 	private boolean searchMatches(String courseName, String id, String search) {
-		return courseName.indexOf(search) != -1 || id.indexOf(search) != -1;
+		return courseName.contains(search) || id.contains(search);
 	}
 
 	private void subscribeToCourseList() {
