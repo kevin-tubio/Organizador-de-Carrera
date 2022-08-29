@@ -1,4 +1,4 @@
-package com.organizadorcarrera.converter;
+package com.organizadorcarrera.util.converter;
 
 import com.organizadorcarrera.model.Configuration;
 import com.organizadorcarrera.model.Course;

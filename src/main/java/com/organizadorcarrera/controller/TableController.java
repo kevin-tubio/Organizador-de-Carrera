@@ -27,7 +27,7 @@ import javafx.scene.control.cell.ChoiceBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 
-import com.organizadorcarrera.converter.TableViewConfigurationConverter;
+import com.organizadorcarrera.util.converter.TableViewConfigurationConverter;
 import com.organizadorcarrera.service.TableConfigurationService;
 import com.organizadorcarrera.model.Configuration;
 import com.organizadorcarrera.model.Course;
