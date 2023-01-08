@@ -19,206 +19,230 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane minWidth="-Infinity" prefWidth="552.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.organizadorcarrera.controller.CourseController">
-	<children>
-		<BorderPane fx:id="container" prefWidth="552.0">
-			<bottom>
+<AnchorPane minWidth="-Infinity" prefWidth="552.0" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.organizadorcarrera.controller.CourseController">
+    <BorderPane fx:id="container" prefWidth="552.0">
+        <bottom>
             <Pane prefHeight="40.0" prefWidth="552.0">
-               <BorderPane.margin>
-                  <Insets />
-               </BorderPane.margin>
-               <children>
-                  <Separator prefHeight="1.0" prefWidth="552.0" />
-                  <GridPane prefHeight="40.0" prefWidth="552.0">
-                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
-                     </columnConstraints>
-                     <rowConstraints>
-                        <RowConstraints maxHeight="1.0" minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES" />
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                     </rowConstraints>
-                     <children>
-            						<Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonCancelar" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Button>
-            						<Button fx:id="okButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonAceptar" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets left="10.0" />
-                           </GridPane.margin>
-                        </Button>
-            						<Label fx:id="errorMessage" text="" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-                     </children>
-                     <padding>
-                        <Insets left="10.0" right="10.0" />
-                     </padding>
-                  </GridPane>
-               </children>
+                <BorderPane.margin>
+                    <Insets/>
+                </BorderPane.margin>
+                <Separator prefHeight="1.0" prefWidth="552.0"/>
+                <GridPane prefHeight="40.0" prefWidth="552.0">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="1.0" minHeight="1.0" prefHeight="1.0" vgrow="SOMETIMES"/>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <padding>
+                        <Insets left="10.0" right="10.0"/>
+                    </padding>
+                    <Button fx:id="cancelButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonCancelar"
+                            GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                            GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                            <Insets left="10.0"/>
+                        </GridPane.margin>
+                    </Button>
+                    <Button fx:id="okButton" mnemonicParsing="false" prefWidth="80.0" text="%BotonAceptar"
+                            GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="1"
+                            GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                            <Insets left="10.0"/>
+                        </GridPane.margin>
+                    </Button>
+                    <Label fx:id="errorMessage" GridPane.halignment="LEFT" GridPane.rowIndex="1"
+                           GridPane.valignment="CENTER">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                </GridPane>
             </Pane>
-			</bottom>
-			<center>
-				<VBox minWidth="-Infinity" prefWidth="552.0">
-					<children>
-						<GridPane alignment="CENTER" minWidth="-Infinity" prefHeight="196.0" prefWidth="552.0" vgap="5.0" VBox.vgrow="ALWAYS">
-							<columnConstraints>
-								<ColumnConstraints maxWidth="138.0" minWidth="138.0" prefWidth="138.0" />
-                        <ColumnConstraints maxWidth="46.0" minWidth="46.0" prefWidth="46.0" />
-								<ColumnConstraints maxWidth="92.0" minWidth="92.0" prefWidth="92.0" />
-								<ColumnConstraints maxWidth="92.0" minWidth="92.0" prefWidth="92.0" />
-								<ColumnConstraints maxWidth="46.0" minWidth="46.0" prefWidth="46.0" />
-                        <ColumnConstraints maxWidth="138.0" minWidth="138.0" prefWidth="138.0" />
-							</columnConstraints>
-							<rowConstraints>
-                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
-                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
-								<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM" vgrow="NEVER" />
-								<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-								<RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-							</rowConstraints>
-							<children>
-								<Label text="%TextoID">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<TextField fx:id="idField" GridPane.rowIndex="1" GridPane.valignment="TOP">
-									<GridPane.margin>
-										<Insets left="10.0" right="10.0" />
-									</GridPane.margin>
-								</TextField>
-								<Label text="%TextoNombre" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.columnSpan="2147483647" GridPane.rowIndex="1" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-								<Label layoutX="10.0" layoutY="127.0" text="%TextoTipo" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<ChoiceBox fx:id="courseTypeField" minWidth="164.0" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ChoiceBox>
-								<Label text="%TextoPeriodo" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<ChoiceBox fx:id="coursePeriodField" minWidth="164.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ChoiceBox>
-								<Label text="%TextoEstado" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<ChoiceBox fx:id="courseStatusField" minWidth="164.0" GridPane.columnIndex="4" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </ChoiceBox>
-								<Label text="%TextoNota" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<Spinner fx:id="gradeField" editable="true" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Spinner>
-								<Label text="%TextoAño" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.rowIndex="4">
-									<GridPane.margin>
-										<Insets left="10.0" right="10.0" />
-									</GridPane.margin>
-								</Label>
-								<Spinner fx:id="yearField" editable="true" GridPane.columnIndex="1" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Spinner>
-								<Label layoutX="142.0" layoutY="127.0" text="%TextoHoras" wrapText="true" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<Spinner fx:id="hoursField" editable="true" layoutX="56.0" layoutY="123.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Spinner>
-								<Label layoutX="274.0" layoutY="117.0" text="%TextoCreditos" wrapText="true" GridPane.columnIndex="5" GridPane.rowIndex="4">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Label>
-								<Spinner fx:id="creditsField" editable="true" layoutX="394.0" layoutY="123.0" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </Spinner>
-								<TextField fx:id="searchField" prefHeight="25.0" prefWidth="169.0" promptText="%TextoBuscadorCorrelativas" GridPane.columnSpan="2147483647" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
-                           <GridPane.margin>
-                              <Insets left="10.0" right="10.0" />
-                           </GridPane.margin>
-                        </TextField>
-							</children>
-							<VBox.margin>
-								<Insets bottom="10.0" top="5.0" />
-							</VBox.margin>
-						</GridPane>
-						<StackPane minWidth="-Infinity" prefHeight="140.0" prefWidth="552.0" VBox.vgrow="NEVER">
-							<VBox.margin>
-								<Insets bottom="10.0" />
-							</VBox.margin>
-							<children>
-								<ListView fx:id="correlativeCourseList" minWidth="-Infinity" prefWidth="532.0" StackPane.alignment="CENTER">
-									<contextMenu>
-										<ContextMenu>
-											<items>
-												<MenuItem fx:id="removeCorrelativeMenuItem" mnemonicParsing="false" text="%MenuContextQuitar" />
-											</items>
-										</ContextMenu>
-									</contextMenu>
-                           <StackPane.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </StackPane.margin>
-								</ListView>
-								<ListView fx:id="courseList" minWidth="-Infinity" prefWidth="532.0" translateZ="2.0" StackPane.alignment="CENTER">
-									<contextMenu>
-										<ContextMenu>
-											<items>
-												<MenuItem fx:id="addCorrelativeMenuItem" mnemonicParsing="false" text="%MenuContextAgregar" />
-											</items>
-										</ContextMenu>
-									</contextMenu>
-                           <StackPane.margin>
-                              <Insets left="20.0" right="20.0" />
-                           </StackPane.margin>
-								</ListView>
-							</children>
-						</StackPane>
-					</children>
-				</VBox>
-			</center>
-		</BorderPane>
-	</children>
+        </bottom>
+        <center>
+            <VBox minWidth="-Infinity" prefWidth="552.0">
+                <GridPane alignment="CENTER" minWidth="-Infinity" prefHeight="196.0" prefWidth="552.0" vgap="5.0"
+                          VBox.vgrow="ALWAYS">
+                    <columnConstraints>
+                        <ColumnConstraints maxWidth="138.0" minWidth="138.0" prefWidth="138.0"/>
+                        <ColumnConstraints maxWidth="46.0" minWidth="46.0" prefWidth="46.0"/>
+                        <ColumnConstraints maxWidth="92.0" minWidth="92.0" prefWidth="92.0"/>
+                        <ColumnConstraints maxWidth="92.0" minWidth="92.0" prefWidth="92.0"/>
+                        <ColumnConstraints maxWidth="46.0" minWidth="46.0" prefWidth="46.0"/>
+                        <ColumnConstraints maxWidth="138.0" minWidth="138.0" prefWidth="138.0"/>
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM"
+                                        vgrow="NEVER"/>
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM"
+                                        vgrow="NEVER"/>
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="20.0" minHeight="20.0" prefHeight="20.0" valignment="BOTTOM"
+                                        vgrow="NEVER"/>
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                        <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES"/>
+                    </rowConstraints>
+                    <VBox.margin>
+                        <Insets bottom="10.0" top="5.0"/>
+                    </VBox.margin>
+                    <Label text="%TextoID">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <TextField fx:id="idField" GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </TextField>
+                    <Label text="%TextoNombre" GridPane.columnIndex="1" GridPane.columnSpan="2147483647">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.columnSpan="2147483647"
+                               GridPane.rowIndex="1" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </TextField>
+                    <Label layoutX="10.0" layoutY="127.0" text="%TextoTipo" GridPane.columnSpan="2"
+                           GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <ChoiceBox fx:id="courseTypeField" minWidth="164.0" GridPane.columnSpan="2"
+                               GridPane.halignment="CENTER" GridPane.rowIndex="3" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </ChoiceBox>
+                    <Label text="%TextoPeriodo" GridPane.columnIndex="2" GridPane.columnSpan="2"
+                           GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <ChoiceBox fx:id="coursePeriodField" minWidth="164.0" GridPane.columnIndex="2"
+                               GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                               GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </ChoiceBox>
+                    <Label text="%TextoEstado" GridPane.columnIndex="4" GridPane.columnSpan="2"
+                           GridPane.rowIndex="2">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <ChoiceBox fx:id="courseStatusField" minWidth="164.0" GridPane.columnIndex="4"
+                               GridPane.columnSpan="2" GridPane.halignment="CENTER" GridPane.rowIndex="3"
+                               GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </ChoiceBox>
+                    <Label text="%TextoNota" GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <Spinner fx:id="gradeField" editable="true" GridPane.halignment="CENTER"
+                             GridPane.rowIndex="5" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Spinner>
+                    <Label text="%TextoAño" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                           GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <Spinner fx:id="yearField" editable="true" GridPane.columnIndex="1" GridPane.columnSpan="2"
+                             GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Spinner>
+                    <Label layoutX="142.0" layoutY="127.0" text="%TextoHoras" wrapText="true"
+                           GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <Spinner fx:id="hoursField" editable="true" layoutX="56.0" layoutY="123.0"
+                             GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.halignment="CENTER"
+                             GridPane.rowIndex="5" GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Spinner>
+                    <Label layoutX="274.0" layoutY="117.0" text="%TextoCreditos" wrapText="true"
+                           GridPane.columnIndex="5" GridPane.rowIndex="4">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Label>
+                    <Spinner fx:id="creditsField" editable="true" layoutX="394.0" layoutY="123.0"
+                             GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="5"
+                             GridPane.valignment="TOP">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </Spinner>
+                    <TextField fx:id="searchField" prefHeight="25.0" prefWidth="169.0"
+                               promptText="%TextoBuscadorCorrelativas" GridPane.columnSpan="2147483647"
+                               GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.valignment="BOTTOM">
+                        <GridPane.margin>
+                            <Insets left="10.0" right="10.0"/>
+                        </GridPane.margin>
+                    </TextField>
+                </GridPane>
+                <StackPane minWidth="-Infinity" prefHeight="140.0" prefWidth="552.0" VBox.vgrow="NEVER">
+                    <VBox.margin>
+                        <Insets bottom="10.0"/>
+                    </VBox.margin>
+                    <children>
+                        <ListView fx:id="correlativeCourseList" minWidth="-Infinity" prefWidth="532.0"
+                                  StackPane.alignment="CENTER">
+                            <contextMenu>
+                                <ContextMenu>
+                                    <items>
+                                        <MenuItem fx:id="removeCorrelativeMenuItem" mnemonicParsing="false"
+                                                  text="%MenuContextQuitar"/>
+                                    </items>
+                                </ContextMenu>
+                            </contextMenu>
+                            <StackPane.margin>
+                                <Insets left="20.0" right="20.0"/>
+                            </StackPane.margin>
+                        </ListView>
+                        <ListView fx:id="courseList" minWidth="-Infinity" prefWidth="532.0" translateZ="2.0"
+                                  StackPane.alignment="CENTER">
+                            <contextMenu>
+                                <ContextMenu>
+                                    <items>
+                                        <MenuItem fx:id="addCorrelativeMenuItem" mnemonicParsing="false"
+                                                  text="%MenuContextAgregar"/>
+                                    </items>
+                                </ContextMenu>
+                            </contextMenu>
+                            <StackPane.margin>
+                                <Insets left="20.0" right="20.0"/>
+                            </StackPane.margin>
+                        </ListView>
+                    </children>
+                </StackPane>
+            </VBox>
+        </center>
+    </BorderPane>
 </AnchorPane>

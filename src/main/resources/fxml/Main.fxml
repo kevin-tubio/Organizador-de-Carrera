@@ -12,57 +12,45 @@
 <?import javafx.scene.layout.HBox?>
 
 <AnchorPane fx:id="anchor" minHeight="600.0"
-	minWidth="1024.0" prefHeight="720.0" prefWidth="1280.0"
-	xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.organizadorcarrera.controller.MainController">
-	<children>
-		<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-			<top>
-				<MenuBar>
-					<menus>
-						<Menu mnemonicParsing="false" text="%MenuArchivo">
-							<items>
-								<MenuItem fx:id="newProgramMenuItem" mnemonicParsing="false" text="%MenuArchivoNuevo" />
-								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="openFileMenuItem" mnemonicParsing="false" text="%MenuArchivoAbrir" />
-								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="saveChangesMenuItem" mnemonicParsing="false" text="%MenuArchivoGuardar" />
-								<SeparatorMenuItem mnemonicParsing="false" />
-								<MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" text="%MenuArchivoSalir" />
-							</items>
-						</Menu>
-						<Menu mnemonicParsing="false" text="%MenuEditar">
-							<items>
-								<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" text="%MenuEditarAgregar" />
-								<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" text="%MenuEditarEditar" />
-								<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" text="%MenuEditarBorrar" />
-							</items>
-						</Menu>
-					</menus>
-				</MenuBar>
-			</top>
-			<center>
-				<TabPane fx:id="tabPane" onMouseClicked="#disableActions" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-					<tabs>
-						<Tab closable="false" text="%TabTabla">
-							<content>
-								<fx:include fx:id="table" source="Table.fxml" />
-							</content>
-						</Tab>
-						<Tab closable="false" text="%TabLista">
-							<content>
-								<fx:include fx:id="list" source="List.fxml" />
-							</content>
-						</Tab>
-					</tabs>
-					<BorderPane.margin>
-						<Insets />
-					</BorderPane.margin>
-				</TabPane>
-			</center>
-			<bottom>
-				<HBox prefHeight="32.0" />
-			</bottom>
-		</BorderPane>
-	</children>
+			minWidth="1024.0" prefHeight="720.0" prefWidth="1280.0"
+			xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+			fx:controller="com.organizadorcarrera.controller.MainController">
+	<BorderPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+				AnchorPane.topAnchor="0.0">
+		<top>
+			<MenuBar>
+				<Menu mnemonicParsing="false" text="%MenuArchivo">
+					<MenuItem fx:id="newProgramMenuItem" mnemonicParsing="false" text="%MenuArchivoNuevo"/>
+					<SeparatorMenuItem mnemonicParsing="false"/>
+					<MenuItem fx:id="openFileMenuItem" mnemonicParsing="false" text="%MenuArchivoAbrir"/>
+					<SeparatorMenuItem mnemonicParsing="false"/>
+					<MenuItem fx:id="saveChangesMenuItem" mnemonicParsing="false" text="%MenuArchivoGuardar"/>
+					<SeparatorMenuItem mnemonicParsing="false"/>
+					<MenuItem fx:id="exitAppMenuItem" mnemonicParsing="false" text="%MenuArchivoSalir"/>
+				</Menu>
+				<Menu mnemonicParsing="false" text="%MenuEditar">
+					<MenuItem fx:id="addCourseMenuItem" mnemonicParsing="false" text="%MenuEditarAgregar"/>
+					<MenuItem fx:id="editCourseMenuItem" mnemonicParsing="false" text="%MenuEditarEditar"/>
+					<MenuItem fx:id="deleteCourseMenuItem" mnemonicParsing="false" text="%MenuEditarBorrar"/>
+				</Menu>
+			</MenuBar>
+		</top>
+		<center>
+			<TabPane fx:id="tabPane" onMouseClicked="#disableActions" tabClosingPolicy="UNAVAILABLE"
+					 BorderPane.alignment="CENTER">
+				<BorderPane.margin>
+					<Insets/>
+				</BorderPane.margin>
+				<Tab closable="false" text="%TabTabla">
+					<fx:include fx:id="table" source="Table.fxml"/>
+				</Tab>
+				<Tab closable="false" text="%TabLista">
+					<fx:include fx:id="list" source="List.fxml"/>
+				</Tab>
+			</TabPane>
+		</center>
+		<bottom>
+			<HBox prefHeight="32.0"/>
+		</bottom>
+	</BorderPane>
 </AnchorPane>

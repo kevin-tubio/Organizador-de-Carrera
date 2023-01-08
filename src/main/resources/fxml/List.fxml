@@ -6,18 +6,14 @@
 <?import javafx.scene.layout.HBox?>
 
 <AnchorPane xmlns="http://javafx.com/javafx/17"
-	xmlns:fx="http://javafx.com/fxml/1"
-	fx:controller="com.organizadorcarrera.controller.ListController">
-	<children>
+			xmlns:fx="http://javafx.com/fxml/1"
+			fx:controller="com.organizadorcarrera.controller.ListController">
 	<HBox AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
-		AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-			<children>
-				<ListView fx:id="listView" onMouseClicked="#enableActions" HBox.hgrow="ALWAYS">
-					<HBox.margin>
-						<Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-					</HBox.margin>
-				</ListView>
-			</children>
-		</HBox>
-	</children>
+		  AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+		<ListView fx:id="listView" onMouseClicked="#enableActions" HBox.hgrow="ALWAYS">
+			<HBox.margin>
+				<Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
+			</HBox.margin>
+		</ListView>
+	</HBox>
 </AnchorPane>
