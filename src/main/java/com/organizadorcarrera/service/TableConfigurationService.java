@@ -1,20 +1,15 @@
 package com.organizadorcarrera.service;
 
-import com.organizadorcarrera.model.Configuration;
 import com.organizadorcarrera.enums.ConfigurationType;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import com.organizadorcarrera.model.Configuration;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class TableConfigurationService {
 
 	private final ConfigurationService configurationService;
-
-	@Autowired
-	public TableConfigurationService(ConfigurationService configurationService) {
-		this.configurationService = configurationService;
-	}
 
 	public Configuration getTableConfiguration() {
 		Configuration tableConfiguration = configurationService.findByTipoConfiguracion(ConfigurationType.TABLE);

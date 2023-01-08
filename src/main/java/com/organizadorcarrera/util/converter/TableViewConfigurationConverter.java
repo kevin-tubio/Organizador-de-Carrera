@@ -5,20 +5,16 @@ import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.service.TableConfigurationService;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.Comparator;
 
 @Component
+@RequiredArgsConstructor
 public class TableViewConfigurationConverter {
 
     private final TableConfigurationService tableConfigurationService;
-
-    @Autowired
-    public TableViewConfigurationConverter(TableConfigurationService tableConfigurationService) {
-        this.tableConfigurationService = tableConfigurationService;
-    }
 
     public void fromTable(TableView<Course> table, Configuration configuration) {
         saveColumnsOrder(table, configuration);

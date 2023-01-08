@@ -1,20 +1,19 @@
 package com.organizadorcarrera.controller;
 
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import io.reactivex.rxjavafx.observables.JavaFxObservable;
-
 @Component
+@RequiredArgsConstructor
 public class ExitController implements Initializable {
 
 	@FXML
@@ -28,12 +27,6 @@ public class ExitController implements Initializable {
 
 	private final MainController mainController;
 	private final CompositeDisposable subscriptions;
-
-	@Autowired
-	public ExitController(MainController mainController, CompositeDisposable compositeDisposable) {
-		this.mainController = mainController;
-		this.subscriptions = compositeDisposable;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resources) {

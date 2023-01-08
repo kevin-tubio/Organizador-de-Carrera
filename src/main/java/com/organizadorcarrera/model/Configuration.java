@@ -16,9 +16,11 @@ import javax.persistence.Table;
 import javax.persistence.JoinColumn;
 
 import com.organizadorcarrera.enums.ConfigurationType;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name="CONFIGURATION_TYPE")
+@NoArgsConstructor
 public class Configuration {
 
 	@Id
@@ -31,8 +33,6 @@ public class Configuration {
 	@MapKeyColumn(name = "parameter")
 	@Column(name = "value")
 	private Map<String, String> config;
-
-	public Configuration() { /* JPA exclusive */ }
 	
 	public Configuration(ConfigurationType configurationType) {
 		this.configurationType = configurationType;

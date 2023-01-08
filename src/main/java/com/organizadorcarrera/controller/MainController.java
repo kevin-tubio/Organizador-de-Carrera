@@ -1,20 +1,13 @@
 package com.organizadorcarrera.controller;
 
-import java.io.File;
-import java.net.URL;
-import java.util.ResourceBundle;
-import java.util.function.Consumer;
-
+import com.organizadorcarrera.exception.FileException;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.parser.file.ExcelFileParser;
+import com.organizadorcarrera.parser.file.TextFileParser;
 import com.organizadorcarrera.service.ProgramService;
+import com.organizadorcarrera.util.WindowDirector;
 import io.reactivex.disposables.CompositeDisposable;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.Event;
@@ -24,16 +17,19 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TabPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-import com.organizadorcarrera.model.Course;
-import com.organizadorcarrera.exception.FileException;
-import com.organizadorcarrera.parser.file.ExcelFileParser;
-import com.organizadorcarrera.parser.file.TextFileParser;
-import com.organizadorcarrera.util.WindowDirector;
-
-import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.function.Consumer;
 
 @Component
+@RequiredArgsConstructor
 public class MainController implements Initializable {
 
 	@FXML
@@ -69,30 +65,13 @@ public class MainController implements Initializable {
 	@Value("${main.initial-file-directory}")
 	private String initialFileDirectory;
 
-	private final SimpleBooleanProperty unsavedChangesSubject;
-	private final Logger logger;
+	private final SimpleBooleanProperty unsavedChangesSubject = new SimpleBooleanProperty(false);
+	private final Logger logger = LoggerFactory.getLogger(MainController.class);
 	private final CompositeDisposable subscriptions;
 	private final ProgramService programService;
 	private final WindowDirector windowDirector;
 	private final ExcelFileParser excelFileParserService;
 	private final TextFileParser textFileParserService;
-
-	@Autowired
-	public MainController(
-			ProgramService programService,
-			WindowDirector windowDirector,
-			ExcelFileParser excelFileParserService,
-			TextFileParser textFileParserService,
-			CompositeDisposable compositeDisposable) {
-
-		this.programService = programService;
-		this.windowDirector = windowDirector;
-		this.excelFileParserService = excelFileParserService;
-		this.textFileParserService = textFileParserService;
-		this.unsavedChangesSubject = new SimpleBooleanProperty(false);
-		this.logger = LoggerFactory.getLogger(MainController.class);
-		this.subscriptions = compositeDisposable;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {

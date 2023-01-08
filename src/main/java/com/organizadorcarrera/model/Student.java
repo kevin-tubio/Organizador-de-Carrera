@@ -1,5 +1,7 @@
 package com.organizadorcarrera.model;
 
+import lombok.NoArgsConstructor;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -7,6 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "STUDENT")
+@NoArgsConstructor
 public class Student {
 
 	@Id
@@ -21,8 +24,6 @@ public class Student {
 
 	@Column(nullable = false)
 	private String career;
-
-	public Student() { /* JPA exclusive */ }
 
 	public Student(String firstName, String lastName, Integer studentId, String carrera) {
 		this.firstName = capitalize(firstName);

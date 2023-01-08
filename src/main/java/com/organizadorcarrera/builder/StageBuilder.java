@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.function.Consumer;
 
 import com.organizadorcarrera.exception.StageBuilderException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -19,14 +20,10 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
 @Component
+@RequiredArgsConstructor
 public class StageBuilder {
 
 	private final ApplicationContext applicationContext;
-
-	@Autowired
-	public StageBuilder(ApplicationContext applicationContext) {
-		this.applicationContext = applicationContext;
-	}
 
 	private Stage stage;
 	private FXMLLoader fxmlLoader;

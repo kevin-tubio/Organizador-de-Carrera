@@ -1,21 +1,20 @@
 package com.organizadorcarrera.controller;
 
-import java.net.URL;
-import java.util.ResourceBundle;
-
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.service.ProgramService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
-import com.organizadorcarrera.model.Course;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 @Component
+@RequiredArgsConstructor
 public class ListController implements Initializable {
 
 	@FXML
@@ -24,13 +23,6 @@ public class ListController implements Initializable {
 	private final MainController mainController;
 	private final FilteredList<Course> filteredList;
 	private final ProgramService programService;
-
-	@Autowired
-	public ListController(MainController mainController, ProgramService programService, FilteredList<Course> filteredCourseList) {
-		this.filteredList = filteredCourseList;
-		this.programService = programService;
-		this.mainController = mainController;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {

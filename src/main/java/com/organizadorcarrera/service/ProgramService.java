@@ -2,6 +2,7 @@ package com.organizadorcarrera.service;
 
 import java.util.Set;
 
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,20 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ProgramService {
 
-	private final Logger logger;
 	private final Grafo grafo;
 	private final CourseRepository courseRepository;
 	private final ProgramRepository programRepository;
-
-	@Autowired
-	public ProgramService(CourseRepository materiaRepository, ProgramRepository programRepository, Grafo grafo) {
-		this.logger = LoggerFactory.getLogger(ProgramService.class);
-		this.courseRepository = materiaRepository;
-		this.programRepository = programRepository;
-		this.grafo = grafo;
-	}
+	private final Logger logger = LoggerFactory.getLogger(ProgramService.class);
 
 	public void clearProgram() {
 		programRepository.deleteAll();

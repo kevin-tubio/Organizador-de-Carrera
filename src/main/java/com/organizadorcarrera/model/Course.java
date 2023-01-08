@@ -21,9 +21,15 @@ import com.organizadorcarrera.enums.CoursePeriod;
 import com.organizadorcarrera.enums.CourseType;
 import com.organizadorcarrera.exception.InvalidCourseException;
 import com.organizadorcarrera.util.LangResource;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "COURSE")
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Course {
 
 	@Id
@@ -60,8 +66,6 @@ public class Course {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "COURSE_COURSE", joinColumns = @JoinColumn(name = "ID"))
 	private Set<Course> correlatives;
-
-	public Course() { /* JPA exclusive */ }
 
 	public Course(Integer id, String name) {
 		this(id, name, 1, CoursePeriod.PRIMER_CUATRIMESTRE);
@@ -200,4 +204,5 @@ public class Course {
 	public void setCoursePeriod(CoursePeriod coursePeriod) {
 		this.coursePeriod = coursePeriod;
 	}
+
 }

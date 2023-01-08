@@ -1,42 +1,31 @@
 package com.organizadorcarrera.parser.file;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.exception.FileException;
+import com.organizadorcarrera.exception.InvalidCourseException;
+import com.organizadorcarrera.exception.LineFormatException;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.service.ProgramService;
+import com.organizadorcarrera.util.LangResource;
+import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.organizadorcarrera.model.Course;
-import com.organizadorcarrera.enums.CourseStatus;
-import com.organizadorcarrera.enums.CoursePeriod;
-import com.organizadorcarrera.exception.FileException;
-import com.organizadorcarrera.exception.LineFormatException;
-import com.organizadorcarrera.exception.InvalidCourseException;
-import com.organizadorcarrera.util.LangResource;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+
 @Component
+@RequiredArgsConstructor
 public class TextFileParser implements FileParser {
 
 	private int numeroDeLinea;
 
-	private final Logger logger;
 	private final ProgramService programService;
+	private final Logger logger = LoggerFactory.getLogger(TextFileParser.class);
 
 	private static final String LINEA_INVALIDA = "LineaInvalida";
-
-	@Autowired
-	public TextFileParser(ProgramService programService) {
-		this.logger = LoggerFactory.getLogger(TextFileParser.class);
-		this.programService = programService;
-	}
 
 	@Override
 	public void generarListado(String ruta) throws FileException {

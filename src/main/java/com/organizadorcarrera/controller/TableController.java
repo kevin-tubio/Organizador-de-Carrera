@@ -1,5 +1,28 @@
 package com.organizadorcarrera.controller;
 
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CourseType;
+import com.organizadorcarrera.model.Configuration;
+import com.organizadorcarrera.model.Course;
+import com.organizadorcarrera.service.TableConfigurationService;
+import com.organizadorcarrera.util.SpinnerTableCell;
+import com.organizadorcarrera.util.converter.TableViewConfigurationConverter;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.*;
+import javafx.scene.control.TableColumn.CellEditEvent;
+import javafx.scene.control.cell.ChoiceBoxTableCell;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
 import java.math.BigDecimal;
 import java.net.URL;
 import java.util.Comparator;
@@ -10,36 +33,8 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellEditEvent;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.ChoiceBoxTableCell;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
-
-import com.organizadorcarrera.util.converter.TableViewConfigurationConverter;
-import com.organizadorcarrera.service.TableConfigurationService;
-import com.organizadorcarrera.model.Configuration;
-import com.organizadorcarrera.model.Course;
-import com.organizadorcarrera.enums.CourseStatus;
-import com.organizadorcarrera.enums.CoursePeriod;
-import com.organizadorcarrera.enums.CourseType;
-import com.organizadorcarrera.util.SpinnerTableCell;
-
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.rxjavafx.observables.JavaFxObservable;
-
 @Component
+@RequiredArgsConstructor
 public class TableController implements Initializable {
 
 	@FXML
@@ -86,21 +81,6 @@ public class TableController implements Initializable {
 	private final MainController mainController;
 	private final ObservableList<Course> courseList;
 	private final TableViewConfigurationConverter tableViewConfigurationConverter;
-
-	@Autowired
-	public TableController(
-			MainController mainController,
-			TableConfigurationService tableConfigurationService,
-			CompositeDisposable compositeDisposable,
-			ObservableList<Course> courseList,
-			TableViewConfigurationConverter tableViewConfigurationConverter) {
-
-		this.mainController = mainController;
-		this.tableConfigurationService = tableConfigurationService;
-		this.subscriptions = compositeDisposable;
-		this.courseList = courseList;
-		this.tableViewConfigurationConverter = tableViewConfigurationConverter;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {

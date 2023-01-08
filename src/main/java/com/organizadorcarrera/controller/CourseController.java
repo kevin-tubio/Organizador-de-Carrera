@@ -1,48 +1,36 @@
 package com.organizadorcarrera.controller;
 
-import java.net.URL;
-import java.util.HashSet;
-import java.util.ResourceBundle;
-
+import com.organizadorcarrera.enums.CoursePeriod;
+import com.organizadorcarrera.enums.CourseStatus;
+import com.organizadorcarrera.enums.CourseType;
+import com.organizadorcarrera.model.Course;
 import com.organizadorcarrera.service.ProgramService;
+import com.organizadorcarrera.util.LangResource;
 import io.reactivex.disposables.CompositeDisposable;
-
+import io.reactivex.rxjavafx.observables.JavaFxObservable;
 import javafx.collections.ListChangeListener;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
-
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.MenuItem;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-
-import com.organizadorcarrera.enums.CourseStatus;
-import com.organizadorcarrera.enums.CoursePeriod;
-import com.organizadorcarrera.enums.CourseType;
-import com.organizadorcarrera.util.LangResource;
-import com.organizadorcarrera.model.Course;
-
-import io.reactivex.rxjavafx.observables.JavaFxObservable;
-
+import lombok.RequiredArgsConstructor;
 import net.synedra.validatorfx.Check;
 import net.synedra.validatorfx.ValidationResult;
 import net.synedra.validatorfx.Validator;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
+import java.net.URL;
+import java.util.HashSet;
+import java.util.ResourceBundle;
 
 @Component
 @Scope("prototype")
+@RequiredArgsConstructor
 public class CourseController implements Initializable {
 
 	@FXML
@@ -107,23 +95,6 @@ public class CourseController implements Initializable {
 	private final MainController mainController;
 
 	private Course injectedCourse;
-
-	@Autowired
-	public CourseController(
-			MainController mainController,
-			CompositeDisposable compositeDisposable,
-			ProgramService programService,
-			Validator validator,
-			FilteredList<Course> filteredCourseList,
-			ObservableList<Course> correlativeCourses) {
-
-		this.mainController = mainController;
-		this.programService = programService;
-		this.validator = validator;
-		this.correlativeCourses = correlativeCourses;
-		this.filteredList = filteredCourseList;
-		this.subscriptions = compositeDisposable;
-	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle resourceBundle) {
