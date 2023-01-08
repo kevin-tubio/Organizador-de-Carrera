@@ -98,7 +98,6 @@ buildNumber.properties
 ### DataBase ###
 db/
 
-
 # Created by https://www.toptal.com/developers/gitignore/api/intellij,maven,java
 # Edit at https://www.toptal.com/developers/gitignore?templates=intellij,maven,java
 
@@ -214,3 +213,5 @@ fabric.properties
 # Azure Toolkit for IntelliJ plugin
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
+
+/src/main/resources/application.properties
